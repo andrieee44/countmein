@@ -14,8 +14,6 @@ migrate:
 	atlas schema apply --env prod
 
 clean:
-	docker rmi hackusc:latest || true
-	rm -f hackusc-latest.tar.gz hackusc
 	@printf "mariadb $(DB_DEV_NAME) -e %s\n" \
 		'"DROP DATABASE $(DB_DEV_NAME); CREATE DATABASE $(DB_DEV_NAME);"'
 	@mariadb -h $(DB_DEV_HOST) -u $(DB_DEV_USERNAME) -p$(DB_DEV_PASSWORD) \

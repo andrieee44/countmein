@@ -205,6 +205,16 @@ func (u *UserService) UpdateLogin(
 		return nil, err
 	}
 
+	err = store.New(u.db).UpdateUserSession(ctx, actor.ID)
+	if err != nil {
+		err = store.New(u.db).RevokeAllUserSession(ctx, actor.ID)
+		if err != nil {
+			panic(err)
+		}
+
+		return nil, err
+	}
+
 	return connect.NewResponse(&usersv1.UpdateLoginResponse{}), nil
 }
 
