@@ -1,0 +1,18 @@
+version: "v2"
+managed:
+  enabled: true
+  override:
+    - file_option: "go_package_prefix"
+      value: "github.com/andrieee44/countmein/gen"
+plugins:
+  - local: "protoc-gen-go"
+    out: "gen"
+    opt: "paths=source_relative"
+  - local: "protoc-gen-connect-go"
+    out: "gen"
+    opt: "paths=source_relative"
+  - local: "protoc-gen-doc"
+    out: "gen/docs"
+    opt:
+      - "html"
+      - "index.html"
