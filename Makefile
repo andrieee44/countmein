@@ -1,5 +1,8 @@
 run: vet generate migrate
-	go run .
+	nix run
+
+build: vet generate migrate
+	nix build
 
 generate:
 	tbls doc --rm-dist
@@ -25,4 +28,4 @@ vet:
 	buf lint
 	tbls lint
 
-.PHONY: run migrate clean vet
+.PHONY: run build generate migrate clean vet

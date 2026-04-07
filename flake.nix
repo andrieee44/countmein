@@ -15,7 +15,7 @@
           env.CGO_ENABLED = 0;
           pname = "countmein";
           version = "0.0.1";
-          vendorHash = "";
+          vendorHash = "sha256-TVVLwQyBesy9HFa9OLtcNy9UBjQcGfalQfL9J8WPAiI=";
           src = self;
         };
       };
