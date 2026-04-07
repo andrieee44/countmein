@@ -86,11 +86,19 @@ func NewAuthInterceptor(db store.DBTX) connect.UnaryInterceptorFunc {
 				return nil, err
 			}
 
+			if row.DbTime.After(row.ExpiresAt) {
+				err = store.New(db).RevokeUserSession(ctx, row.ID)
+				if err != nil {
+					return nil, err
+				}
+
+				return nil, errors.New("session or token expired")
+			}
+
 			return next(WithActor(ctx, UserActor{
 				ID:    row.UserID,
 				Email: row.Email,
 			}), req)
-
 		}
 	}
 }
