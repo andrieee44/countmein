@@ -10,12 +10,13 @@ CREATE TABLE `calendars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `ical_data` longblob NOT NULL,
   `description` text DEFAULT NULL,
+  `ical` longblob NOT NULL,
+  `members_only` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_calendars_owner_id` (`owner_id`),
   CONSTRAINT `fk_calendars_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ```
 
 </details>
@@ -24,11 +25,12 @@ CREATE TABLE `calendars` (
 
 | Name | Type | Default | Nullable | Extra Definition | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | ---------------- | -------- | ------- | ------- |
-| id | int(11) |  | false | auto_increment | [calendars_access_codes](calendars_access_codes.md) [users_external_calendars](users_external_calendars.md) |  |  |
+| id | int(11) |  | false | auto_increment | [users_calendars](users_calendars.md) [calendars_access_codes](calendars_access_codes.md) |  |  |
 | owner_id | int(11) |  | false |  |  | [users](users.md) |  |
 | name | varchar(255) |  | false |  |  |  |  |
-| ical_data | longblob |  | false |  |  |  |  |
 | description | text | NULL | true |  |  |  |  |
+| ical | longblob |  | false |  |  |  |  |
+| members_only | tinyint(1) |  | false |  |  |  |  |
 
 ## Constraints
 

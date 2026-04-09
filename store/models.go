@@ -13,7 +13,8 @@ type Calendar struct {
 	ID          int32
 	OwnerID     int32
 	Name        string
-	IcalData    []byte
+	Ical        []byte
+	MembersOnly bool
 	Description sql.Null[string]
 }
 
@@ -21,15 +22,7 @@ type CalendarsAccessCode struct {
 	ID         int32
 	CalendarID int32
 	Code       string
-	ExpiresAt  sql.Null[time.Time]
-}
-
-type OnlineCalendar struct {
-	ID          int32
-	OwnerID     int32
-	Name        string
-	Url         string
-	Description sql.Null[string]
+	ExpiresAt  sql.NullTime
 }
 
 type User struct {
@@ -41,14 +34,9 @@ type User struct {
 	MiddleName   sql.Null[string]
 }
 
-type UsersExternalCalendar struct {
+type UsersCalendar struct {
 	UserID     int32
 	CalendarID int32
-}
-
-type UsersExternalOnlineCalendar struct {
-	UserID           int32
-	OnlineCalendarID int32
 }
 
 type UsersSession struct {

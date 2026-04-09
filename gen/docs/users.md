@@ -24,7 +24,7 @@ CREATE TABLE `users` (
 
 | Name | Type | Default | Nullable | Extra Definition | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | ---------------- | -------- | ------- | ------- |
-| id | int(11) |  | false | auto_increment | [online_calendars](online_calendars.md) [calendars](calendars.md) [users_external_online_calendars](users_external_online_calendars.md) [users_external_calendars](users_external_calendars.md) [users_sessions](users_sessions.md) |  |  |
+| id | int(11) |  | false | auto_increment | [users_calendars](users_calendars.md) [calendars](calendars.md) [users_sessions](users_sessions.md) |  |  |
 | email | varchar(320) |  | false |  |  |  |  |
 | first_name | varchar(255) |  | false |  |  |  |  |
 | last_name | varchar(255) |  | false |  |  |  |  |

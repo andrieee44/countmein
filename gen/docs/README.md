@@ -4,12 +4,10 @@
 
 | Name | Columns | Comment | Type |
 | ---- | ------- | ------- | ---- |
-| [online_calendars](online_calendars.md) | 5 |  | BASE TABLE |
+| [users_calendars](users_calendars.md) | 2 |  | BASE TABLE |
 | [calendars_access_codes](calendars_access_codes.md) | 4 |  | BASE TABLE |
 | [users](users.md) | 6 |  | BASE TABLE |
-| [calendars](calendars.md) | 5 |  | BASE TABLE |
-| [users_external_online_calendars](users_external_online_calendars.md) | 2 |  | BASE TABLE |
-| [users_external_calendars](users_external_calendars.md) | 2 |  | BASE TABLE |
+| [calendars](calendars.md) | 6 |  | BASE TABLE |
 | [users_sessions](users_sessions.md) | 4 |  | BASE TABLE |
 
 ## Relations

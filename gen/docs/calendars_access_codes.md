@@ -15,7 +15,7 @@ CREATE TABLE `calendars_access_codes` (
   UNIQUE KEY `uq_calendars_access_codes_code` (`code`),
   KEY `fk_calendars_access_codes_calendar_id` (`calendar_id`),
   CONSTRAINT `fk_calendars_access_codes_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ```
 
 </details>

@@ -11,6 +11,12 @@ sql:
         package: "store"
         out: "./store"
         overrides:
+          - db_type: "bool"
+            go_type: "database/sql.Null[bool]"
+            nullable: true
+          - db_type: "tinyint"
+            go_type: "database/sql.Null[bool]"
+            nullable: true
           - db_type: "varchar"
             go_type: "database/sql.Null[string]"
             nullable: true
@@ -25,9 +31,4 @@ sql:
             nullable: true
           - db_type: "binary"
             go_type: "database/sql.Null[[]byte]"
-            nullable: true
-          - db_type: "datetime"
-            go_type:
-              import: "database/sql"
-              type: "Null[time.Time]"
             nullable: true

@@ -1,4 +1,4 @@
-# users_external_calendars
+# users_calendars
 
 ## Description
 
@@ -6,13 +6,13 @@
 <summary><strong>Table Definition</strong></summary>
 
 ```sql
-CREATE TABLE `users_external_calendars` (
+CREATE TABLE `users_calendars` (
   `user_id` int(11) NOT NULL,
   `calendar_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`,`calendar_id`),
-  KEY `fk_users_external_calendars_calendar_id` (`calendar_id`),
-  CONSTRAINT `fk_users_external_calendars_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_users_external_calendars_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  KEY `fk_users_calendars_calendar_id` (`calendar_id`),
+  CONSTRAINT `fk_users_calendars_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_users_calendars_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ```
 
@@ -29,20 +29,20 @@ CREATE TABLE `users_external_calendars` (
 
 | Name | Type | Definition |
 | ---- | ---- | ---------- |
-| fk_users_external_calendars_calendar_id | FOREIGN KEY | FOREIGN KEY (calendar_id) REFERENCES calendars (id) |
-| fk_users_external_calendars_user_id | FOREIGN KEY | FOREIGN KEY (user_id) REFERENCES users (id) |
+| fk_users_calendars_calendar_id | FOREIGN KEY | FOREIGN KEY (calendar_id) REFERENCES calendars (id) |
+| fk_users_calendars_user_id | FOREIGN KEY | FOREIGN KEY (user_id) REFERENCES users (id) |
 | PRIMARY | PRIMARY KEY | PRIMARY KEY (user_id, calendar_id) |
 
 ## Indexes
 
 | Name | Definition |
 | ---- | ---------- |
-| fk_users_external_calendars_calendar_id | KEY fk_users_external_calendars_calendar_id (calendar_id) USING BTREE |
+| fk_users_calendars_calendar_id | KEY fk_users_calendars_calendar_id (calendar_id) USING BTREE |
 | PRIMARY | PRIMARY KEY (user_id, calendar_id) USING BTREE |
 
 ## Relations
 
-![er](users_external_calendars.svg)
+![er](users_calendars.svg)
 
 ---
 

@@ -4,8 +4,11 @@ go 1.26.1
 
 require (
 	connectrpc.com/connect v1.19.1
+	connectrpc.com/cors v0.1.0
+	github.com/arran4/golang-ical v0.3.5
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/google/uuid v1.6.0
+	github.com/rs/cors v1.11.1
 	golang.org/x/crypto v0.49.0
 	golang.org/x/net v0.52.0
 	google.golang.org/protobuf v1.36.11

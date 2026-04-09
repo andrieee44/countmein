@@ -2,64 +2,61 @@
   "name": "s25101270_countmein",
   "tables": [
     {
-      "name": "online_calendars",
+      "name": "users_calendars",
       "type": "BASE TABLE",
       "columns": [
         {
-          "name": "id",
-          "type": "int(11)",
-          "nullable": false,
-          "extra_def": "auto_increment"
-        },
-        {
-          "name": "owner_id",
+          "name": "user_id",
           "type": "int(11)",
           "nullable": false
         },
         {
-          "name": "name",
-          "type": "varchar(255)",
+          "name": "calendar_id",
+          "type": "int(11)",
           "nullable": false
-        },
-        {
-          "name": "url",
-          "type": "varchar(2048)",
-          "nullable": false
-        },
-        {
-          "name": "description",
-          "type": "text",
-          "nullable": true,
-          "default": "NULL"
         }
       ],
       "indexes": [
         {
-          "name": "fk_online_calendars_owner_id",
-          "def": "KEY fk_online_calendars_owner_id (owner_id) USING BTREE",
-          "table": "online_calendars",
+          "name": "fk_users_calendars_calendar_id",
+          "def": "KEY fk_users_calendars_calendar_id (calendar_id) USING BTREE",
+          "table": "users_calendars",
           "columns": [
-            "owner_id"
+            "calendar_id"
           ]
         },
         {
           "name": "PRIMARY",
-          "def": "PRIMARY KEY (id) USING BTREE",
-          "table": "online_calendars",
+          "def": "PRIMARY KEY (user_id, calendar_id) USING BTREE",
+          "table": "users_calendars",
           "columns": [
-            "id"
+            "user_id",
+            "calendar_id"
           ]
         }
       ],
       "constraints": [
         {
-          "name": "fk_online_calendars_owner_id",
+          "name": "fk_users_calendars_calendar_id",
           "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (owner_id) REFERENCES users (id)",
-          "table": "online_calendars",
+          "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)",
+          "table": "users_calendars",
+          "referenced_table": "calendars",
+          "columns": [
+            "calendar_id"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "fk_users_calendars_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (user_id) REFERENCES users (id)",
+          "table": "users_calendars",
           "referenced_table": "users",
           "columns": [
-            "owner_id"
+            "user_id"
           ],
           "referenced_columns": [
             "id"
@@ -68,14 +65,15 @@
         {
           "name": "PRIMARY",
           "type": "PRIMARY KEY",
-          "def": "PRIMARY KEY (id)",
-          "table": "online_calendars",
+          "def": "PRIMARY KEY (user_id, calendar_id)",
+          "table": "users_calendars",
           "columns": [
-            "id"
+            "user_id",
+            "calendar_id"
           ]
         }
       ],
-      "def": "CREATE TABLE `online_calendars` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `owner_id` int(11) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `url` varchar(2048) NOT NULL,\n  `description` text DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  KEY `fk_online_calendars_owner_id` (`owner_id`),\n  CONSTRAINT `fk_online_calendars_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `users_calendars` (\n  `user_id` int(11) NOT NULL,\n  `calendar_id` int(11) NOT NULL,\n  PRIMARY KEY (`user_id`,`calendar_id`),\n  KEY `fk_users_calendars_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_users_calendars_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_users_calendars_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "calendars_access_codes",
@@ -163,7 +161,7 @@
           ]
         }
       ],
-      "def": "CREATE TABLE `calendars_access_codes` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `calendar_id` int(11) NOT NULL,\n  `code` varchar(64) NOT NULL,\n  `expires_at` datetime(6) DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `uq_calendars_access_codes_code` (`code`),\n  KEY `fk_calendars_access_codes_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_calendars_access_codes_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `calendars_access_codes` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `calendar_id` int(11) NOT NULL,\n  `code` varchar(64) NOT NULL,\n  `expires_at` datetime(6) DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `uq_calendars_access_codes_code` (`code`),\n  KEY `fk_calendars_access_codes_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_calendars_access_codes_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "users",
@@ -263,15 +261,20 @@
           "nullable": false
         },
         {
-          "name": "ical_data",
-          "type": "longblob",
-          "nullable": false
-        },
-        {
           "name": "description",
           "type": "text",
           "nullable": true,
           "default": "NULL"
+        },
+        {
+          "name": "ical",
+          "type": "longblob",
+          "nullable": false
+        },
+        {
+          "name": "members_only",
+          "type": "tinyint(1)",
+          "nullable": false
         }
       ],
       "indexes": [
@@ -316,155 +319,7 @@
           ]
         }
       ],
-      "def": "CREATE TABLE `calendars` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `owner_id` int(11) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `ical_data` longblob NOT NULL,\n  `description` text DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  KEY `fk_calendars_owner_id` (`owner_id`),\n  CONSTRAINT `fk_calendars_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
-    },
-    {
-      "name": "users_external_online_calendars",
-      "type": "BASE TABLE",
-      "columns": [
-        {
-          "name": "user_id",
-          "type": "int(11)",
-          "nullable": false
-        },
-        {
-          "name": "online_calendar_id",
-          "type": "int(11)",
-          "nullable": false
-        }
-      ],
-      "indexes": [
-        {
-          "name": "fk_users_external_online_calendars_online_calendar_id",
-          "def": "KEY fk_users_external_online_calendars_online_calendar_id (online_calendar_id) USING BTREE",
-          "table": "users_external_online_calendars",
-          "columns": [
-            "online_calendar_id"
-          ]
-        },
-        {
-          "name": "PRIMARY",
-          "def": "PRIMARY KEY (user_id, online_calendar_id) USING BTREE",
-          "table": "users_external_online_calendars",
-          "columns": [
-            "user_id",
-            "online_calendar_id"
-          ]
-        }
-      ],
-      "constraints": [
-        {
-          "name": "fk_users_external_online_calendars_online_calendar_id",
-          "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (online_calendar_id) REFERENCES online_calendars (id)",
-          "table": "users_external_online_calendars",
-          "referenced_table": "online_calendars",
-          "columns": [
-            "online_calendar_id"
-          ],
-          "referenced_columns": [
-            "id"
-          ]
-        },
-        {
-          "name": "fk_users_external_online_calendars_user_id",
-          "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (user_id) REFERENCES users (id)",
-          "table": "users_external_online_calendars",
-          "referenced_table": "users",
-          "columns": [
-            "user_id"
-          ],
-          "referenced_columns": [
-            "id"
-          ]
-        },
-        {
-          "name": "PRIMARY",
-          "type": "PRIMARY KEY",
-          "def": "PRIMARY KEY (user_id, online_calendar_id)",
-          "table": "users_external_online_calendars",
-          "columns": [
-            "user_id",
-            "online_calendar_id"
-          ]
-        }
-      ],
-      "def": "CREATE TABLE `users_external_online_calendars` (\n  `user_id` int(11) NOT NULL,\n  `online_calendar_id` int(11) NOT NULL,\n  PRIMARY KEY (`user_id`,`online_calendar_id`),\n  KEY `fk_users_external_online_calendars_online_calendar_id` (`online_calendar_id`),\n  CONSTRAINT `fk_users_external_online_calendars_online_calendar_id` FOREIGN KEY (`online_calendar_id`) REFERENCES `online_calendars` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_users_external_online_calendars_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
-    },
-    {
-      "name": "users_external_calendars",
-      "type": "BASE TABLE",
-      "columns": [
-        {
-          "name": "user_id",
-          "type": "int(11)",
-          "nullable": false
-        },
-        {
-          "name": "calendar_id",
-          "type": "int(11)",
-          "nullable": false
-        }
-      ],
-      "indexes": [
-        {
-          "name": "fk_users_external_calendars_calendar_id",
-          "def": "KEY fk_users_external_calendars_calendar_id (calendar_id) USING BTREE",
-          "table": "users_external_calendars",
-          "columns": [
-            "calendar_id"
-          ]
-        },
-        {
-          "name": "PRIMARY",
-          "def": "PRIMARY KEY (user_id, calendar_id) USING BTREE",
-          "table": "users_external_calendars",
-          "columns": [
-            "user_id",
-            "calendar_id"
-          ]
-        }
-      ],
-      "constraints": [
-        {
-          "name": "fk_users_external_calendars_calendar_id",
-          "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)",
-          "table": "users_external_calendars",
-          "referenced_table": "calendars",
-          "columns": [
-            "calendar_id"
-          ],
-          "referenced_columns": [
-            "id"
-          ]
-        },
-        {
-          "name": "fk_users_external_calendars_user_id",
-          "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (user_id) REFERENCES users (id)",
-          "table": "users_external_calendars",
-          "referenced_table": "users",
-          "columns": [
-            "user_id"
-          ],
-          "referenced_columns": [
-            "id"
-          ]
-        },
-        {
-          "name": "PRIMARY",
-          "type": "PRIMARY KEY",
-          "def": "PRIMARY KEY (user_id, calendar_id)",
-          "table": "users_external_calendars",
-          "columns": [
-            "user_id",
-            "calendar_id"
-          ]
-        }
-      ],
-      "def": "CREATE TABLE `users_external_calendars` (\n  `user_id` int(11) NOT NULL,\n  `calendar_id` int(11) NOT NULL,\n  PRIMARY KEY (`user_id`,`calendar_id`),\n  KEY `fk_users_external_calendars_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_users_external_calendars_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_users_external_calendars_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `calendars` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `owner_id` int(11) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `description` text DEFAULT NULL,\n  `ical` longblob NOT NULL,\n  `members_only` tinyint(1) NOT NULL,\n  PRIMARY KEY (`id`),\n  KEY `fk_calendars_owner_id` (`owner_id`),\n  CONSTRAINT `fk_calendars_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "users_sessions",
@@ -538,9 +393,22 @@
   ],
   "relations": [
     {
-      "table": "online_calendars",
+      "table": "users_calendars",
       "columns": [
-        "owner_id"
+        "calendar_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "calendars",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)"
+    },
+    {
+      "table": "users_calendars",
+      "columns": [
+        "user_id"
       ],
       "cardinality": "zero_or_more",
       "parent_table": "users",
@@ -548,7 +416,7 @@
         "id"
       ],
       "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (owner_id) REFERENCES users (id)"
+      "def": "FOREIGN KEY (user_id) REFERENCES users (id)"
     },
     {
       "table": "calendars_access_codes",
@@ -575,58 +443,6 @@
       ],
       "parent_cardinality": "exactly_one",
       "def": "FOREIGN KEY (owner_id) REFERENCES users (id)"
-    },
-    {
-      "table": "users_external_online_calendars",
-      "columns": [
-        "online_calendar_id"
-      ],
-      "cardinality": "zero_or_more",
-      "parent_table": "online_calendars",
-      "parent_columns": [
-        "id"
-      ],
-      "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (online_calendar_id) REFERENCES online_calendars (id)"
-    },
-    {
-      "table": "users_external_online_calendars",
-      "columns": [
-        "user_id"
-      ],
-      "cardinality": "zero_or_more",
-      "parent_table": "users",
-      "parent_columns": [
-        "id"
-      ],
-      "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (user_id) REFERENCES users (id)"
-    },
-    {
-      "table": "users_external_calendars",
-      "columns": [
-        "calendar_id"
-      ],
-      "cardinality": "zero_or_more",
-      "parent_table": "calendars",
-      "parent_columns": [
-        "id"
-      ],
-      "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)"
-    },
-    {
-      "table": "users_external_calendars",
-      "columns": [
-        "user_id"
-      ],
-      "cardinality": "zero_or_more",
-      "parent_table": "users",
-      "parent_columns": [
-        "id"
-      ],
-      "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (user_id) REFERENCES users (id)"
     },
     {
       "table": "users_sessions",

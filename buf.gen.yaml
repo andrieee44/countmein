@@ -13,6 +13,6 @@ plugins:
     opt: "paths=source_relative"
   - local: "protoc-gen-doc"
     out: "gen/docs"
+    strategy: "all"
     opt:
-      - "html"
-      - "index.html"
+      - "html,docs.html"

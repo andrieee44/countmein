@@ -15,7 +15,7 @@
           env.CGO_ENABLED = 0;
           pname = "countmein";
           version = "0.0.1";
-          vendorHash = "sha256-APyjDqsjUf9pzyXGwLOqT5tNQioKI40ZBk3oM2jiyeU=";
+          vendorHash = "sha256-1TqGu+fTVQaO2+PakkatbYv7+Xq4e7wPulanD/T9Z9c=";
           src = self;
         };
       };
@@ -33,6 +33,7 @@
           protoc-gen-connect-go
           protoc-gen-doc
           protoc-gen-go
+          rsync
           sqlc
           sshpass
           tbls
