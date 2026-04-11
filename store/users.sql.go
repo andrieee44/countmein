@@ -58,6 +58,7 @@ const getLoginUser = `-- name: GetLoginUser :one
 SELECT id, password_hash
 FROM users
 WHERE email = ?
+FOR UPDATE
 `
 
 type GetLoginUserRow struct {

@@ -175,8 +175,47 @@
         
           
           <li>
+            <a href="#ai%2fv1%2fai.proto">ai/v1/ai.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#ai.v1.AnalyzeICalRequest"><span class="badge">M</span>AnalyzeICalRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#ai.v1.AnalyzeICalResponse"><span class="badge">M</span>AnalyzeICalResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#ai.v1.ImageToICalRequest"><span class="badge">M</span>ImageToICalRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#ai.v1.ImageToICalResponse"><span class="badge">M</span>ImageToICalResponse</a>
+                </li>
+              
+              
+              
+              
+                <li>
+                  <a href="#ai.v1.AIService"><span class="badge">S</span>AIService</a>
+                </li>
+              
+            </ul>
+          </li>
+        
+          
+          <li>
             <a href="#calendars%2fv1%2fcalendars.proto">calendars/v1/calendars.proto</a>
             <ul>
+              
+                <li>
+                  <a href="#calendars.v1.BanMemberRequest"><span class="badge">M</span>BanMemberRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#calendars.v1.BanMemberResponse"><span class="badge">M</span>BanMemberResponse</a>
+                </li>
               
                 <li>
                   <a href="#calendars.v1.CreateCodeRequest"><span class="badge">M</span>CreateCodeRequest</a>
@@ -208,6 +247,14 @@
               
                 <li>
                   <a href="#calendars.v1.DeleteResponse"><span class="badge">M</span>DeleteResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#calendars.v1.GetBannedMembersRequest"><span class="badge">M</span>GetBannedMembersRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#calendars.v1.GetBannedMembersResponse"><span class="badge">M</span>GetBannedMembersResponse</a>
                 </li>
               
                 <li>
@@ -288,6 +335,14 @@
               
                 <li>
                   <a href="#calendars.v1.SubscribeResponse"><span class="badge">M</span>SubscribeResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#calendars.v1.UnbanMemberRequest"><span class="badge">M</span>UnbanMemberRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#calendars.v1.UnbanMemberResponse"><span class="badge">M</span>UnbanMemberResponse</a>
                 </li>
               
                 <li>
@@ -402,10 +457,198 @@
     
       
       <div class="file-heading">
+        <h2 id="ai/v1/ai.proto">ai/v1/ai.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="ai.v1.AnalyzeICalRequest">AnalyzeICalRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>ical</td>
+                  <td><a href="#bytes">bytes</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="ai.v1.AnalyzeICalResponse">AnalyzeICalResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>analysis</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="ai.v1.ImageToICalRequest">ImageToICalRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>image</td>
+                  <td><a href="#bytes">bytes</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="ai.v1.ImageToICalResponse">ImageToICalResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>ical</td>
+                  <td><a href="#bytes">bytes</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+
+      
+
+      
+        <h3 id="ai.v1.AIService">AIService</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>ImageToICal</td>
+                <td><a href="#ai.v1.ImageToICalRequest">ImageToICalRequest</a></td>
+                <td><a href="#ai.v1.ImageToICalResponse">ImageToICalResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>AnalyzeICal</td>
+                <td><a href="#ai.v1.AnalyzeICalRequest">AnalyzeICalRequest</a></td>
+                <td><a href="#ai.v1.AnalyzeICalResponse">AnalyzeICalResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+    
+      
+      <div class="file-heading">
         <h2 id="calendars/v1/calendars.proto">calendars/v1/calendars.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
 
+      
+        <h3 id="calendars.v1.BanMemberRequest">BanMemberRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>reason</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>ttl</td>
+                  <td><a href="#google.protobuf.Duration">google.protobuf.Duration</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="calendars.v1.BanMemberResponse">BanMemberResponse</h3>
+        <p></p>
+
+        
+
+        
       
         <h3 id="calendars.v1.CreateCodeRequest">CreateCodeRequest</h3>
         <p></p>
@@ -563,6 +806,54 @@
         <p></p>
 
         
+
+        
+      
+        <h3 id="calendars.v1.GetBannedMembersRequest">GetBannedMembersRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="calendars.v1.GetBannedMembersResponse">GetBannedMembersResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_ids</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
 
         
       
@@ -1007,6 +1298,44 @@
 
         
       
+        <h3 id="calendars.v1.UnbanMemberRequest">UnbanMemberRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="calendars.v1.UnbanMemberResponse">UnbanMemberResponse</h3>
+        <p></p>
+
+        
+
+        
+      
         <h3 id="calendars.v1.UnsubscribeRequest">UnsubscribeRequest</h3>
         <p></p>
 
@@ -1213,6 +1542,27 @@
                 <td>RemoveMember</td>
                 <td><a href="#calendars.v1.RemoveMemberRequest">RemoveMemberRequest</a></td>
                 <td><a href="#calendars.v1.RemoveMemberResponse">RemoveMemberResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>BanMember</td>
+                <td><a href="#calendars.v1.BanMemberRequest">BanMemberRequest</a></td>
+                <td><a href="#calendars.v1.BanMemberResponse">BanMemberResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>GetBannedMembers</td>
+                <td><a href="#calendars.v1.GetBannedMembersRequest">GetBannedMembersRequest</a></td>
+                <td><a href="#calendars.v1.GetBannedMembersResponse">GetBannedMembersResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>UnbanMember</td>
+                <td><a href="#calendars.v1.UnbanMemberRequest">UnbanMemberRequest</a></td>
+                <td><a href="#calendars.v1.UnbanMemberResponse">UnbanMemberResponse</a></td>
                 <td><p></p></td>
               </tr>
             

@@ -18,7 +18,7 @@ FROM calendars_access_codes
 WHERE calendar_id = ?;
 
 -- name: GetCalendarCodeFromCode :one
-SELECT id, calendar_id, expires_at
+SELECT id, calendar_id, expires_at, NOW(6) AS db_time
 FROM calendars_access_codes
 WHERE code = ?;
 

@@ -16,7 +16,8 @@ INSERT INTO users (
 -- name: GetLoginUser :one
 SELECT id, password_hash
 FROM users
-WHERE email = ?;
+WHERE email = ?
+FOR UPDATE;
 
 -- name: GetUser :one
 SELECT email, first_name, last_name, middle_name

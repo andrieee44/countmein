@@ -25,7 +25,7 @@ CREATE TABLE `calendars` (
 
 | Name | Type | Default | Nullable | Extra Definition | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | ---------------- | -------- | ------- | ------- |
-| id | int(11) |  | false | auto_increment | [users_calendars](users_calendars.md) [calendars_access_codes](calendars_access_codes.md) |  |  |
+| id | int(11) |  | false | auto_increment | [users_calendars](users_calendars.md) [calendars_access_codes](calendars_access_codes.md) [users_calendars_bans](users_calendars_bans.md) |  |  |
 | owner_id | int(11) |  | false |  |  | [users](users.md) |  |
 | name | varchar(255) |  | false |  |  |  |  |
 | description | text | NULL | true |  |  |  |  |

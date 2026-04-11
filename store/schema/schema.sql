@@ -81,3 +81,24 @@ CREATE TABLE users_calendars (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE users_calendars_bans (
+	user_id     INT          NOT NULL,
+	calendar_id INT          NOT NULL,
+	reason      VARCHAR(255) NOT NULL,
+	expires_at  DATETIME(6),
+
+	CONSTRAINT PRIMARY KEY (user_id, calendar_id),
+
+	CONSTRAINT fk_users_calendars_bans_user_id
+		FOREIGN KEY (user_id)
+		REFERENCES users(id)
+		ON DELETE CASCADE,
+
+	CONSTRAINT fk_users_calendars_bans_calendar_id
+		FOREIGN KEY (calendar_id)
+		REFERENCES calendars(id)
+		ON DELETE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;

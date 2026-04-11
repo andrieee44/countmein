@@ -9,7 +9,11 @@ WHERE id = ?;
 
 -- name: UpdateUserSession :exec
 UPDATE users_sessions
-SET email = (SELECT email FROM users WHERE id = users_sessions.user_id)
+SET email = (
+	SELECT email
+	FROM users
+	WHERE id = users_sessions.user_id
+)
 WHERE user_id = ?;
 
 -- name: RevokeUserSession :exec

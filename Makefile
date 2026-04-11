@@ -2,10 +2,10 @@ run: vet generate migrate
 	go run .
 
 build: vet generate migrate
-	nix build
+	nix build .#appimage
 
 generate:
-	tbls doc --rm-dist
+	tbls doc -f
 	sqlc generate
 	buf generate
 	buf format -w
@@ -14,12 +14,11 @@ migrate:
 	atlas schema apply --env prod
 
 deploy: build
-	@echo "rsync -avz result/bin/countmein $(DEPLOY_BIN_PATH)"
+	@echo "rsync -avz ./result $(DEPLOY_BIN_PATH)/countmein"
 	@sshpass -p "$(SSH_PASSWORD)" \
-		rsync -avz -e "ssh -p $(SSH_PORT)" --chmod=u+w \
-		result/bin/countmein \
-		"$(SSH_USER)@$(SSH_HOST):/$(DEPLOY_BIN_PATH)"
-	@echo "rsync -avz --delete ./gen/docs $(DEPLOY_PUBLIC_PATH)"
+		rsync -avz -e "ssh -p $(SSH_PORT)" --chmod=u+w --copy-links \
+		./result "$(SSH_USER)@$(SSH_HOST):/$(DEPLOY_BIN_PATH)/countmein"
+	@echo "rsync -avz --delete ./gen/docs/ $(DEPLOY_PUBLIC_PATH)"
 	@sshpass -p "$(SSH_PASSWORD)" \
 		rsync -avz --delete -e "ssh -p $(SSH_PORT)" --chmod=u+w  \
 		./gen/docs/ \
@@ -32,10 +31,11 @@ deploy: build
 
 clean:
 	rm -f result
+	rm -rf ./gen/docs/
 	@printf 'mariadb "$(DB_DEV_NAME)" -e %s\n' \
 		'"DROP DATABASE $(DB_DEV_NAME); CREATE DATABASE $(DB_DEV_NAME);"'
 	@mariadb -h "$(DB_DEV_HOST)" -u "$(DB_DEV_USERNAME)" \
-		"-p$(DB_DEV_PASSWORD)" \ --skip-ssl "$(DB_DEV_NAME)" \
+		"-p$(DB_DEV_PASSWORD)" --skip-ssl "$(DB_DEV_NAME)" \
 		-e "DROP DATABASE $(DB_DEV_NAME);" \
 		-e "CREATE DATABASE $(DB_DEV_NAME);"
 

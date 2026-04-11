@@ -39,6 +39,13 @@ type UsersCalendar struct {
 	CalendarID int32
 }
 
+type UsersCalendarsBan struct {
+	UserID     int32
+	CalendarID int32
+	Reason     string
+	ExpiresAt  sql.NullTime
+}
+
 type UsersSession struct {
 	ID        []byte
 	UserID    int32

@@ -241,6 +241,91 @@
       "def": "CREATE TABLE `users` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `email` varchar(320) NOT NULL,\n  `first_name` varchar(255) NOT NULL,\n  `last_name` varchar(255) NOT NULL,\n  `password_hash` varbinary(255) NOT NULL,\n  `middle_name` varchar(255) DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `uq_users_email` (`email`)\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
+      "name": "users_calendars_bans",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "calendar_id",
+          "type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "reason",
+          "type": "varchar(255)",
+          "nullable": false
+        },
+        {
+          "name": "expires_at",
+          "type": "datetime(6)",
+          "nullable": true,
+          "default": "NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_users_calendars_bans_calendar_id",
+          "def": "KEY fk_users_calendars_bans_calendar_id (calendar_id) USING BTREE",
+          "table": "users_calendars_bans",
+          "columns": [
+            "calendar_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (user_id, calendar_id) USING BTREE",
+          "table": "users_calendars_bans",
+          "columns": [
+            "user_id",
+            "calendar_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "fk_users_calendars_bans_calendar_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)",
+          "table": "users_calendars_bans",
+          "referenced_table": "calendars",
+          "columns": [
+            "calendar_id"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "fk_users_calendars_bans_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (user_id) REFERENCES users (id)",
+          "table": "users_calendars_bans",
+          "referenced_table": "users",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_columns": [
+            "id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (user_id, calendar_id)",
+          "table": "users_calendars_bans",
+          "columns": [
+            "user_id",
+            "calendar_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `users_calendars_bans` (\n  `user_id` int(11) NOT NULL,\n  `calendar_id` int(11) NOT NULL,\n  `reason` varchar(255) NOT NULL,\n  `expires_at` datetime(6) DEFAULT NULL,\n  PRIMARY KEY (`user_id`,`calendar_id`),\n  KEY `fk_users_calendars_bans_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_users_calendars_bans_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_users_calendars_bans_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
       "name": "calendars",
       "type": "BASE TABLE",
       "columns": [
@@ -430,6 +515,32 @@
       ],
       "parent_cardinality": "exactly_one",
       "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)"
+    },
+    {
+      "table": "users_calendars_bans",
+      "columns": [
+        "calendar_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "calendars",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)"
+    },
+    {
+      "table": "users_calendars_bans",
+      "columns": [
+        "user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (user_id) REFERENCES users (id)"
     },
     {
       "table": "calendars",

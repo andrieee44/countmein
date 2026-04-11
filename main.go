@@ -92,6 +92,7 @@ func main() {
 
 	mux.Handle(api.NewUserHandler(db, opts...))
 	mux.Handle(api.NewCalendarHandler(db, opts...))
+	mux.Handle(api.NewAIHandler(logger, opts...))
 	handler = withCORS(mux)
 
 	logger.Info(

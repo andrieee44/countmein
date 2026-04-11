@@ -8,6 +8,7 @@ package store
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const createCalendarCode = `-- name: CreateCalendarCode :execresult
@@ -49,7 +50,7 @@ func (q *Queries) GetCalendarCodeCalendarID(ctx context.Context, id int32) (int3
 }
 
 const getCalendarCodeFromCode = `-- name: GetCalendarCodeFromCode :one
-SELECT id, calendar_id, expires_at
+SELECT id, calendar_id, expires_at, NOW(6) AS db_time
 FROM calendars_access_codes
 WHERE code = ?
 `
@@ -58,12 +59,18 @@ type GetCalendarCodeFromCodeRow struct {
 	ID         int32
 	CalendarID int32
 	ExpiresAt  sql.NullTime
+	DBTime     time.Time
 }
 
 func (q *Queries) GetCalendarCodeFromCode(ctx context.Context, code string) (GetCalendarCodeFromCodeRow, error) {
 	row := q.db.QueryRowContext(ctx, getCalendarCodeFromCode, code)
 	var i GetCalendarCodeFromCodeRow
-	err := row.Scan(&i.ID, &i.CalendarID, &i.ExpiresAt)
+	err := row.Scan(
+		&i.ID,
+		&i.CalendarID,
+		&i.ExpiresAt,
+		&i.DBTime,
+	)
 	return i, err
 }
 

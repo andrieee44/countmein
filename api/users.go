@@ -21,10 +21,10 @@ type UserActor struct {
 }
 
 type UserService struct {
-	db store.DBTX
+	db *sql.DB
 }
 
-func NewUserService(db store.DBTX) *UserService {
+func NewUserService(db *sql.DB) *UserService {
 	return &UserService{
 		db: db,
 	}
@@ -84,13 +84,21 @@ func (u *UserService) Login(
 	req *connect.Request[usersv1.LoginRequest],
 ) (*connect.Response[usersv1.LoginResponse], error) {
 	var (
+		tx        *sql.Tx
 		row       store.GetLoginUserRow
 		sessionID uuid.UUID
 		ok        bool
 		err       error
 	)
 
-	row, err = store.New(u.db).GetLoginUser(ctx, req.Msg.Email)
+	tx, err = u.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+
+	defer tx.Rollback()
+
+	row, err = store.New(tx).GetLoginUser(ctx, req.Msg.Email)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +112,12 @@ func (u *UserService) Login(
 		return nil, errors.New("password verification failed")
 	}
 
-	sessionID, err = createSession(ctx, u.db, row.ID, req.Msg.Email)
+	sessionID, err = createSession(ctx, tx, row.ID, req.Msg.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	err = tx.Commit()
 	if err != nil {
 		return nil, err
 	}
@@ -285,7 +298,7 @@ func (u *UserService) RevokeAll(
 }
 
 func NewUserHandler(
-	db store.DBTX,
+	db *sql.DB,
 	opts ...connect.HandlerOption,
 ) (string, http.Handler) {
 	return usersv1connect.NewUserServiceHandler(

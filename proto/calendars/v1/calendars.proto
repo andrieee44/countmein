@@ -22,6 +22,9 @@ service CalendarService {
   rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse);
   rpc GetMembers(GetMembersRequest) returns (GetMembersResponse);
   rpc RemoveMember(RemoveMemberRequest) returns (RemoveMemberResponse);
+  rpc BanMember(BanMemberRequest) returns (BanMemberResponse);
+  rpc GetBannedMembers(GetBannedMembersRequest) returns (GetBannedMembersResponse);
+  rpc UnbanMember(UnbanMemberRequest) returns (UnbanMemberResponse);
 }
 
 message CreateRequest {
@@ -144,3 +147,27 @@ message RemoveMemberRequest {
 }
 
 message RemoveMemberResponse {}
+
+message BanMemberRequest {
+  int32 id = 1;
+  int32 user_id = 2;
+  string reason = 3;
+  optional google.protobuf.Duration ttl = 4;
+}
+
+message BanMemberResponse {}
+
+message GetBannedMembersRequest {
+  int32 id = 1;
+}
+
+message GetBannedMembersResponse {
+  repeated int32 user_ids = 1;
+}
+
+message UnbanMemberRequest {
+  int32 id = 1;
+  int32 user_id = 2;
+}
+
+message UnbanMemberResponse {}

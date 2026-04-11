@@ -5,6 +5,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -17,10 +18,10 @@ import (
 )
 
 type CalendarService struct {
-	db store.DBTX
+	db *sql.DB
 }
 
-func NewCalendarService(db store.DBTX) *CalendarService {
+func NewCalendarService(db *sql.DB) *CalendarService {
 	return &CalendarService{
 		db: db,
 	}
@@ -67,9 +68,10 @@ func (c *CalendarService) Get(
 	req *connect.Request[calendarsv1.GetRequest],
 ) (*connect.Response[calendarsv1.GetResponse], error) {
 	var (
-		actor UserActor
-		row   store.GetCalendarRow
-		err   error
+		actor  UserActor
+		banRow store.IsMemberBannedRow
+		calRow store.GetCalendarRow
+		err    error
 	)
 
 	actor, err = ActorFromContext(ctx)
@@ -77,7 +79,43 @@ func (c *CalendarService) Get(
 		return nil, err
 	}
 
-	row, err = store.New(c.db).GetCalendar(ctx, store.GetCalendarParams{
+	banRow, err = store.New(c.db).IsMemberBanned(
+		ctx,
+		store.IsMemberBannedParams{
+			UserID:     actor.ID,
+			CalendarID: req.Msg.Id,
+		},
+	)
+	if err == nil {
+		if !banRow.ExpiresAt.Valid {
+			return nil, fmt.Errorf("banned permanently: %s", banRow.Reason)
+		}
+
+		if banRow.DBTime.Before(banRow.ExpiresAt.Time) {
+			return nil, fmt.Errorf(
+				"banned until %s: %s",
+				banRow.ExpiresAt.Time.Format("Jan 2 2006 3:04 PM"),
+				banRow.Reason,
+			)
+		}
+
+		err = store.New(c.db).UnbanCalendarMember(
+			ctx,
+			store.UnbanCalendarMemberParams{
+				UserID:     actor.ID,
+				CalendarID: req.Msg.Id,
+			},
+		)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if !errors.Is(err, sql.ErrNoRows) {
+		return nil, err
+	}
+
+	calRow, err = store.New(c.db).GetCalendar(ctx, store.GetCalendarParams{
 		ID:     req.Msg.Id,
 		UserID: actor.ID,
 	})
@@ -86,11 +124,11 @@ func (c *CalendarService) Get(
 	}
 
 	return connect.NewResponse(&calendarsv1.GetResponse{
-		OwnerId:     row.OwnerID,
-		Name:        row.Name,
-		Ical:        row.Ical,
-		MembersOnly: row.MembersOnly,
-		Description: toPtr(row.Description),
+		OwnerId:     calRow.OwnerID,
+		Name:        calRow.Name,
+		Ical:        calRow.Ical,
+		MembersOnly: calRow.MembersOnly,
+		Description: toPtr(calRow.Description),
 	}), nil
 }
 
@@ -149,16 +187,24 @@ func (c *CalendarService) Merge(
 	req *connect.Request[calendarsv1.MergeRequest],
 ) (*connect.Response[calendarsv1.MergeResponse], error) {
 	var (
+		tx                  *sql.Tx
 		oldICal, mergedICal []byte
 		err                 error
 	)
 
-	err = c.isOwner(ctx, req.Msg.Id)
+	tx, err = c.db.Begin()
 	if err != nil {
 		return nil, err
 	}
 
-	oldICal, err = store.New(c.db).GetCalendarICal(ctx, req.Msg.Id)
+	defer tx.Rollback()
+
+	err = isCalendarOwner(ctx, tx, req.Msg.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	oldICal, err = store.New(tx).GetCalendarICal(ctx, req.Msg.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -168,10 +214,15 @@ func (c *CalendarService) Merge(
 		return nil, err
 	}
 
-	err = store.New(c.db).ReplaceCalendar(ctx, store.ReplaceCalendarParams{
+	err = store.New(tx).ReplaceCalendar(ctx, store.ReplaceCalendarParams{
 		ID:   req.Msg.Id,
 		Ical: mergedICal,
 	})
+	if err != nil {
+		return nil, err
+	}
+
+	err = tx.Commit()
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +236,7 @@ func (c *CalendarService) Replace(
 ) (*connect.Response[calendarsv1.ReplaceResponse], error) {
 	var err error
 
-	err = c.isOwner(ctx, req.Msg.Id)
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +263,7 @@ func (c *CalendarService) UpdateMetadata(
 ) (*connect.Response[calendarsv1.UpdateMetadataResponse], error) {
 	var err error
 
-	err = c.isOwner(ctx, req.Msg.Id)
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -239,7 +290,7 @@ func (c *CalendarService) Delete(
 ) (*connect.Response[calendarsv1.DeleteResponse], error) {
 	var err error
 
-	err = c.isOwner(ctx, req.Msg.Id)
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -262,7 +313,7 @@ func (c *CalendarService) CreateCode(
 		err     error
 	)
 
-	err = c.isOwner(ctx, req.Msg.Id)
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -311,9 +362,13 @@ func (c *CalendarService) GetCodeMetadata(
 		return nil, err
 	}
 
-	err = c.isOwner(ctx, row.CalendarID)
+	err = isCalendarOwner(ctx, c.db, row.CalendarID)
 	if err != nil {
 		return nil, err
+	}
+
+	if row.ExpiresAt.Valid {
+		expiresAt = timestamppb.New(row.ExpiresAt.Time)
 	}
 
 	return connect.NewResponse(&calendarsv1.GetCodeMetadataResponse{
@@ -332,7 +387,7 @@ func (c *CalendarService) GetCodes(
 		err     error
 	)
 
-	err = c.isOwner(ctx, req.Msg.Id)
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -361,7 +416,7 @@ func (c *CalendarService) DeleteCode(
 		return nil, err
 	}
 
-	err = c.isOwner(ctx, id)
+	err = isCalendarOwner(ctx, c.db, id)
 	if err != nil {
 		return nil, err
 	}
@@ -380,7 +435,6 @@ func (c *CalendarService) Subscribe(
 ) (*connect.Response[calendarsv1.SubscribeResponse], error) {
 	var (
 		actor   UserActor
-		current time.Time
 		row     store.GetCalendarCodeFromCodeRow
 		ownerID int32
 		err     error
@@ -396,12 +450,7 @@ func (c *CalendarService) Subscribe(
 		return nil, err
 	}
 
-	current, err = store.New(c.db).GetCurrentTime(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	if row.ExpiresAt.Valid && current.After(row.ExpiresAt.Time) {
+	if row.ExpiresAt.Valid && row.DBTime.After(row.ExpiresAt.Time) {
 		return nil, errors.New("code expired")
 	}
 
@@ -465,7 +514,7 @@ func (c *CalendarService) GetMembers(
 		err     error
 	)
 
-	err = c.isOwner(ctx, req.Msg.Id)
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -486,7 +535,7 @@ func (c *CalendarService) RemoveMember(
 ) (*connect.Response[calendarsv1.RemoveMemberResponse], error) {
 	var err error
 
-	err = c.isOwner(ctx, req.Msg.Id)
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -505,8 +554,102 @@ func (c *CalendarService) RemoveMember(
 	return connect.NewResponse(&calendarsv1.RemoveMemberResponse{}), nil
 }
 
+func (c *CalendarService) BanMember(
+	ctx context.Context,
+	req *connect.Request[calendarsv1.BanMemberRequest],
+) (*connect.Response[calendarsv1.BanMemberResponse], error) {
+	var (
+		current time.Time
+		valid   bool
+		err     error
+	)
+
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	current, err = store.New(c.db).GetCurrentTime(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.Msg.Ttl != nil {
+		current = current.Add(req.Msg.Ttl.AsDuration())
+		valid = true
+	}
+
+	err = store.New(c.db).BanCalendarMember(
+		ctx,
+		store.BanCalendarMemberParams{
+			UserID:     req.Msg.UserId,
+			CalendarID: req.Msg.Id,
+			Reason:     req.Msg.Reason,
+
+			ExpiresAt: sql.NullTime{
+				Valid: valid,
+				Time:  current,
+			},
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(&calendarsv1.BanMemberResponse{}), nil
+}
+
+func (c *CalendarService) GetBannedMembers(
+	ctx context.Context,
+	req *connect.Request[calendarsv1.GetBannedMembersRequest],
+) (*connect.Response[calendarsv1.GetBannedMembersResponse], error) {
+	var (
+		bannedUserIDs []int32
+		err           error
+	)
+
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	bannedUserIDs, err = store.New(c.db).GetCalendarBans(ctx, req.Msg.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(&calendarsv1.GetBannedMembersResponse{
+		UserIds: bannedUserIDs,
+	}), nil
+}
+
+func (c *CalendarService) UnbanMember(
+	ctx context.Context,
+	req *connect.Request[calendarsv1.UnbanMemberRequest],
+) (*connect.Response[calendarsv1.UnbanMemberResponse], error) {
+	var err error
+
+	err = isCalendarOwner(ctx, c.db, req.Msg.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	err = store.New(c.db).UnbanCalendarMember(
+		ctx,
+		store.UnbanCalendarMemberParams{
+			UserID:     req.Msg.UserId,
+			CalendarID: req.Msg.Id,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(&calendarsv1.UnbanMemberResponse{}), nil
+}
+
 func NewCalendarHandler(
-	db store.DBTX,
+	db *sql.DB,
 	opts ...connect.HandlerOption,
 ) (string, http.Handler) {
 	return calendarsv1connect.NewCalendarServiceHandler(
@@ -515,7 +658,7 @@ func NewCalendarHandler(
 	)
 }
 
-func (c *CalendarService) isOwner(ctx context.Context, id int32) error {
+func isCalendarOwner(ctx context.Context, db store.DBTX, id int32) error {
 	var (
 		actor   UserActor
 		ownerID int32
@@ -527,7 +670,7 @@ func (c *CalendarService) isOwner(ctx context.Context, id int32) error {
 		return err
 	}
 
-	ownerID, err = store.New(c.db).GetCalendarOwner(ctx, id)
+	ownerID, err = store.New(db).GetCalendarOwner(ctx, id)
 	if err != nil {
 		return err
 	}

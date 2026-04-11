@@ -76,6 +76,15 @@ const (
 	// CalendarServiceRemoveMemberProcedure is the fully-qualified name of the CalendarService's
 	// RemoveMember RPC.
 	CalendarServiceRemoveMemberProcedure = "/calendars.v1.CalendarService/RemoveMember"
+	// CalendarServiceBanMemberProcedure is the fully-qualified name of the CalendarService's BanMember
+	// RPC.
+	CalendarServiceBanMemberProcedure = "/calendars.v1.CalendarService/BanMember"
+	// CalendarServiceGetBannedMembersProcedure is the fully-qualified name of the CalendarService's
+	// GetBannedMembers RPC.
+	CalendarServiceGetBannedMembersProcedure = "/calendars.v1.CalendarService/GetBannedMembers"
+	// CalendarServiceUnbanMemberProcedure is the fully-qualified name of the CalendarService's
+	// UnbanMember RPC.
+	CalendarServiceUnbanMemberProcedure = "/calendars.v1.CalendarService/UnbanMember"
 )
 
 // CalendarServiceClient is a client for the calendars.v1.CalendarService service.
@@ -96,6 +105,9 @@ type CalendarServiceClient interface {
 	Unsubscribe(context.Context, *connect.Request[v1.UnsubscribeRequest]) (*connect.Response[v1.UnsubscribeResponse], error)
 	GetMembers(context.Context, *connect.Request[v1.GetMembersRequest]) (*connect.Response[v1.GetMembersResponse], error)
 	RemoveMember(context.Context, *connect.Request[v1.RemoveMemberRequest]) (*connect.Response[v1.RemoveMemberResponse], error)
+	BanMember(context.Context, *connect.Request[v1.BanMemberRequest]) (*connect.Response[v1.BanMemberResponse], error)
+	GetBannedMembers(context.Context, *connect.Request[v1.GetBannedMembersRequest]) (*connect.Response[v1.GetBannedMembersResponse], error)
+	UnbanMember(context.Context, *connect.Request[v1.UnbanMemberRequest]) (*connect.Response[v1.UnbanMemberResponse], error)
 }
 
 // NewCalendarServiceClient constructs a client for the calendars.v1.CalendarService service. By
@@ -205,27 +217,48 @@ func NewCalendarServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(calendarServiceMethods.ByName("RemoveMember")),
 			connect.WithClientOptions(opts...),
 		),
+		banMember: connect.NewClient[v1.BanMemberRequest, v1.BanMemberResponse](
+			httpClient,
+			baseURL+CalendarServiceBanMemberProcedure,
+			connect.WithSchema(calendarServiceMethods.ByName("BanMember")),
+			connect.WithClientOptions(opts...),
+		),
+		getBannedMembers: connect.NewClient[v1.GetBannedMembersRequest, v1.GetBannedMembersResponse](
+			httpClient,
+			baseURL+CalendarServiceGetBannedMembersProcedure,
+			connect.WithSchema(calendarServiceMethods.ByName("GetBannedMembers")),
+			connect.WithClientOptions(opts...),
+		),
+		unbanMember: connect.NewClient[v1.UnbanMemberRequest, v1.UnbanMemberResponse](
+			httpClient,
+			baseURL+CalendarServiceUnbanMemberProcedure,
+			connect.WithSchema(calendarServiceMethods.ByName("UnbanMember")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // calendarServiceClient implements CalendarServiceClient.
 type calendarServiceClient struct {
-	create          *connect.Client[v1.CreateRequest, v1.CreateResponse]
-	get             *connect.Client[v1.GetRequest, v1.GetResponse]
-	getOwned        *connect.Client[v1.GetOwnedRequest, v1.GetOwnedResponse]
-	getSubscribed   *connect.Client[v1.GetSubscribedRequest, v1.GetSubscribedResponse]
-	merge           *connect.Client[v1.MergeRequest, v1.MergeResponse]
-	replace         *connect.Client[v1.ReplaceRequest, v1.ReplaceResponse]
-	updateMetadata  *connect.Client[v1.UpdateMetadataRequest, v1.UpdateMetadataResponse]
-	delete          *connect.Client[v1.DeleteRequest, v1.DeleteResponse]
-	createCode      *connect.Client[v1.CreateCodeRequest, v1.CreateCodeResponse]
-	getCodeMetadata *connect.Client[v1.GetCodeMetadataRequest, v1.GetCodeMetadataResponse]
-	getCodes        *connect.Client[v1.GetCodesRequest, v1.GetCodesResponse]
-	deleteCode      *connect.Client[v1.DeleteCodeRequest, v1.DeleteCodeResponse]
-	subscribe       *connect.Client[v1.SubscribeRequest, v1.SubscribeResponse]
-	unsubscribe     *connect.Client[v1.UnsubscribeRequest, v1.UnsubscribeResponse]
-	getMembers      *connect.Client[v1.GetMembersRequest, v1.GetMembersResponse]
-	removeMember    *connect.Client[v1.RemoveMemberRequest, v1.RemoveMemberResponse]
+	create           *connect.Client[v1.CreateRequest, v1.CreateResponse]
+	get              *connect.Client[v1.GetRequest, v1.GetResponse]
+	getOwned         *connect.Client[v1.GetOwnedRequest, v1.GetOwnedResponse]
+	getSubscribed    *connect.Client[v1.GetSubscribedRequest, v1.GetSubscribedResponse]
+	merge            *connect.Client[v1.MergeRequest, v1.MergeResponse]
+	replace          *connect.Client[v1.ReplaceRequest, v1.ReplaceResponse]
+	updateMetadata   *connect.Client[v1.UpdateMetadataRequest, v1.UpdateMetadataResponse]
+	delete           *connect.Client[v1.DeleteRequest, v1.DeleteResponse]
+	createCode       *connect.Client[v1.CreateCodeRequest, v1.CreateCodeResponse]
+	getCodeMetadata  *connect.Client[v1.GetCodeMetadataRequest, v1.GetCodeMetadataResponse]
+	getCodes         *connect.Client[v1.GetCodesRequest, v1.GetCodesResponse]
+	deleteCode       *connect.Client[v1.DeleteCodeRequest, v1.DeleteCodeResponse]
+	subscribe        *connect.Client[v1.SubscribeRequest, v1.SubscribeResponse]
+	unsubscribe      *connect.Client[v1.UnsubscribeRequest, v1.UnsubscribeResponse]
+	getMembers       *connect.Client[v1.GetMembersRequest, v1.GetMembersResponse]
+	removeMember     *connect.Client[v1.RemoveMemberRequest, v1.RemoveMemberResponse]
+	banMember        *connect.Client[v1.BanMemberRequest, v1.BanMemberResponse]
+	getBannedMembers *connect.Client[v1.GetBannedMembersRequest, v1.GetBannedMembersResponse]
+	unbanMember      *connect.Client[v1.UnbanMemberRequest, v1.UnbanMemberResponse]
 }
 
 // Create calls calendars.v1.CalendarService.Create.
@@ -308,6 +341,21 @@ func (c *calendarServiceClient) RemoveMember(ctx context.Context, req *connect.R
 	return c.removeMember.CallUnary(ctx, req)
 }
 
+// BanMember calls calendars.v1.CalendarService.BanMember.
+func (c *calendarServiceClient) BanMember(ctx context.Context, req *connect.Request[v1.BanMemberRequest]) (*connect.Response[v1.BanMemberResponse], error) {
+	return c.banMember.CallUnary(ctx, req)
+}
+
+// GetBannedMembers calls calendars.v1.CalendarService.GetBannedMembers.
+func (c *calendarServiceClient) GetBannedMembers(ctx context.Context, req *connect.Request[v1.GetBannedMembersRequest]) (*connect.Response[v1.GetBannedMembersResponse], error) {
+	return c.getBannedMembers.CallUnary(ctx, req)
+}
+
+// UnbanMember calls calendars.v1.CalendarService.UnbanMember.
+func (c *calendarServiceClient) UnbanMember(ctx context.Context, req *connect.Request[v1.UnbanMemberRequest]) (*connect.Response[v1.UnbanMemberResponse], error) {
+	return c.unbanMember.CallUnary(ctx, req)
+}
+
 // CalendarServiceHandler is an implementation of the calendars.v1.CalendarService service.
 type CalendarServiceHandler interface {
 	Create(context.Context, *connect.Request[v1.CreateRequest]) (*connect.Response[v1.CreateResponse], error)
@@ -326,6 +374,9 @@ type CalendarServiceHandler interface {
 	Unsubscribe(context.Context, *connect.Request[v1.UnsubscribeRequest]) (*connect.Response[v1.UnsubscribeResponse], error)
 	GetMembers(context.Context, *connect.Request[v1.GetMembersRequest]) (*connect.Response[v1.GetMembersResponse], error)
 	RemoveMember(context.Context, *connect.Request[v1.RemoveMemberRequest]) (*connect.Response[v1.RemoveMemberResponse], error)
+	BanMember(context.Context, *connect.Request[v1.BanMemberRequest]) (*connect.Response[v1.BanMemberResponse], error)
+	GetBannedMembers(context.Context, *connect.Request[v1.GetBannedMembersRequest]) (*connect.Response[v1.GetBannedMembersResponse], error)
+	UnbanMember(context.Context, *connect.Request[v1.UnbanMemberRequest]) (*connect.Response[v1.UnbanMemberResponse], error)
 }
 
 // NewCalendarServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -431,6 +482,24 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect.Handl
 		connect.WithSchema(calendarServiceMethods.ByName("RemoveMember")),
 		connect.WithHandlerOptions(opts...),
 	)
+	calendarServiceBanMemberHandler := connect.NewUnaryHandler(
+		CalendarServiceBanMemberProcedure,
+		svc.BanMember,
+		connect.WithSchema(calendarServiceMethods.ByName("BanMember")),
+		connect.WithHandlerOptions(opts...),
+	)
+	calendarServiceGetBannedMembersHandler := connect.NewUnaryHandler(
+		CalendarServiceGetBannedMembersProcedure,
+		svc.GetBannedMembers,
+		connect.WithSchema(calendarServiceMethods.ByName("GetBannedMembers")),
+		connect.WithHandlerOptions(opts...),
+	)
+	calendarServiceUnbanMemberHandler := connect.NewUnaryHandler(
+		CalendarServiceUnbanMemberProcedure,
+		svc.UnbanMember,
+		connect.WithSchema(calendarServiceMethods.ByName("UnbanMember")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/calendars.v1.CalendarService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case CalendarServiceCreateProcedure:
@@ -465,6 +534,12 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect.Handl
 			calendarServiceGetMembersHandler.ServeHTTP(w, r)
 		case CalendarServiceRemoveMemberProcedure:
 			calendarServiceRemoveMemberHandler.ServeHTTP(w, r)
+		case CalendarServiceBanMemberProcedure:
+			calendarServiceBanMemberHandler.ServeHTTP(w, r)
+		case CalendarServiceGetBannedMembersProcedure:
+			calendarServiceGetBannedMembersHandler.ServeHTTP(w, r)
+		case CalendarServiceUnbanMemberProcedure:
+			calendarServiceUnbanMemberHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -536,4 +611,16 @@ func (UnimplementedCalendarServiceHandler) GetMembers(context.Context, *connect.
 
 func (UnimplementedCalendarServiceHandler) RemoveMember(context.Context, *connect.Request[v1.RemoveMemberRequest]) (*connect.Response[v1.RemoveMemberResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("calendars.v1.CalendarService.RemoveMember is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) BanMember(context.Context, *connect.Request[v1.BanMemberRequest]) (*connect.Response[v1.BanMemberResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("calendars.v1.CalendarService.BanMember is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) GetBannedMembers(context.Context, *connect.Request[v1.GetBannedMembersRequest]) (*connect.Response[v1.GetBannedMembersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("calendars.v1.CalendarService.GetBannedMembers is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) UnbanMember(context.Context, *connect.Request[v1.UnbanMemberRequest]) (*connect.Response[v1.UnbanMemberResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("calendars.v1.CalendarService.UnbanMember is not implemented"))
 }

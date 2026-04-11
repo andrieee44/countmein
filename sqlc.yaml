@@ -10,6 +10,8 @@ sql:
       go:
         package: "store"
         out: "./store"
+        rename:
+          db_time: DBTime
         overrides:
           - db_type: "bool"
             go_type: "database/sql.Null[bool]"

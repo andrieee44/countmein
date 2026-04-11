@@ -43,7 +43,7 @@ type GetUserSessionRow struct {
 	UserID    int32
 	Email     string
 	ExpiresAt time.Time
-	DbTime    time.Time
+	DBTime    time.Time
 }
 
 func (q *Queries) GetUserSession(ctx context.Context, id []byte) (GetUserSessionRow, error) {
@@ -54,7 +54,7 @@ func (q *Queries) GetUserSession(ctx context.Context, id []byte) (GetUserSession
 		&i.UserID,
 		&i.Email,
 		&i.ExpiresAt,
-		&i.DbTime,
+		&i.DBTime,
 	)
 	return i, err
 }
@@ -81,7 +81,11 @@ func (q *Queries) RevokeUserSession(ctx context.Context, id []byte) error {
 
 const updateUserSession = `-- name: UpdateUserSession :exec
 UPDATE users_sessions
-SET email = (SELECT email FROM users WHERE id = users_sessions.user_id)
+SET email = (
+	SELECT email
+	FROM users
+	WHERE id = users_sessions.user_id
+)
 WHERE user_id = ?
 `
 

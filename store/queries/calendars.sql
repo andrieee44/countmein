@@ -25,7 +25,8 @@ WHERE owner_id = ?;
 -- name: GetCalendarICal :one
 SELECT ical
 FROM calendars
-WHERE id = ?;
+WHERE id = ?
+FOR UPDATE;
 
 -- name: GetCalendarOwner :one
 SELECT owner_id

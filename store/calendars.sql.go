@@ -89,6 +89,7 @@ const getCalendarICal = `-- name: GetCalendarICal :one
 SELECT ical
 FROM calendars
 WHERE id = ?
+FOR UPDATE
 `
 
 func (q *Queries) GetCalendarICal(ctx context.Context, id int32) ([]byte, error) {
