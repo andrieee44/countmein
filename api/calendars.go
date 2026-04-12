@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"regexp"
 	"time"
 
 	"connectrpc.com/connect"
@@ -16,6 +17,8 @@ import (
 	ics "github.com/arran4/golang-ical"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
+
+var reHex *regexp.Regexp = regexp.MustCompile("^[0-9A-Fa-f]{6}$")
 
 type CalendarService struct {
 	db *sql.DB
@@ -41,6 +44,11 @@ func (c *CalendarService) Create(
 		return nil, err
 	}
 
+	err = isValidColor(req.Msg.Color)
+	if err != nil {
+		return nil, err
+	}
+
 	_, err = ics.ParseCalendar(bytes.NewReader(req.Msg.Ical))
 	if err != nil {
 		return nil, err
@@ -53,6 +61,7 @@ func (c *CalendarService) Create(
 			Name:        req.Msg.Name,
 			Ical:        req.Msg.Ical,
 			MembersOnly: req.Msg.MembersOnly,
+			Color:       req.Msg.Color,
 			Description: fromPtr(req.Msg.Description),
 		},
 	)
@@ -71,6 +80,7 @@ func (c *CalendarService) Get(
 		actor  UserActor
 		banRow store.IsMemberBannedRow
 		calRow store.GetCalendarRow
+		color  string
 		err    error
 	)
 
@@ -109,9 +119,7 @@ func (c *CalendarService) Get(
 		if err != nil {
 			return nil, err
 		}
-	}
-
-	if !errors.Is(err, sql.ErrNoRows) {
+	} else if !errors.Is(err, sql.ErrNoRows) {
 		return nil, err
 	}
 
@@ -123,11 +131,31 @@ func (c *CalendarService) Get(
 		return nil, err
 	}
 
+	if calRow.OwnerID == actor.ID {
+		color = calRow.Color
+	} else {
+		color, err = store.New(c.db).GetSubscribedMetadata(
+			ctx,
+			store.GetSubscribedMetadataParams{
+				UserID:     actor.ID,
+				CalendarID: req.Msg.Id,
+			},
+		)
+		if err != nil {
+			if !errors.Is(err, sql.ErrNoRows) {
+				return nil, err
+			}
+
+			color = calRow.Color
+		}
+	}
+
 	return connect.NewResponse(&calendarsv1.GetResponse{
 		OwnerId:     calRow.OwnerID,
 		Name:        calRow.Name,
 		Ical:        calRow.Ical,
 		MembersOnly: calRow.MembersOnly,
+		Color:       color,
 		Description: toPtr(calRow.Description),
 	}), nil
 }
@@ -282,6 +310,44 @@ func (c *CalendarService) UpdateMetadata(
 	}
 
 	return connect.NewResponse(&calendarsv1.UpdateMetadataResponse{}), nil
+}
+
+func (c *CalendarService) UpdateSubscribedMetadata(
+	ctx context.Context,
+	req *connect.Request[calendarsv1.UpdateSubscribedMetadataRequest],
+) (*connect.Response[calendarsv1.UpdateSubscribedMetadataResponse], error) {
+	var (
+		actor UserActor
+		err   error
+	)
+
+	actor, err = ActorFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.Msg.Color != nil {
+		err = isValidColor(*req.Msg.Color)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	err = store.New(c.db).UpdateSubscribedMetadata(
+		ctx,
+		store.UpdateSubscribedMetadataParams{
+			UserID:     actor.ID,
+			CalendarID: req.Msg.Id,
+			Color:      fromPtr(req.Msg.Color),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(
+		&calendarsv1.UpdateSubscribedMetadataResponse{},
+	), nil
 }
 
 func (c *CalendarService) Delete(
@@ -656,6 +722,14 @@ func NewCalendarHandler(
 		NewCalendarService(db),
 		opts...,
 	)
+}
+
+func isValidColor(color string) error {
+	if !reHex.MatchString(color) {
+		return fmt.Errorf("invalid color hex: %s", color)
+	}
+
+	return nil
 }
 
 func isCalendarOwner(ctx context.Context, db store.DBTX, id int32) error {

@@ -16,3 +16,15 @@ WHERE user_id = ?
 SELECT user_id
 FROM users_calendars
 WHERE calendar_id = ?;
+
+-- name: GetSubscribedMetadata :one
+SELECT color
+FROM users_calendars
+WHERE user_id = ?
+	AND calendar_id = ?;
+
+-- name: UpdateSubscribedMetadata :exec
+UPDATE users_calendars
+SET color = COALESCE(sqlc.narg('color'), color)
+WHERE user_id = ?
+	AND calendar_id = ?;

@@ -15,6 +15,7 @@ type Calendar struct {
 	Name        string
 	Ical        []byte
 	MembersOnly bool
+	Color       string
 	Description sql.Null[string]
 }
 
@@ -37,6 +38,7 @@ type User struct {
 type UsersCalendar struct {
 	UserID     int32
 	CalendarID int32
+	Color      string
 }
 
 type UsersCalendarsBan struct {

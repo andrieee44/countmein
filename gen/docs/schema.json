@@ -14,6 +14,11 @@
           "name": "calendar_id",
           "type": "int(11)",
           "nullable": false
+        },
+        {
+          "name": "color",
+          "type": "varchar(6)",
+          "nullable": false
         }
       ],
       "indexes": [
@@ -73,7 +78,7 @@
           ]
         }
       ],
-      "def": "CREATE TABLE `users_calendars` (\n  `user_id` int(11) NOT NULL,\n  `calendar_id` int(11) NOT NULL,\n  PRIMARY KEY (`user_id`,`calendar_id`),\n  KEY `fk_users_calendars_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_users_calendars_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_users_calendars_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `users_calendars` (\n  `user_id` int(11) NOT NULL,\n  `calendar_id` int(11) NOT NULL,\n  `color` varchar(6) NOT NULL,\n  PRIMARY KEY (`user_id`,`calendar_id`),\n  KEY `fk_users_calendars_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_users_calendars_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_users_calendars_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "calendars_access_codes",
@@ -360,6 +365,11 @@
           "name": "members_only",
           "type": "tinyint(1)",
           "nullable": false
+        },
+        {
+          "name": "color",
+          "type": "varchar(6)",
+          "nullable": false
         }
       ],
       "indexes": [
@@ -404,7 +414,7 @@
           ]
         }
       ],
-      "def": "CREATE TABLE `calendars` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `owner_id` int(11) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `description` text DEFAULT NULL,\n  `ical` longblob NOT NULL,\n  `members_only` tinyint(1) NOT NULL,\n  PRIMARY KEY (`id`),\n  KEY `fk_calendars_owner_id` (`owner_id`),\n  CONSTRAINT `fk_calendars_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `calendars` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `owner_id` int(11) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `description` text DEFAULT NULL,\n  `ical` longblob NOT NULL,\n  `members_only` tinyint(1) NOT NULL,\n  `color` varchar(6) NOT NULL,\n  PRIMARY KEY (`id`),\n  KEY `fk_calendars_owner_id` (`owner_id`),\n  CONSTRAINT `fk_calendars_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "users_sessions",

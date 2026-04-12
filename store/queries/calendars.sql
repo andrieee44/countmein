@@ -1,10 +1,10 @@
 -- name: CreateCalendar :execresult
-INSERT INTO calendars (owner_id, name, ical, members_only, description)
-VALUES (?, ?, ?, ?, ?);
+INSERT INTO calendars (owner_id, name, ical, members_only, color, description)
+VALUES (?, ?, ?, ?, ?, ?);
 
 -- name: GetCalendar :one
-SELECT owner_id, name, ical, members_only, description
-FROM calendars
+SELECT owner_id, name, ical, members_only, color, description
+FROM calendars AS c
 WHERE id = ?
 	AND (
 		NOT members_only
@@ -12,7 +12,7 @@ WHERE id = ?
 		OR EXISTS (
 			SELECT 1
 			FROM users_calendars
-			WHERE calendar_id = calendars.id
+			WHERE calendar_id = c.id
 				AND user_id = sqlc.arg('user_id')
 		)
 	);

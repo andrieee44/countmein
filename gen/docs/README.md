@@ -4,11 +4,11 @@
 
 | Name | Columns | Comment | Type |
 | ---- | ------- | ------- | ---- |
-| [users_calendars](users_calendars.md) | 2 |  | BASE TABLE |
+| [users_calendars](users_calendars.md) | 3 |  | BASE TABLE |
 | [calendars_access_codes](calendars_access_codes.md) | 4 |  | BASE TABLE |
 | [users](users.md) | 6 |  | BASE TABLE |
 | [users_calendars_bans](users_calendars_bans.md) | 4 |  | BASE TABLE |
-| [calendars](calendars.md) | 6 |  | BASE TABLE |
+| [calendars](calendars.md) | 7 |  | BASE TABLE |
 | [users_sessions](users_sessions.md) | 4 |  | BASE TABLE |
 
 ## Relations

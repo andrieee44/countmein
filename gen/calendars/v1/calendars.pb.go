@@ -28,7 +28,8 @@ type CreateRequest struct {
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Ical          []byte                 `protobuf:"bytes,2,opt,name=ical,proto3" json:"ical,omitempty"`
 	MembersOnly   bool                   `protobuf:"varint,3,opt,name=members_only,json=membersOnly,proto3" json:"members_only,omitempty"`
-	Description   *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Color         string                 `protobuf:"bytes,4,opt,name=color,proto3" json:"color,omitempty"`
+	Description   *string                `protobuf:"bytes,5,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -82,6 +83,13 @@ func (x *CreateRequest) GetMembersOnly() bool {
 		return x.MembersOnly
 	}
 	return false
+}
+
+func (x *CreateRequest) GetColor() string {
+	if x != nil {
+		return x.Color
+	}
+	return ""
 }
 
 func (x *CreateRequest) GetDescription() string {
@@ -177,7 +185,8 @@ type GetResponse struct {
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Ical          []byte                 `protobuf:"bytes,3,opt,name=ical,proto3" json:"ical,omitempty"`
 	MembersOnly   bool                   `protobuf:"varint,4,opt,name=members_only,json=membersOnly,proto3" json:"members_only,omitempty"`
-	Description   *string                `protobuf:"bytes,5,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Color         string                 `protobuf:"bytes,5,opt,name=color,proto3" json:"color,omitempty"`
+	Description   *string                `protobuf:"bytes,6,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -238,6 +247,13 @@ func (x *GetResponse) GetMembersOnly() bool {
 		return x.MembersOnly
 	}
 	return false
+}
+
+func (x *GetResponse) GetColor() string {
+	if x != nil {
+		return x.Color
+	}
+	return ""
 }
 
 func (x *GetResponse) GetDescription() string {
@@ -687,6 +703,94 @@ func (*UpdateMetadataResponse) Descriptor() ([]byte, []int) {
 	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{13}
 }
 
+type UpdateSubscribedMetadataRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Color         *string                `protobuf:"bytes,2,opt,name=color,proto3,oneof" json:"color,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateSubscribedMetadataRequest) Reset() {
+	*x = UpdateSubscribedMetadataRequest{}
+	mi := &file_calendars_v1_calendars_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateSubscribedMetadataRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateSubscribedMetadataRequest) ProtoMessage() {}
+
+func (x *UpdateSubscribedMetadataRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_calendars_v1_calendars_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateSubscribedMetadataRequest.ProtoReflect.Descriptor instead.
+func (*UpdateSubscribedMetadataRequest) Descriptor() ([]byte, []int) {
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *UpdateSubscribedMetadataRequest) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UpdateSubscribedMetadataRequest) GetColor() string {
+	if x != nil && x.Color != nil {
+		return *x.Color
+	}
+	return ""
+}
+
+type UpdateSubscribedMetadataResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateSubscribedMetadataResponse) Reset() {
+	*x = UpdateSubscribedMetadataResponse{}
+	mi := &file_calendars_v1_calendars_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateSubscribedMetadataResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateSubscribedMetadataResponse) ProtoMessage() {}
+
+func (x *UpdateSubscribedMetadataResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_calendars_v1_calendars_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateSubscribedMetadataResponse.ProtoReflect.Descriptor instead.
+func (*UpdateSubscribedMetadataResponse) Descriptor() ([]byte, []int) {
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{15}
+}
+
 type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -696,7 +800,7 @@ type DeleteRequest struct {
 
 func (x *DeleteRequest) Reset() {
 	*x = DeleteRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[14]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -708,7 +812,7 @@ func (x *DeleteRequest) String() string {
 func (*DeleteRequest) ProtoMessage() {}
 
 func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[14]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -721,7 +825,7 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{14}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DeleteRequest) GetId() int32 {
@@ -739,7 +843,7 @@ type DeleteResponse struct {
 
 func (x *DeleteResponse) Reset() {
 	*x = DeleteResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[15]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -751,7 +855,7 @@ func (x *DeleteResponse) String() string {
 func (*DeleteResponse) ProtoMessage() {}
 
 func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[15]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -764,7 +868,7 @@ func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
 func (*DeleteResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{15}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{17}
 }
 
 type CreateCodeRequest struct {
@@ -778,7 +882,7 @@ type CreateCodeRequest struct {
 
 func (x *CreateCodeRequest) Reset() {
 	*x = CreateCodeRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[16]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -790,7 +894,7 @@ func (x *CreateCodeRequest) String() string {
 func (*CreateCodeRequest) ProtoMessage() {}
 
 func (x *CreateCodeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[16]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -803,7 +907,7 @@ func (x *CreateCodeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCodeRequest.ProtoReflect.Descriptor instead.
 func (*CreateCodeRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{16}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *CreateCodeRequest) GetId() int32 {
@@ -835,7 +939,7 @@ type CreateCodeResponse struct {
 
 func (x *CreateCodeResponse) Reset() {
 	*x = CreateCodeResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[17]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -847,7 +951,7 @@ func (x *CreateCodeResponse) String() string {
 func (*CreateCodeResponse) ProtoMessage() {}
 
 func (x *CreateCodeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[17]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -860,7 +964,7 @@ func (x *CreateCodeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCodeResponse.ProtoReflect.Descriptor instead.
 func (*CreateCodeResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{17}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{19}
 }
 
 type GetCodeMetadataRequest struct {
@@ -872,7 +976,7 @@ type GetCodeMetadataRequest struct {
 
 func (x *GetCodeMetadataRequest) Reset() {
 	*x = GetCodeMetadataRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[18]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -884,7 +988,7 @@ func (x *GetCodeMetadataRequest) String() string {
 func (*GetCodeMetadataRequest) ProtoMessage() {}
 
 func (x *GetCodeMetadataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[18]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -897,7 +1001,7 @@ func (x *GetCodeMetadataRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCodeMetadataRequest.ProtoReflect.Descriptor instead.
 func (*GetCodeMetadataRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{18}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetCodeMetadataRequest) GetCodeId() int32 {
@@ -918,7 +1022,7 @@ type GetCodeMetadataResponse struct {
 
 func (x *GetCodeMetadataResponse) Reset() {
 	*x = GetCodeMetadataResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[19]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -930,7 +1034,7 @@ func (x *GetCodeMetadataResponse) String() string {
 func (*GetCodeMetadataResponse) ProtoMessage() {}
 
 func (x *GetCodeMetadataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[19]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -943,7 +1047,7 @@ func (x *GetCodeMetadataResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCodeMetadataResponse.ProtoReflect.Descriptor instead.
 func (*GetCodeMetadataResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{19}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *GetCodeMetadataResponse) GetCalendarId() int32 {
@@ -976,7 +1080,7 @@ type GetCodesRequest struct {
 
 func (x *GetCodesRequest) Reset() {
 	*x = GetCodesRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[20]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -988,7 +1092,7 @@ func (x *GetCodesRequest) String() string {
 func (*GetCodesRequest) ProtoMessage() {}
 
 func (x *GetCodesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[20]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1001,7 +1105,7 @@ func (x *GetCodesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCodesRequest.ProtoReflect.Descriptor instead.
 func (*GetCodesRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{20}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GetCodesRequest) GetId() int32 {
@@ -1020,7 +1124,7 @@ type GetCodesResponse struct {
 
 func (x *GetCodesResponse) Reset() {
 	*x = GetCodesResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[21]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1032,7 +1136,7 @@ func (x *GetCodesResponse) String() string {
 func (*GetCodesResponse) ProtoMessage() {}
 
 func (x *GetCodesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[21]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1045,7 +1149,7 @@ func (x *GetCodesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCodesResponse.ProtoReflect.Descriptor instead.
 func (*GetCodesResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{21}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *GetCodesResponse) GetCodeIds() []int32 {
@@ -1064,7 +1168,7 @@ type DeleteCodeRequest struct {
 
 func (x *DeleteCodeRequest) Reset() {
 	*x = DeleteCodeRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[22]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1076,7 +1180,7 @@ func (x *DeleteCodeRequest) String() string {
 func (*DeleteCodeRequest) ProtoMessage() {}
 
 func (x *DeleteCodeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[22]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1089,7 +1193,7 @@ func (x *DeleteCodeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCodeRequest.ProtoReflect.Descriptor instead.
 func (*DeleteCodeRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{22}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *DeleteCodeRequest) GetCodeId() int32 {
@@ -1107,7 +1211,7 @@ type DeleteCodeResponse struct {
 
 func (x *DeleteCodeResponse) Reset() {
 	*x = DeleteCodeResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[23]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1119,7 +1223,7 @@ func (x *DeleteCodeResponse) String() string {
 func (*DeleteCodeResponse) ProtoMessage() {}
 
 func (x *DeleteCodeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[23]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1132,7 +1236,7 @@ func (x *DeleteCodeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCodeResponse.ProtoReflect.Descriptor instead.
 func (*DeleteCodeResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{23}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{25}
 }
 
 type SubscribeRequest struct {
@@ -1144,7 +1248,7 @@ type SubscribeRequest struct {
 
 func (x *SubscribeRequest) Reset() {
 	*x = SubscribeRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[24]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1156,7 +1260,7 @@ func (x *SubscribeRequest) String() string {
 func (*SubscribeRequest) ProtoMessage() {}
 
 func (x *SubscribeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[24]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1169,7 +1273,7 @@ func (x *SubscribeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeRequest.ProtoReflect.Descriptor instead.
 func (*SubscribeRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{24}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *SubscribeRequest) GetCode() string {
@@ -1187,7 +1291,7 @@ type SubscribeResponse struct {
 
 func (x *SubscribeResponse) Reset() {
 	*x = SubscribeResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[25]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1199,7 +1303,7 @@ func (x *SubscribeResponse) String() string {
 func (*SubscribeResponse) ProtoMessage() {}
 
 func (x *SubscribeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[25]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1212,7 +1316,7 @@ func (x *SubscribeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeResponse.ProtoReflect.Descriptor instead.
 func (*SubscribeResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{25}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{27}
 }
 
 type UnsubscribeRequest struct {
@@ -1224,7 +1328,7 @@ type UnsubscribeRequest struct {
 
 func (x *UnsubscribeRequest) Reset() {
 	*x = UnsubscribeRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[26]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1236,7 +1340,7 @@ func (x *UnsubscribeRequest) String() string {
 func (*UnsubscribeRequest) ProtoMessage() {}
 
 func (x *UnsubscribeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[26]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1249,7 +1353,7 @@ func (x *UnsubscribeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnsubscribeRequest.ProtoReflect.Descriptor instead.
 func (*UnsubscribeRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{26}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *UnsubscribeRequest) GetId() int32 {
@@ -1267,7 +1371,7 @@ type UnsubscribeResponse struct {
 
 func (x *UnsubscribeResponse) Reset() {
 	*x = UnsubscribeResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[27]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1279,7 +1383,7 @@ func (x *UnsubscribeResponse) String() string {
 func (*UnsubscribeResponse) ProtoMessage() {}
 
 func (x *UnsubscribeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[27]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1292,7 +1396,7 @@ func (x *UnsubscribeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnsubscribeResponse.ProtoReflect.Descriptor instead.
 func (*UnsubscribeResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{27}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{29}
 }
 
 type GetMembersRequest struct {
@@ -1304,7 +1408,7 @@ type GetMembersRequest struct {
 
 func (x *GetMembersRequest) Reset() {
 	*x = GetMembersRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[28]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1316,7 +1420,7 @@ func (x *GetMembersRequest) String() string {
 func (*GetMembersRequest) ProtoMessage() {}
 
 func (x *GetMembersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[28]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1329,7 +1433,7 @@ func (x *GetMembersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMembersRequest.ProtoReflect.Descriptor instead.
 func (*GetMembersRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{28}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *GetMembersRequest) GetId() int32 {
@@ -1348,7 +1452,7 @@ type GetMembersResponse struct {
 
 func (x *GetMembersResponse) Reset() {
 	*x = GetMembersResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[29]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1360,7 +1464,7 @@ func (x *GetMembersResponse) String() string {
 func (*GetMembersResponse) ProtoMessage() {}
 
 func (x *GetMembersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[29]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1373,7 +1477,7 @@ func (x *GetMembersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMembersResponse.ProtoReflect.Descriptor instead.
 func (*GetMembersResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{29}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *GetMembersResponse) GetUserIds() []int32 {
@@ -1393,7 +1497,7 @@ type RemoveMemberRequest struct {
 
 func (x *RemoveMemberRequest) Reset() {
 	*x = RemoveMemberRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[30]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1405,7 +1509,7 @@ func (x *RemoveMemberRequest) String() string {
 func (*RemoveMemberRequest) ProtoMessage() {}
 
 func (x *RemoveMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[30]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1418,7 +1522,7 @@ func (x *RemoveMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveMemberRequest.ProtoReflect.Descriptor instead.
 func (*RemoveMemberRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{30}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *RemoveMemberRequest) GetId() int32 {
@@ -1443,7 +1547,7 @@ type RemoveMemberResponse struct {
 
 func (x *RemoveMemberResponse) Reset() {
 	*x = RemoveMemberResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[31]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1455,7 +1559,7 @@ func (x *RemoveMemberResponse) String() string {
 func (*RemoveMemberResponse) ProtoMessage() {}
 
 func (x *RemoveMemberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[31]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1468,7 +1572,7 @@ func (x *RemoveMemberResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveMemberResponse.ProtoReflect.Descriptor instead.
 func (*RemoveMemberResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{31}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{33}
 }
 
 type BanMemberRequest struct {
@@ -1483,7 +1587,7 @@ type BanMemberRequest struct {
 
 func (x *BanMemberRequest) Reset() {
 	*x = BanMemberRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[32]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1495,7 +1599,7 @@ func (x *BanMemberRequest) String() string {
 func (*BanMemberRequest) ProtoMessage() {}
 
 func (x *BanMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[32]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1508,7 +1612,7 @@ func (x *BanMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BanMemberRequest.ProtoReflect.Descriptor instead.
 func (*BanMemberRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{32}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *BanMemberRequest) GetId() int32 {
@@ -1547,7 +1651,7 @@ type BanMemberResponse struct {
 
 func (x *BanMemberResponse) Reset() {
 	*x = BanMemberResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[33]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1559,7 +1663,7 @@ func (x *BanMemberResponse) String() string {
 func (*BanMemberResponse) ProtoMessage() {}
 
 func (x *BanMemberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[33]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1572,7 +1676,7 @@ func (x *BanMemberResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BanMemberResponse.ProtoReflect.Descriptor instead.
 func (*BanMemberResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{33}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{35}
 }
 
 type GetBannedMembersRequest struct {
@@ -1584,7 +1688,7 @@ type GetBannedMembersRequest struct {
 
 func (x *GetBannedMembersRequest) Reset() {
 	*x = GetBannedMembersRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[34]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1596,7 +1700,7 @@ func (x *GetBannedMembersRequest) String() string {
 func (*GetBannedMembersRequest) ProtoMessage() {}
 
 func (x *GetBannedMembersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[34]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1609,7 +1713,7 @@ func (x *GetBannedMembersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBannedMembersRequest.ProtoReflect.Descriptor instead.
 func (*GetBannedMembersRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{34}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *GetBannedMembersRequest) GetId() int32 {
@@ -1628,7 +1732,7 @@ type GetBannedMembersResponse struct {
 
 func (x *GetBannedMembersResponse) Reset() {
 	*x = GetBannedMembersResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[35]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1640,7 +1744,7 @@ func (x *GetBannedMembersResponse) String() string {
 func (*GetBannedMembersResponse) ProtoMessage() {}
 
 func (x *GetBannedMembersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[35]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1653,7 +1757,7 @@ func (x *GetBannedMembersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBannedMembersResponse.ProtoReflect.Descriptor instead.
 func (*GetBannedMembersResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{35}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *GetBannedMembersResponse) GetUserIds() []int32 {
@@ -1673,7 +1777,7 @@ type UnbanMemberRequest struct {
 
 func (x *UnbanMemberRequest) Reset() {
 	*x = UnbanMemberRequest{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[36]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1685,7 +1789,7 @@ func (x *UnbanMemberRequest) String() string {
 func (*UnbanMemberRequest) ProtoMessage() {}
 
 func (x *UnbanMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[36]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1698,7 +1802,7 @@ func (x *UnbanMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnbanMemberRequest.ProtoReflect.Descriptor instead.
 func (*UnbanMemberRequest) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{36}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *UnbanMemberRequest) GetId() int32 {
@@ -1723,7 +1827,7 @@ type UnbanMemberResponse struct {
 
 func (x *UnbanMemberResponse) Reset() {
 	*x = UnbanMemberResponse{}
-	mi := &file_calendars_v1_calendars_proto_msgTypes[37]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1735,7 +1839,7 @@ func (x *UnbanMemberResponse) String() string {
 func (*UnbanMemberResponse) ProtoMessage() {}
 
 func (x *UnbanMemberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_calendars_v1_calendars_proto_msgTypes[37]
+	mi := &file_calendars_v1_calendars_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1748,30 +1852,32 @@ func (x *UnbanMemberResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnbanMemberResponse.ProtoReflect.Descriptor instead.
 func (*UnbanMemberResponse) Descriptor() ([]byte, []int) {
-	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{37}
+	return file_calendars_v1_calendars_proto_rawDescGZIP(), []int{39}
 }
 
 var File_calendars_v1_calendars_proto protoreflect.FileDescriptor
 
 const file_calendars_v1_calendars_proto_rawDesc = "" +
 	"\n" +
-	"\x1ccalendars/v1/calendars.proto\x12\fcalendars.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x91\x01\n" +
+	"\x1ccalendars/v1/calendars.proto\x12\fcalendars.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa7\x01\n" +
 	"\rCreateRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
 	"\x04ical\x18\x02 \x01(\fR\x04ical\x12!\n" +
-	"\fmembers_only\x18\x03 \x01(\bR\vmembersOnly\x12%\n" +
-	"\vdescription\x18\x04 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
+	"\fmembers_only\x18\x03 \x01(\bR\vmembersOnly\x12\x14\n" +
+	"\x05color\x18\x04 \x01(\tR\x05color\x12%\n" +
+	"\vdescription\x18\x05 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"\x10\n" +
 	"\x0eCreateResponse\"\x1c\n" +
 	"\n" +
 	"GetRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"\xaa\x01\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\xc0\x01\n" +
 	"\vGetResponse\x12\x19\n" +
 	"\bowner_id\x18\x01 \x01(\x05R\aownerId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
 	"\x04ical\x18\x03 \x01(\fR\x04ical\x12!\n" +
-	"\fmembers_only\x18\x04 \x01(\bR\vmembersOnly\x12%\n" +
-	"\vdescription\x18\x05 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
+	"\fmembers_only\x18\x04 \x01(\bR\vmembersOnly\x12\x14\n" +
+	"\x05color\x18\x05 \x01(\tR\x05color\x12%\n" +
+	"\vdescription\x18\x06 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"\x11\n" +
 	"\x0fGetOwnedRequest\"$\n" +
 	"\x10GetOwnedResponse\x12\x10\n" +
@@ -1795,7 +1901,12 @@ const file_calendars_v1_calendars_proto_rawDesc = "" +
 	"\x05_nameB\x0f\n" +
 	"\r_members_onlyB\x0e\n" +
 	"\f_description\"\x18\n" +
-	"\x16UpdateMetadataResponse\"\x1f\n" +
+	"\x16UpdateMetadataResponse\"V\n" +
+	"\x1fUpdateSubscribedMetadataRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x19\n" +
+	"\x05color\x18\x02 \x01(\tH\x00R\x05color\x88\x01\x01B\b\n" +
+	"\x06_color\"\"\n" +
+	" UpdateSubscribedMetadataResponse\"\x1f\n" +
 	"\rDeleteRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"\x10\n" +
 	"\x0eDeleteResponse\"q\n" +
@@ -1849,7 +1960,7 @@ const file_calendars_v1_calendars_proto_rawDesc = "" +
 	"\x12UnbanMemberRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x05R\x06userId\"\x15\n" +
-	"\x13UnbanMemberResponse2\xff\v\n" +
+	"\x13UnbanMemberResponse2\xfa\f\n" +
 	"\x0fCalendarService\x12C\n" +
 	"\x06Create\x12\x1b.calendars.v1.CreateRequest\x1a\x1c.calendars.v1.CreateResponse\x12:\n" +
 	"\x03Get\x12\x18.calendars.v1.GetRequest\x1a\x19.calendars.v1.GetResponse\x12I\n" +
@@ -1857,7 +1968,8 @@ const file_calendars_v1_calendars_proto_rawDesc = "" +
 	"\rGetSubscribed\x12\".calendars.v1.GetSubscribedRequest\x1a#.calendars.v1.GetSubscribedResponse\x12@\n" +
 	"\x05Merge\x12\x1a.calendars.v1.MergeRequest\x1a\x1b.calendars.v1.MergeResponse\x12F\n" +
 	"\aReplace\x12\x1c.calendars.v1.ReplaceRequest\x1a\x1d.calendars.v1.ReplaceResponse\x12[\n" +
-	"\x0eUpdateMetadata\x12#.calendars.v1.UpdateMetadataRequest\x1a$.calendars.v1.UpdateMetadataResponse\x12C\n" +
+	"\x0eUpdateMetadata\x12#.calendars.v1.UpdateMetadataRequest\x1a$.calendars.v1.UpdateMetadataResponse\x12y\n" +
+	"\x18UpdateSubscribedMetadata\x12-.calendars.v1.UpdateSubscribedMetadataRequest\x1a..calendars.v1.UpdateSubscribedMetadataResponse\x12C\n" +
 	"\x06Delete\x12\x1b.calendars.v1.DeleteRequest\x1a\x1c.calendars.v1.DeleteResponse\x12O\n" +
 	"\n" +
 	"CreateCode\x12\x1f.calendars.v1.CreateCodeRequest\x1a .calendars.v1.CreateCodeResponse\x12^\n" +
@@ -1887,53 +1999,55 @@ func file_calendars_v1_calendars_proto_rawDescGZIP() []byte {
 	return file_calendars_v1_calendars_proto_rawDescData
 }
 
-var file_calendars_v1_calendars_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_calendars_v1_calendars_proto_msgTypes = make([]protoimpl.MessageInfo, 40)
 var file_calendars_v1_calendars_proto_goTypes = []any{
-	(*CreateRequest)(nil),            // 0: calendars.v1.CreateRequest
-	(*CreateResponse)(nil),           // 1: calendars.v1.CreateResponse
-	(*GetRequest)(nil),               // 2: calendars.v1.GetRequest
-	(*GetResponse)(nil),              // 3: calendars.v1.GetResponse
-	(*GetOwnedRequest)(nil),          // 4: calendars.v1.GetOwnedRequest
-	(*GetOwnedResponse)(nil),         // 5: calendars.v1.GetOwnedResponse
-	(*GetSubscribedRequest)(nil),     // 6: calendars.v1.GetSubscribedRequest
-	(*GetSubscribedResponse)(nil),    // 7: calendars.v1.GetSubscribedResponse
-	(*MergeRequest)(nil),             // 8: calendars.v1.MergeRequest
-	(*MergeResponse)(nil),            // 9: calendars.v1.MergeResponse
-	(*ReplaceRequest)(nil),           // 10: calendars.v1.ReplaceRequest
-	(*ReplaceResponse)(nil),          // 11: calendars.v1.ReplaceResponse
-	(*UpdateMetadataRequest)(nil),    // 12: calendars.v1.UpdateMetadataRequest
-	(*UpdateMetadataResponse)(nil),   // 13: calendars.v1.UpdateMetadataResponse
-	(*DeleteRequest)(nil),            // 14: calendars.v1.DeleteRequest
-	(*DeleteResponse)(nil),           // 15: calendars.v1.DeleteResponse
-	(*CreateCodeRequest)(nil),        // 16: calendars.v1.CreateCodeRequest
-	(*CreateCodeResponse)(nil),       // 17: calendars.v1.CreateCodeResponse
-	(*GetCodeMetadataRequest)(nil),   // 18: calendars.v1.GetCodeMetadataRequest
-	(*GetCodeMetadataResponse)(nil),  // 19: calendars.v1.GetCodeMetadataResponse
-	(*GetCodesRequest)(nil),          // 20: calendars.v1.GetCodesRequest
-	(*GetCodesResponse)(nil),         // 21: calendars.v1.GetCodesResponse
-	(*DeleteCodeRequest)(nil),        // 22: calendars.v1.DeleteCodeRequest
-	(*DeleteCodeResponse)(nil),       // 23: calendars.v1.DeleteCodeResponse
-	(*SubscribeRequest)(nil),         // 24: calendars.v1.SubscribeRequest
-	(*SubscribeResponse)(nil),        // 25: calendars.v1.SubscribeResponse
-	(*UnsubscribeRequest)(nil),       // 26: calendars.v1.UnsubscribeRequest
-	(*UnsubscribeResponse)(nil),      // 27: calendars.v1.UnsubscribeResponse
-	(*GetMembersRequest)(nil),        // 28: calendars.v1.GetMembersRequest
-	(*GetMembersResponse)(nil),       // 29: calendars.v1.GetMembersResponse
-	(*RemoveMemberRequest)(nil),      // 30: calendars.v1.RemoveMemberRequest
-	(*RemoveMemberResponse)(nil),     // 31: calendars.v1.RemoveMemberResponse
-	(*BanMemberRequest)(nil),         // 32: calendars.v1.BanMemberRequest
-	(*BanMemberResponse)(nil),        // 33: calendars.v1.BanMemberResponse
-	(*GetBannedMembersRequest)(nil),  // 34: calendars.v1.GetBannedMembersRequest
-	(*GetBannedMembersResponse)(nil), // 35: calendars.v1.GetBannedMembersResponse
-	(*UnbanMemberRequest)(nil),       // 36: calendars.v1.UnbanMemberRequest
-	(*UnbanMemberResponse)(nil),      // 37: calendars.v1.UnbanMemberResponse
-	(*durationpb.Duration)(nil),      // 38: google.protobuf.Duration
-	(*timestamppb.Timestamp)(nil),    // 39: google.protobuf.Timestamp
+	(*CreateRequest)(nil),                    // 0: calendars.v1.CreateRequest
+	(*CreateResponse)(nil),                   // 1: calendars.v1.CreateResponse
+	(*GetRequest)(nil),                       // 2: calendars.v1.GetRequest
+	(*GetResponse)(nil),                      // 3: calendars.v1.GetResponse
+	(*GetOwnedRequest)(nil),                  // 4: calendars.v1.GetOwnedRequest
+	(*GetOwnedResponse)(nil),                 // 5: calendars.v1.GetOwnedResponse
+	(*GetSubscribedRequest)(nil),             // 6: calendars.v1.GetSubscribedRequest
+	(*GetSubscribedResponse)(nil),            // 7: calendars.v1.GetSubscribedResponse
+	(*MergeRequest)(nil),                     // 8: calendars.v1.MergeRequest
+	(*MergeResponse)(nil),                    // 9: calendars.v1.MergeResponse
+	(*ReplaceRequest)(nil),                   // 10: calendars.v1.ReplaceRequest
+	(*ReplaceResponse)(nil),                  // 11: calendars.v1.ReplaceResponse
+	(*UpdateMetadataRequest)(nil),            // 12: calendars.v1.UpdateMetadataRequest
+	(*UpdateMetadataResponse)(nil),           // 13: calendars.v1.UpdateMetadataResponse
+	(*UpdateSubscribedMetadataRequest)(nil),  // 14: calendars.v1.UpdateSubscribedMetadataRequest
+	(*UpdateSubscribedMetadataResponse)(nil), // 15: calendars.v1.UpdateSubscribedMetadataResponse
+	(*DeleteRequest)(nil),                    // 16: calendars.v1.DeleteRequest
+	(*DeleteResponse)(nil),                   // 17: calendars.v1.DeleteResponse
+	(*CreateCodeRequest)(nil),                // 18: calendars.v1.CreateCodeRequest
+	(*CreateCodeResponse)(nil),               // 19: calendars.v1.CreateCodeResponse
+	(*GetCodeMetadataRequest)(nil),           // 20: calendars.v1.GetCodeMetadataRequest
+	(*GetCodeMetadataResponse)(nil),          // 21: calendars.v1.GetCodeMetadataResponse
+	(*GetCodesRequest)(nil),                  // 22: calendars.v1.GetCodesRequest
+	(*GetCodesResponse)(nil),                 // 23: calendars.v1.GetCodesResponse
+	(*DeleteCodeRequest)(nil),                // 24: calendars.v1.DeleteCodeRequest
+	(*DeleteCodeResponse)(nil),               // 25: calendars.v1.DeleteCodeResponse
+	(*SubscribeRequest)(nil),                 // 26: calendars.v1.SubscribeRequest
+	(*SubscribeResponse)(nil),                // 27: calendars.v1.SubscribeResponse
+	(*UnsubscribeRequest)(nil),               // 28: calendars.v1.UnsubscribeRequest
+	(*UnsubscribeResponse)(nil),              // 29: calendars.v1.UnsubscribeResponse
+	(*GetMembersRequest)(nil),                // 30: calendars.v1.GetMembersRequest
+	(*GetMembersResponse)(nil),               // 31: calendars.v1.GetMembersResponse
+	(*RemoveMemberRequest)(nil),              // 32: calendars.v1.RemoveMemberRequest
+	(*RemoveMemberResponse)(nil),             // 33: calendars.v1.RemoveMemberResponse
+	(*BanMemberRequest)(nil),                 // 34: calendars.v1.BanMemberRequest
+	(*BanMemberResponse)(nil),                // 35: calendars.v1.BanMemberResponse
+	(*GetBannedMembersRequest)(nil),          // 36: calendars.v1.GetBannedMembersRequest
+	(*GetBannedMembersResponse)(nil),         // 37: calendars.v1.GetBannedMembersResponse
+	(*UnbanMemberRequest)(nil),               // 38: calendars.v1.UnbanMemberRequest
+	(*UnbanMemberResponse)(nil),              // 39: calendars.v1.UnbanMemberResponse
+	(*durationpb.Duration)(nil),              // 40: google.protobuf.Duration
+	(*timestamppb.Timestamp)(nil),            // 41: google.protobuf.Timestamp
 }
 var file_calendars_v1_calendars_proto_depIdxs = []int32{
-	38, // 0: calendars.v1.CreateCodeRequest.ttl:type_name -> google.protobuf.Duration
-	39, // 1: calendars.v1.GetCodeMetadataResponse.expires_at:type_name -> google.protobuf.Timestamp
-	38, // 2: calendars.v1.BanMemberRequest.ttl:type_name -> google.protobuf.Duration
+	40, // 0: calendars.v1.CreateCodeRequest.ttl:type_name -> google.protobuf.Duration
+	41, // 1: calendars.v1.GetCodeMetadataResponse.expires_at:type_name -> google.protobuf.Timestamp
+	40, // 2: calendars.v1.BanMemberRequest.ttl:type_name -> google.protobuf.Duration
 	0,  // 3: calendars.v1.CalendarService.Create:input_type -> calendars.v1.CreateRequest
 	2,  // 4: calendars.v1.CalendarService.Get:input_type -> calendars.v1.GetRequest
 	4,  // 5: calendars.v1.CalendarService.GetOwned:input_type -> calendars.v1.GetOwnedRequest
@@ -1941,39 +2055,41 @@ var file_calendars_v1_calendars_proto_depIdxs = []int32{
 	8,  // 7: calendars.v1.CalendarService.Merge:input_type -> calendars.v1.MergeRequest
 	10, // 8: calendars.v1.CalendarService.Replace:input_type -> calendars.v1.ReplaceRequest
 	12, // 9: calendars.v1.CalendarService.UpdateMetadata:input_type -> calendars.v1.UpdateMetadataRequest
-	14, // 10: calendars.v1.CalendarService.Delete:input_type -> calendars.v1.DeleteRequest
-	16, // 11: calendars.v1.CalendarService.CreateCode:input_type -> calendars.v1.CreateCodeRequest
-	18, // 12: calendars.v1.CalendarService.GetCodeMetadata:input_type -> calendars.v1.GetCodeMetadataRequest
-	20, // 13: calendars.v1.CalendarService.GetCodes:input_type -> calendars.v1.GetCodesRequest
-	22, // 14: calendars.v1.CalendarService.DeleteCode:input_type -> calendars.v1.DeleteCodeRequest
-	24, // 15: calendars.v1.CalendarService.Subscribe:input_type -> calendars.v1.SubscribeRequest
-	26, // 16: calendars.v1.CalendarService.Unsubscribe:input_type -> calendars.v1.UnsubscribeRequest
-	28, // 17: calendars.v1.CalendarService.GetMembers:input_type -> calendars.v1.GetMembersRequest
-	30, // 18: calendars.v1.CalendarService.RemoveMember:input_type -> calendars.v1.RemoveMemberRequest
-	32, // 19: calendars.v1.CalendarService.BanMember:input_type -> calendars.v1.BanMemberRequest
-	34, // 20: calendars.v1.CalendarService.GetBannedMembers:input_type -> calendars.v1.GetBannedMembersRequest
-	36, // 21: calendars.v1.CalendarService.UnbanMember:input_type -> calendars.v1.UnbanMemberRequest
-	1,  // 22: calendars.v1.CalendarService.Create:output_type -> calendars.v1.CreateResponse
-	3,  // 23: calendars.v1.CalendarService.Get:output_type -> calendars.v1.GetResponse
-	5,  // 24: calendars.v1.CalendarService.GetOwned:output_type -> calendars.v1.GetOwnedResponse
-	7,  // 25: calendars.v1.CalendarService.GetSubscribed:output_type -> calendars.v1.GetSubscribedResponse
-	9,  // 26: calendars.v1.CalendarService.Merge:output_type -> calendars.v1.MergeResponse
-	11, // 27: calendars.v1.CalendarService.Replace:output_type -> calendars.v1.ReplaceResponse
-	13, // 28: calendars.v1.CalendarService.UpdateMetadata:output_type -> calendars.v1.UpdateMetadataResponse
-	15, // 29: calendars.v1.CalendarService.Delete:output_type -> calendars.v1.DeleteResponse
-	17, // 30: calendars.v1.CalendarService.CreateCode:output_type -> calendars.v1.CreateCodeResponse
-	19, // 31: calendars.v1.CalendarService.GetCodeMetadata:output_type -> calendars.v1.GetCodeMetadataResponse
-	21, // 32: calendars.v1.CalendarService.GetCodes:output_type -> calendars.v1.GetCodesResponse
-	23, // 33: calendars.v1.CalendarService.DeleteCode:output_type -> calendars.v1.DeleteCodeResponse
-	25, // 34: calendars.v1.CalendarService.Subscribe:output_type -> calendars.v1.SubscribeResponse
-	27, // 35: calendars.v1.CalendarService.Unsubscribe:output_type -> calendars.v1.UnsubscribeResponse
-	29, // 36: calendars.v1.CalendarService.GetMembers:output_type -> calendars.v1.GetMembersResponse
-	31, // 37: calendars.v1.CalendarService.RemoveMember:output_type -> calendars.v1.RemoveMemberResponse
-	33, // 38: calendars.v1.CalendarService.BanMember:output_type -> calendars.v1.BanMemberResponse
-	35, // 39: calendars.v1.CalendarService.GetBannedMembers:output_type -> calendars.v1.GetBannedMembersResponse
-	37, // 40: calendars.v1.CalendarService.UnbanMember:output_type -> calendars.v1.UnbanMemberResponse
-	22, // [22:41] is the sub-list for method output_type
-	3,  // [3:22] is the sub-list for method input_type
+	14, // 10: calendars.v1.CalendarService.UpdateSubscribedMetadata:input_type -> calendars.v1.UpdateSubscribedMetadataRequest
+	16, // 11: calendars.v1.CalendarService.Delete:input_type -> calendars.v1.DeleteRequest
+	18, // 12: calendars.v1.CalendarService.CreateCode:input_type -> calendars.v1.CreateCodeRequest
+	20, // 13: calendars.v1.CalendarService.GetCodeMetadata:input_type -> calendars.v1.GetCodeMetadataRequest
+	22, // 14: calendars.v1.CalendarService.GetCodes:input_type -> calendars.v1.GetCodesRequest
+	24, // 15: calendars.v1.CalendarService.DeleteCode:input_type -> calendars.v1.DeleteCodeRequest
+	26, // 16: calendars.v1.CalendarService.Subscribe:input_type -> calendars.v1.SubscribeRequest
+	28, // 17: calendars.v1.CalendarService.Unsubscribe:input_type -> calendars.v1.UnsubscribeRequest
+	30, // 18: calendars.v1.CalendarService.GetMembers:input_type -> calendars.v1.GetMembersRequest
+	32, // 19: calendars.v1.CalendarService.RemoveMember:input_type -> calendars.v1.RemoveMemberRequest
+	34, // 20: calendars.v1.CalendarService.BanMember:input_type -> calendars.v1.BanMemberRequest
+	36, // 21: calendars.v1.CalendarService.GetBannedMembers:input_type -> calendars.v1.GetBannedMembersRequest
+	38, // 22: calendars.v1.CalendarService.UnbanMember:input_type -> calendars.v1.UnbanMemberRequest
+	1,  // 23: calendars.v1.CalendarService.Create:output_type -> calendars.v1.CreateResponse
+	3,  // 24: calendars.v1.CalendarService.Get:output_type -> calendars.v1.GetResponse
+	5,  // 25: calendars.v1.CalendarService.GetOwned:output_type -> calendars.v1.GetOwnedResponse
+	7,  // 26: calendars.v1.CalendarService.GetSubscribed:output_type -> calendars.v1.GetSubscribedResponse
+	9,  // 27: calendars.v1.CalendarService.Merge:output_type -> calendars.v1.MergeResponse
+	11, // 28: calendars.v1.CalendarService.Replace:output_type -> calendars.v1.ReplaceResponse
+	13, // 29: calendars.v1.CalendarService.UpdateMetadata:output_type -> calendars.v1.UpdateMetadataResponse
+	15, // 30: calendars.v1.CalendarService.UpdateSubscribedMetadata:output_type -> calendars.v1.UpdateSubscribedMetadataResponse
+	17, // 31: calendars.v1.CalendarService.Delete:output_type -> calendars.v1.DeleteResponse
+	19, // 32: calendars.v1.CalendarService.CreateCode:output_type -> calendars.v1.CreateCodeResponse
+	21, // 33: calendars.v1.CalendarService.GetCodeMetadata:output_type -> calendars.v1.GetCodeMetadataResponse
+	23, // 34: calendars.v1.CalendarService.GetCodes:output_type -> calendars.v1.GetCodesResponse
+	25, // 35: calendars.v1.CalendarService.DeleteCode:output_type -> calendars.v1.DeleteCodeResponse
+	27, // 36: calendars.v1.CalendarService.Subscribe:output_type -> calendars.v1.SubscribeResponse
+	29, // 37: calendars.v1.CalendarService.Unsubscribe:output_type -> calendars.v1.UnsubscribeResponse
+	31, // 38: calendars.v1.CalendarService.GetMembers:output_type -> calendars.v1.GetMembersResponse
+	33, // 39: calendars.v1.CalendarService.RemoveMember:output_type -> calendars.v1.RemoveMemberResponse
+	35, // 40: calendars.v1.CalendarService.BanMember:output_type -> calendars.v1.BanMemberResponse
+	37, // 41: calendars.v1.CalendarService.GetBannedMembers:output_type -> calendars.v1.GetBannedMembersResponse
+	39, // 42: calendars.v1.CalendarService.UnbanMember:output_type -> calendars.v1.UnbanMemberResponse
+	23, // [23:43] is the sub-list for method output_type
+	3,  // [3:23] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
 	3,  // [3:3] is the sub-list for extension extendee
 	0,  // [0:3] is the sub-list for field type_name
@@ -1987,16 +2103,17 @@ func file_calendars_v1_calendars_proto_init() {
 	file_calendars_v1_calendars_proto_msgTypes[0].OneofWrappers = []any{}
 	file_calendars_v1_calendars_proto_msgTypes[3].OneofWrappers = []any{}
 	file_calendars_v1_calendars_proto_msgTypes[12].OneofWrappers = []any{}
-	file_calendars_v1_calendars_proto_msgTypes[16].OneofWrappers = []any{}
-	file_calendars_v1_calendars_proto_msgTypes[19].OneofWrappers = []any{}
-	file_calendars_v1_calendars_proto_msgTypes[32].OneofWrappers = []any{}
+	file_calendars_v1_calendars_proto_msgTypes[14].OneofWrappers = []any{}
+	file_calendars_v1_calendars_proto_msgTypes[18].OneofWrappers = []any{}
+	file_calendars_v1_calendars_proto_msgTypes[21].OneofWrappers = []any{}
+	file_calendars_v1_calendars_proto_msgTypes[34].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_calendars_v1_calendars_proto_rawDesc), len(file_calendars_v1_calendars_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   38,
+			NumMessages:   40,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -9,6 +9,7 @@
 CREATE TABLE `users_calendars` (
   `user_id` int(11) NOT NULL,
   `calendar_id` int(11) NOT NULL,
+  `color` varchar(6) NOT NULL,
   PRIMARY KEY (`user_id`,`calendar_id`),
   KEY `fk_users_calendars_calendar_id` (`calendar_id`),
   CONSTRAINT `fk_users_calendars_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,
@@ -24,6 +25,7 @@ CREATE TABLE `users_calendars` (
 | ---- | ---- | ------- | -------- | -------- | ------- | ------- |
 | user_id | int(11) |  | false |  | [users](users.md) |  |
 | calendar_id | int(11) |  | false |  | [calendars](calendars.md) |  |
+| color | varchar(6) |  | false |  |  |  |
 
 ## Constraints
 

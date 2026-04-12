@@ -34,6 +34,7 @@ CREATE TABLE calendars (
 	name         VARCHAR(255) NOT NULL,
 	ical         LONGBLOB     NOT NULL,
 	members_only BOOLEAN      NOT NULL,
+	color        VARCHAR(6)   NOT NULL,
 	description  TEXT,
 
 	CONSTRAINT PRIMARY KEY (id),
@@ -64,8 +65,9 @@ CREATE TABLE calendars_access_codes (
   COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE users_calendars (
-	user_id     INT NOT NULL,
-	calendar_id INT NOT NULL,
+	user_id     INT        NOT NULL,
+	calendar_id INT        NOT NULL,
+	color       VARCHAR(6) NOT NULL,
 
 	CONSTRAINT PRIMARY KEY (user_id, calendar_id),
 

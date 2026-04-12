@@ -13,6 +13,7 @@ CREATE TABLE `calendars` (
   `description` text DEFAULT NULL,
   `ical` longblob NOT NULL,
   `members_only` tinyint(1) NOT NULL,
+  `color` varchar(6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_calendars_owner_id` (`owner_id`),
   CONSTRAINT `fk_calendars_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
@@ -31,6 +32,7 @@ CREATE TABLE `calendars` (
 | description | text | NULL | true |  |  |  |  |
 | ical | longblob |  | false |  |  |  |  |
 | members_only | tinyint(1) |  | false |  |  |  |  |
+| color | varchar(6) |  | false |  |  |  |  |
 
 ## Constraints
 

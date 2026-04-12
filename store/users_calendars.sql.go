@@ -7,6 +7,7 @@ package store
 
 import (
 	"context"
+	"database/sql"
 )
 
 const getCalendarMembers = `-- name: GetCalendarMembers :many
@@ -67,6 +68,25 @@ func (q *Queries) GetSubscribedCalendars(ctx context.Context, userID int32) ([]i
 	return items, nil
 }
 
+const getSubscribedMetadata = `-- name: GetSubscribedMetadata :one
+SELECT color
+FROM users_calendars
+WHERE user_id = ?
+	AND calendar_id = ?
+`
+
+type GetSubscribedMetadataParams struct {
+	UserID     int32
+	CalendarID int32
+}
+
+func (q *Queries) GetSubscribedMetadata(ctx context.Context, arg GetSubscribedMetadataParams) (string, error) {
+	row := q.db.QueryRowContext(ctx, getSubscribedMetadata, arg.UserID, arg.CalendarID)
+	var color string
+	err := row.Scan(&color)
+	return color, err
+}
+
 const subscribeToCalendar = `-- name: SubscribeToCalendar :exec
 INSERT INTO users_calendars (user_id, calendar_id)
 VALUES (?, ?)
@@ -95,5 +115,23 @@ type UnsubscribeFromCalendarParams struct {
 
 func (q *Queries) UnsubscribeFromCalendar(ctx context.Context, arg UnsubscribeFromCalendarParams) error {
 	_, err := q.db.ExecContext(ctx, unsubscribeFromCalendar, arg.UserID, arg.CalendarID)
+	return err
+}
+
+const updateSubscribedMetadata = `-- name: UpdateSubscribedMetadata :exec
+UPDATE users_calendars
+SET color = COALESCE(?, color)
+WHERE user_id = ?
+	AND calendar_id = ?
+`
+
+type UpdateSubscribedMetadataParams struct {
+	Color      sql.Null[string]
+	UserID     int32
+	CalendarID int32
+}
+
+func (q *Queries) UpdateSubscribedMetadata(ctx context.Context, arg UpdateSubscribedMetadataParams) error {
+	_, err := q.db.ExecContext(ctx, updateSubscribedMetadata, arg.Color, arg.UserID, arg.CalendarID)
 	return err
 }

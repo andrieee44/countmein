@@ -50,6 +50,9 @@ const (
 	// CalendarServiceUpdateMetadataProcedure is the fully-qualified name of the CalendarService's
 	// UpdateMetadata RPC.
 	CalendarServiceUpdateMetadataProcedure = "/calendars.v1.CalendarService/UpdateMetadata"
+	// CalendarServiceUpdateSubscribedMetadataProcedure is the fully-qualified name of the
+	// CalendarService's UpdateSubscribedMetadata RPC.
+	CalendarServiceUpdateSubscribedMetadataProcedure = "/calendars.v1.CalendarService/UpdateSubscribedMetadata"
 	// CalendarServiceDeleteProcedure is the fully-qualified name of the CalendarService's Delete RPC.
 	CalendarServiceDeleteProcedure = "/calendars.v1.CalendarService/Delete"
 	// CalendarServiceCreateCodeProcedure is the fully-qualified name of the CalendarService's
@@ -96,6 +99,7 @@ type CalendarServiceClient interface {
 	Merge(context.Context, *connect.Request[v1.MergeRequest]) (*connect.Response[v1.MergeResponse], error)
 	Replace(context.Context, *connect.Request[v1.ReplaceRequest]) (*connect.Response[v1.ReplaceResponse], error)
 	UpdateMetadata(context.Context, *connect.Request[v1.UpdateMetadataRequest]) (*connect.Response[v1.UpdateMetadataResponse], error)
+	UpdateSubscribedMetadata(context.Context, *connect.Request[v1.UpdateSubscribedMetadataRequest]) (*connect.Response[v1.UpdateSubscribedMetadataResponse], error)
 	Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.DeleteResponse], error)
 	CreateCode(context.Context, *connect.Request[v1.CreateCodeRequest]) (*connect.Response[v1.CreateCodeResponse], error)
 	GetCodeMetadata(context.Context, *connect.Request[v1.GetCodeMetadataRequest]) (*connect.Response[v1.GetCodeMetadataResponse], error)
@@ -161,6 +165,12 @@ func NewCalendarServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			httpClient,
 			baseURL+CalendarServiceUpdateMetadataProcedure,
 			connect.WithSchema(calendarServiceMethods.ByName("UpdateMetadata")),
+			connect.WithClientOptions(opts...),
+		),
+		updateSubscribedMetadata: connect.NewClient[v1.UpdateSubscribedMetadataRequest, v1.UpdateSubscribedMetadataResponse](
+			httpClient,
+			baseURL+CalendarServiceUpdateSubscribedMetadataProcedure,
+			connect.WithSchema(calendarServiceMethods.ByName("UpdateSubscribedMetadata")),
 			connect.WithClientOptions(opts...),
 		),
 		delete: connect.NewClient[v1.DeleteRequest, v1.DeleteResponse](
@@ -240,25 +250,26 @@ func NewCalendarServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // calendarServiceClient implements CalendarServiceClient.
 type calendarServiceClient struct {
-	create           *connect.Client[v1.CreateRequest, v1.CreateResponse]
-	get              *connect.Client[v1.GetRequest, v1.GetResponse]
-	getOwned         *connect.Client[v1.GetOwnedRequest, v1.GetOwnedResponse]
-	getSubscribed    *connect.Client[v1.GetSubscribedRequest, v1.GetSubscribedResponse]
-	merge            *connect.Client[v1.MergeRequest, v1.MergeResponse]
-	replace          *connect.Client[v1.ReplaceRequest, v1.ReplaceResponse]
-	updateMetadata   *connect.Client[v1.UpdateMetadataRequest, v1.UpdateMetadataResponse]
-	delete           *connect.Client[v1.DeleteRequest, v1.DeleteResponse]
-	createCode       *connect.Client[v1.CreateCodeRequest, v1.CreateCodeResponse]
-	getCodeMetadata  *connect.Client[v1.GetCodeMetadataRequest, v1.GetCodeMetadataResponse]
-	getCodes         *connect.Client[v1.GetCodesRequest, v1.GetCodesResponse]
-	deleteCode       *connect.Client[v1.DeleteCodeRequest, v1.DeleteCodeResponse]
-	subscribe        *connect.Client[v1.SubscribeRequest, v1.SubscribeResponse]
-	unsubscribe      *connect.Client[v1.UnsubscribeRequest, v1.UnsubscribeResponse]
-	getMembers       *connect.Client[v1.GetMembersRequest, v1.GetMembersResponse]
-	removeMember     *connect.Client[v1.RemoveMemberRequest, v1.RemoveMemberResponse]
-	banMember        *connect.Client[v1.BanMemberRequest, v1.BanMemberResponse]
-	getBannedMembers *connect.Client[v1.GetBannedMembersRequest, v1.GetBannedMembersResponse]
-	unbanMember      *connect.Client[v1.UnbanMemberRequest, v1.UnbanMemberResponse]
+	create                   *connect.Client[v1.CreateRequest, v1.CreateResponse]
+	get                      *connect.Client[v1.GetRequest, v1.GetResponse]
+	getOwned                 *connect.Client[v1.GetOwnedRequest, v1.GetOwnedResponse]
+	getSubscribed            *connect.Client[v1.GetSubscribedRequest, v1.GetSubscribedResponse]
+	merge                    *connect.Client[v1.MergeRequest, v1.MergeResponse]
+	replace                  *connect.Client[v1.ReplaceRequest, v1.ReplaceResponse]
+	updateMetadata           *connect.Client[v1.UpdateMetadataRequest, v1.UpdateMetadataResponse]
+	updateSubscribedMetadata *connect.Client[v1.UpdateSubscribedMetadataRequest, v1.UpdateSubscribedMetadataResponse]
+	delete                   *connect.Client[v1.DeleteRequest, v1.DeleteResponse]
+	createCode               *connect.Client[v1.CreateCodeRequest, v1.CreateCodeResponse]
+	getCodeMetadata          *connect.Client[v1.GetCodeMetadataRequest, v1.GetCodeMetadataResponse]
+	getCodes                 *connect.Client[v1.GetCodesRequest, v1.GetCodesResponse]
+	deleteCode               *connect.Client[v1.DeleteCodeRequest, v1.DeleteCodeResponse]
+	subscribe                *connect.Client[v1.SubscribeRequest, v1.SubscribeResponse]
+	unsubscribe              *connect.Client[v1.UnsubscribeRequest, v1.UnsubscribeResponse]
+	getMembers               *connect.Client[v1.GetMembersRequest, v1.GetMembersResponse]
+	removeMember             *connect.Client[v1.RemoveMemberRequest, v1.RemoveMemberResponse]
+	banMember                *connect.Client[v1.BanMemberRequest, v1.BanMemberResponse]
+	getBannedMembers         *connect.Client[v1.GetBannedMembersRequest, v1.GetBannedMembersResponse]
+	unbanMember              *connect.Client[v1.UnbanMemberRequest, v1.UnbanMemberResponse]
 }
 
 // Create calls calendars.v1.CalendarService.Create.
@@ -294,6 +305,11 @@ func (c *calendarServiceClient) Replace(ctx context.Context, req *connect.Reques
 // UpdateMetadata calls calendars.v1.CalendarService.UpdateMetadata.
 func (c *calendarServiceClient) UpdateMetadata(ctx context.Context, req *connect.Request[v1.UpdateMetadataRequest]) (*connect.Response[v1.UpdateMetadataResponse], error) {
 	return c.updateMetadata.CallUnary(ctx, req)
+}
+
+// UpdateSubscribedMetadata calls calendars.v1.CalendarService.UpdateSubscribedMetadata.
+func (c *calendarServiceClient) UpdateSubscribedMetadata(ctx context.Context, req *connect.Request[v1.UpdateSubscribedMetadataRequest]) (*connect.Response[v1.UpdateSubscribedMetadataResponse], error) {
+	return c.updateSubscribedMetadata.CallUnary(ctx, req)
 }
 
 // Delete calls calendars.v1.CalendarService.Delete.
@@ -365,6 +381,7 @@ type CalendarServiceHandler interface {
 	Merge(context.Context, *connect.Request[v1.MergeRequest]) (*connect.Response[v1.MergeResponse], error)
 	Replace(context.Context, *connect.Request[v1.ReplaceRequest]) (*connect.Response[v1.ReplaceResponse], error)
 	UpdateMetadata(context.Context, *connect.Request[v1.UpdateMetadataRequest]) (*connect.Response[v1.UpdateMetadataResponse], error)
+	UpdateSubscribedMetadata(context.Context, *connect.Request[v1.UpdateSubscribedMetadataRequest]) (*connect.Response[v1.UpdateSubscribedMetadataResponse], error)
 	Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.DeleteResponse], error)
 	CreateCode(context.Context, *connect.Request[v1.CreateCodeRequest]) (*connect.Response[v1.CreateCodeResponse], error)
 	GetCodeMetadata(context.Context, *connect.Request[v1.GetCodeMetadataRequest]) (*connect.Response[v1.GetCodeMetadataResponse], error)
@@ -426,6 +443,12 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect.Handl
 		CalendarServiceUpdateMetadataProcedure,
 		svc.UpdateMetadata,
 		connect.WithSchema(calendarServiceMethods.ByName("UpdateMetadata")),
+		connect.WithHandlerOptions(opts...),
+	)
+	calendarServiceUpdateSubscribedMetadataHandler := connect.NewUnaryHandler(
+		CalendarServiceUpdateSubscribedMetadataProcedure,
+		svc.UpdateSubscribedMetadata,
+		connect.WithSchema(calendarServiceMethods.ByName("UpdateSubscribedMetadata")),
 		connect.WithHandlerOptions(opts...),
 	)
 	calendarServiceDeleteHandler := connect.NewUnaryHandler(
@@ -516,6 +539,8 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect.Handl
 			calendarServiceReplaceHandler.ServeHTTP(w, r)
 		case CalendarServiceUpdateMetadataProcedure:
 			calendarServiceUpdateMetadataHandler.ServeHTTP(w, r)
+		case CalendarServiceUpdateSubscribedMetadataProcedure:
+			calendarServiceUpdateSubscribedMetadataHandler.ServeHTTP(w, r)
 		case CalendarServiceDeleteProcedure:
 			calendarServiceDeleteHandler.ServeHTTP(w, r)
 		case CalendarServiceCreateCodeProcedure:
@@ -575,6 +600,10 @@ func (UnimplementedCalendarServiceHandler) Replace(context.Context, *connect.Req
 
 func (UnimplementedCalendarServiceHandler) UpdateMetadata(context.Context, *connect.Request[v1.UpdateMetadataRequest]) (*connect.Response[v1.UpdateMetadataResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("calendars.v1.CalendarService.UpdateMetadata is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) UpdateSubscribedMetadata(context.Context, *connect.Request[v1.UpdateSubscribedMetadataRequest]) (*connect.Response[v1.UpdateSubscribedMetadataResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("calendars.v1.CalendarService.UpdateSubscribedMetadata is not implemented"))
 }
 
 func (UnimplementedCalendarServiceHandler) Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.DeleteResponse], error) {

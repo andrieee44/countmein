@@ -11,8 +11,8 @@ import (
 )
 
 const createCalendar = `-- name: CreateCalendar :execresult
-INSERT INTO calendars (owner_id, name, ical, members_only, description)
-VALUES (?, ?, ?, ?, ?)
+INSERT INTO calendars (owner_id, name, ical, members_only, color, description)
+VALUES (?, ?, ?, ?, ?, ?)
 `
 
 type CreateCalendarParams struct {
@@ -20,6 +20,7 @@ type CreateCalendarParams struct {
 	Name        string
 	Ical        []byte
 	MembersOnly bool
+	Color       string
 	Description sql.Null[string]
 }
 
@@ -29,6 +30,7 @@ func (q *Queries) CreateCalendar(ctx context.Context, arg CreateCalendarParams) 
 		arg.Name,
 		arg.Ical,
 		arg.MembersOnly,
+		arg.Color,
 		arg.Description,
 	)
 }
@@ -44,8 +46,8 @@ func (q *Queries) DeleteCalendar(ctx context.Context, id int32) error {
 }
 
 const getCalendar = `-- name: GetCalendar :one
-SELECT owner_id, name, ical, members_only, description
-FROM calendars
+SELECT owner_id, name, ical, members_only, color, description
+FROM calendars AS c
 WHERE id = ?
 	AND (
 		NOT members_only
@@ -53,7 +55,7 @@ WHERE id = ?
 		OR EXISTS (
 			SELECT 1
 			FROM users_calendars
-			WHERE calendar_id = calendars.id
+			WHERE calendar_id = c.id
 				AND user_id = ?
 		)
 	)
@@ -69,6 +71,7 @@ type GetCalendarRow struct {
 	Name        string
 	Ical        []byte
 	MembersOnly bool
+	Color       string
 	Description sql.Null[string]
 }
 
@@ -80,6 +83,7 @@ func (q *Queries) GetCalendar(ctx context.Context, arg GetCalendarParams) (GetCa
 		&i.Name,
 		&i.Ical,
 		&i.MembersOnly,
+		&i.Color,
 		&i.Description,
 	)
 	return i, err

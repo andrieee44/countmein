@@ -13,6 +13,7 @@ service CalendarService {
   rpc Merge(MergeRequest) returns (MergeResponse);
   rpc Replace(ReplaceRequest) returns (ReplaceResponse);
   rpc UpdateMetadata(UpdateMetadataRequest) returns (UpdateMetadataResponse);
+  rpc UpdateSubscribedMetadata(UpdateSubscribedMetadataRequest) returns (UpdateSubscribedMetadataResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
   rpc CreateCode(CreateCodeRequest) returns (CreateCodeResponse);
   rpc GetCodeMetadata(GetCodeMetadataRequest) returns (GetCodeMetadataResponse);
@@ -31,7 +32,8 @@ message CreateRequest {
   string name = 1;
   bytes ical = 2;
   bool members_only = 3;
-  optional string description = 4;
+  string color = 4;
+  optional string description = 5;
 }
 
 message CreateResponse {}
@@ -45,7 +47,8 @@ message GetResponse {
   string name = 2;
   bytes ical = 3;
   bool members_only = 4;
-  optional string description = 5;
+  string color = 5;
+  optional string description = 6;
 }
 
 message GetOwnedRequest {}
@@ -82,6 +85,13 @@ message UpdateMetadataRequest {
 }
 
 message UpdateMetadataResponse {}
+
+message UpdateSubscribedMetadataRequest {
+  int32 id = 1;
+  optional string color = 2;
+}
+
+message UpdateSubscribedMetadataResponse {}
 
 message DeleteRequest {
   int32 id = 1;
