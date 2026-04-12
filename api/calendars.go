@@ -783,10 +783,10 @@ func (c *CalendarService) mergeICals(
 		return nil, err
 	}
 
-	forEach(oldCal.Alarms, newCal.AddVAlarm)
-	forEach(oldCal.Busys, newCal.AddVBusy)
-	forEach(oldCal.Events, newCal.AddVEvent)
-	forEach(oldCal.Journals, newCal.AddVJournal)
+	forEach(newCal.Alarms, oldCal.AddVAlarm)
+	forEach(newCal.Busys, oldCal.AddVBusy)
+	forEach(newCal.Events, oldCal.AddVEvent)
+	forEach(newCal.Journals, oldCal.AddVJournal)
 
 	forEach(oldCal.Timezones, func(elem *ics.VTimezone) {
 		var temp *ics.VTimezone

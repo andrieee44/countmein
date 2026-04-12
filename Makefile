@@ -13,7 +13,7 @@ generate:
 migrate:
 	atlas schema apply --env prod
 
-deploy: build
+deploy: clean build
 	@echo "rsync -avz ./result $(DEPLOY_BIN_PATH)/countmein"
 	@sshpass -p "$(SSH_PASSWORD)" \
 		rsync -avz -e "ssh -p $(SSH_PORT)" --chmod=u+w --copy-links \
