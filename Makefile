@@ -17,11 +17,12 @@ deploy: clean build
 	@echo "rsync -avz ./result $(DEPLOY_BIN_PATH)/countmein"
 	@sshpass -p "$(SSH_PASSWORD)" \
 		rsync -avz -e "ssh -p $(SSH_PORT)" --chmod=u+w --copy-links \
-		./result "$(SSH_USER)@$(SSH_HOST):/$(DEPLOY_BIN_PATH)/countmein"
+		--checksum ./result \
+		"$(SSH_USER)@$(SSH_HOST):/$(DEPLOY_BIN_PATH)/countmein"
 	@echo "rsync -avz --delete ./gen/docs/ $(DEPLOY_PUBLIC_PATH)"
 	@sshpass -p "$(SSH_PASSWORD)" \
 		rsync -avz --delete -e "ssh -p $(SSH_PORT)" --chmod=u+w  \
-		./gen/docs/ \
+		--checksum ./gen/docs/ \
 		"$(SSH_USER)@$(SSH_HOST):/$(DEPLOY_PUBLIC_PATH)"
 	@echo 'ssh "systemctl --user restart countmein-api.service"'
 	@sshpass -p "$(SSH_PASSWORD)" ssh -p $(SSH_PORT) \

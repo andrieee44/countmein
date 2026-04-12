@@ -4,8 +4,8 @@ FROM users_calendars
 WHERE user_id = ?;
 
 -- name: SubscribeToCalendar :exec
-INSERT INTO users_calendars (user_id, calendar_id)
-VALUES (?, ?);
+INSERT INTO users_calendars (user_id, calendar_id, color)
+VALUES (?, ?, ?);
 
 -- name: UnsubscribeFromCalendar :exec
 DELETE FROM users_calendars

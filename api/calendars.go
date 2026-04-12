@@ -534,6 +534,7 @@ func (c *CalendarService) Subscribe(
 		store.SubscribeToCalendarParams{
 			UserID:     actor.ID,
 			CalendarID: row.CalendarID,
+			Color:      "FFFFFF",
 		},
 	)
 	if err != nil {

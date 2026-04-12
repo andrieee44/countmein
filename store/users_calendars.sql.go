@@ -88,17 +88,18 @@ func (q *Queries) GetSubscribedMetadata(ctx context.Context, arg GetSubscribedMe
 }
 
 const subscribeToCalendar = `-- name: SubscribeToCalendar :exec
-INSERT INTO users_calendars (user_id, calendar_id)
-VALUES (?, ?)
+INSERT INTO users_calendars (user_id, calendar_id, color)
+VALUES (?, ?, ?)
 `
 
 type SubscribeToCalendarParams struct {
 	UserID     int32
 	CalendarID int32
+	Color      string
 }
 
 func (q *Queries) SubscribeToCalendar(ctx context.Context, arg SubscribeToCalendarParams) error {
-	_, err := q.db.ExecContext(ctx, subscribeToCalendar, arg.UserID, arg.CalendarID)
+	_, err := q.db.ExecContext(ctx, subscribeToCalendar, arg.UserID, arg.CalendarID, arg.Color)
 	return err
 }
 
