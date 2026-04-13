@@ -6,6 +6,7 @@ service UserService {
   rpc Create(CreateRequest) returns (CreateResponse);
   rpc Login(LoginRequest) returns (LoginResponse);
   rpc Get(GetRequest) returns (GetResponse);
+  rpc GetSelf(GetSelfRequest) returns (GetSelfResponse);
   rpc Update(UpdateRequest) returns (UpdateResponse);
   rpc UpdateLogin(UpdateLoginRequest) returns (UpdateLoginResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
@@ -43,6 +44,12 @@ message GetResponse {
   string first_name = 2 [json_name = "first_name"];
   string last_name = 3 [json_name = "last_name"];
   optional string middle_name = 4 [json_name = "middle_name"];
+}
+
+message GetSelfRequest {}
+
+message GetSelfResponse {
+  int32 id = 1;
 }
 
 message UpdateRequest {

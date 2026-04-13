@@ -39,6 +39,8 @@ const (
 	UserServiceLoginProcedure = "/users.v1.UserService/Login"
 	// UserServiceGetProcedure is the fully-qualified name of the UserService's Get RPC.
 	UserServiceGetProcedure = "/users.v1.UserService/Get"
+	// UserServiceGetSelfProcedure is the fully-qualified name of the UserService's GetSelf RPC.
+	UserServiceGetSelfProcedure = "/users.v1.UserService/GetSelf"
 	// UserServiceUpdateProcedure is the fully-qualified name of the UserService's Update RPC.
 	UserServiceUpdateProcedure = "/users.v1.UserService/Update"
 	// UserServiceUpdateLoginProcedure is the fully-qualified name of the UserService's UpdateLogin RPC.
@@ -56,6 +58,7 @@ type UserServiceClient interface {
 	Create(context.Context, *connect.Request[v1.CreateRequest]) (*connect.Response[v1.CreateResponse], error)
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
 	Get(context.Context, *connect.Request[v1.GetRequest]) (*connect.Response[v1.GetResponse], error)
+	GetSelf(context.Context, *connect.Request[v1.GetSelfRequest]) (*connect.Response[v1.GetSelfResponse], error)
 	Update(context.Context, *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error)
 	UpdateLogin(context.Context, *connect.Request[v1.UpdateLoginRequest]) (*connect.Response[v1.UpdateLoginResponse], error)
 	Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.DeleteResponse], error)
@@ -90,6 +93,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			httpClient,
 			baseURL+UserServiceGetProcedure,
 			connect.WithSchema(userServiceMethods.ByName("Get")),
+			connect.WithClientOptions(opts...),
+		),
+		getSelf: connect.NewClient[v1.GetSelfRequest, v1.GetSelfResponse](
+			httpClient,
+			baseURL+UserServiceGetSelfProcedure,
+			connect.WithSchema(userServiceMethods.ByName("GetSelf")),
 			connect.WithClientOptions(opts...),
 		),
 		update: connect.NewClient[v1.UpdateRequest, v1.UpdateResponse](
@@ -130,6 +139,7 @@ type userServiceClient struct {
 	create      *connect.Client[v1.CreateRequest, v1.CreateResponse]
 	login       *connect.Client[v1.LoginRequest, v1.LoginResponse]
 	get         *connect.Client[v1.GetRequest, v1.GetResponse]
+	getSelf     *connect.Client[v1.GetSelfRequest, v1.GetSelfResponse]
 	update      *connect.Client[v1.UpdateRequest, v1.UpdateResponse]
 	updateLogin *connect.Client[v1.UpdateLoginRequest, v1.UpdateLoginResponse]
 	delete      *connect.Client[v1.DeleteRequest, v1.DeleteResponse]
@@ -150,6 +160,11 @@ func (c *userServiceClient) Login(ctx context.Context, req *connect.Request[v1.L
 // Get calls users.v1.UserService.Get.
 func (c *userServiceClient) Get(ctx context.Context, req *connect.Request[v1.GetRequest]) (*connect.Response[v1.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
+}
+
+// GetSelf calls users.v1.UserService.GetSelf.
+func (c *userServiceClient) GetSelf(ctx context.Context, req *connect.Request[v1.GetSelfRequest]) (*connect.Response[v1.GetSelfResponse], error) {
+	return c.getSelf.CallUnary(ctx, req)
 }
 
 // Update calls users.v1.UserService.Update.
@@ -182,6 +197,7 @@ type UserServiceHandler interface {
 	Create(context.Context, *connect.Request[v1.CreateRequest]) (*connect.Response[v1.CreateResponse], error)
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
 	Get(context.Context, *connect.Request[v1.GetRequest]) (*connect.Response[v1.GetResponse], error)
+	GetSelf(context.Context, *connect.Request[v1.GetSelfRequest]) (*connect.Response[v1.GetSelfResponse], error)
 	Update(context.Context, *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error)
 	UpdateLogin(context.Context, *connect.Request[v1.UpdateLoginRequest]) (*connect.Response[v1.UpdateLoginResponse], error)
 	Delete(context.Context, *connect.Request[v1.DeleteRequest]) (*connect.Response[v1.DeleteResponse], error)
@@ -212,6 +228,12 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		UserServiceGetProcedure,
 		svc.Get,
 		connect.WithSchema(userServiceMethods.ByName("Get")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceGetSelfHandler := connect.NewUnaryHandler(
+		UserServiceGetSelfProcedure,
+		svc.GetSelf,
+		connect.WithSchema(userServiceMethods.ByName("GetSelf")),
 		connect.WithHandlerOptions(opts...),
 	)
 	userServiceUpdateHandler := connect.NewUnaryHandler(
@@ -252,6 +274,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceLoginHandler.ServeHTTP(w, r)
 		case UserServiceGetProcedure:
 			userServiceGetHandler.ServeHTTP(w, r)
+		case UserServiceGetSelfProcedure:
+			userServiceGetSelfHandler.ServeHTTP(w, r)
 		case UserServiceUpdateProcedure:
 			userServiceUpdateHandler.ServeHTTP(w, r)
 		case UserServiceUpdateLoginProcedure:
@@ -281,6 +305,10 @@ func (UnimplementedUserServiceHandler) Login(context.Context, *connect.Request[v
 
 func (UnimplementedUserServiceHandler) Get(context.Context, *connect.Request[v1.GetRequest]) (*connect.Response[v1.GetResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("users.v1.UserService.Get is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) GetSelf(context.Context, *connect.Request[v1.GetSelfRequest]) (*connect.Response[v1.GetSelfResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("users.v1.UserService.GetSelf is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) Update(context.Context, *connect.Request[v1.UpdateRequest]) (*connect.Response[v1.UpdateResponse], error) {

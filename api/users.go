@@ -147,7 +147,25 @@ func (u *UserService) Get(
 		LastName:   row.LastName,
 		MiddleName: toPtr(row.MiddleName),
 	}), nil
+}
 
+func (u *UserService) GetSelf(
+	ctx context.Context,
+	req *connect.Request[usersv1.GetSelfRequest],
+) (*connect.Response[usersv1.GetSelfResponse], error) {
+	var (
+		actor UserActor
+		err   error
+	)
+
+	actor, err = ActorFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(&usersv1.GetSelfResponse{
+		Id: actor.ID,
+	}), nil
 }
 
 func (u *UserService) Update(
