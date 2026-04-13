@@ -42,7 +42,8 @@ WHERE id = ?;
 UPDATE calendars
 SET name = COALESCE(sqlc.narg('name'), name),
 	members_only = COALESCE(sqlc.narg('members_only'), members_only),
-	description = COALESCE(?, description)
+	description = COALESCE(?, description),
+	color = COALESCE(sqlc.narg('color'), color)
 WHERE id = ?;
 
 -- name: DeleteCalendar :exec

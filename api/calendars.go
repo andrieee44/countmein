@@ -296,6 +296,13 @@ func (c *CalendarService) UpdateMetadata(
 		return nil, err
 	}
 
+	if req.Msg.Color != nil {
+		err = isValidColor(*req.Msg.Color)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	err = store.New(c.db).UpdateMetadataCalendar(
 		ctx,
 		store.UpdateMetadataCalendarParams{
@@ -303,6 +310,7 @@ func (c *CalendarService) UpdateMetadata(
 			Name:        fromPtr(req.Msg.Name),
 			MembersOnly: fromPtr(req.Msg.MembersOnly),
 			Description: fromPtr(req.Msg.Description),
+			Color:       fromPtr(req.Msg.Color),
 		},
 	)
 	if err != nil {

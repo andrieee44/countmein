@@ -605,6 +605,7 @@ type UpdateMetadataRequest struct {
 	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
 	MembersOnly   *bool                  `protobuf:"varint,3,opt,name=members_only,json=membersOnly,proto3,oneof" json:"members_only,omitempty"`
 	Description   *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Color         *string                `protobuf:"bytes,5,opt,name=color,proto3,oneof" json:"color,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -663,6 +664,13 @@ func (x *UpdateMetadataRequest) GetMembersOnly() bool {
 func (x *UpdateMetadataRequest) GetDescription() string {
 	if x != nil && x.Description != nil {
 		return *x.Description
+	}
+	return ""
+}
+
+func (x *UpdateMetadataRequest) GetColor() string {
+	if x != nil && x.Color != nil {
+		return *x.Color
 	}
 	return ""
 }
@@ -1892,15 +1900,17 @@ const file_calendars_v1_calendars_proto_rawDesc = "" +
 	"\x0eReplaceRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04ical\x18\x02 \x01(\fR\x04ical\"\x11\n" +
-	"\x0fReplaceResponse\"\xb9\x01\n" +
+	"\x0fReplaceResponse\"\xde\x01\n" +
 	"\x15UpdateMetadataRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12&\n" +
 	"\fmembers_only\x18\x03 \x01(\bH\x01R\vmembersOnly\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x04 \x01(\tH\x02R\vdescription\x88\x01\x01B\a\n" +
+	"\vdescription\x18\x04 \x01(\tH\x02R\vdescription\x88\x01\x01\x12\x19\n" +
+	"\x05color\x18\x05 \x01(\tH\x03R\x05color\x88\x01\x01B\a\n" +
 	"\x05_nameB\x0f\n" +
 	"\r_members_onlyB\x0e\n" +
-	"\f_description\"\x18\n" +
+	"\f_descriptionB\b\n" +
+	"\x06_color\"\x18\n" +
 	"\x16UpdateMetadataResponse\"V\n" +
 	"\x1fUpdateSubscribedMetadataRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x19\n" +

@@ -165,7 +165,8 @@ const updateMetadataCalendar = `-- name: UpdateMetadataCalendar :exec
 UPDATE calendars
 SET name = COALESCE(?, name),
 	members_only = COALESCE(?, members_only),
-	description = COALESCE(?, description)
+	description = COALESCE(?, description),
+	color = COALESCE(?, color)
 WHERE id = ?
 `
 
@@ -173,6 +174,7 @@ type UpdateMetadataCalendarParams struct {
 	Name        sql.Null[string]
 	MembersOnly sql.Null[bool]
 	Description sql.Null[string]
+	Color       sql.Null[string]
 	ID          int32
 }
 
@@ -181,6 +183,7 @@ func (q *Queries) UpdateMetadataCalendar(ctx context.Context, arg UpdateMetadata
 		arg.Name,
 		arg.MembersOnly,
 		arg.Description,
+		arg.Color,
 		arg.ID,
 	)
 	return err
