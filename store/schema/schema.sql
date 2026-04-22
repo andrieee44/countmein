@@ -15,7 +15,6 @@ CREATE TABLE users (
 CREATE TABLE users_sessions (
 	id         BINARY(16)   NOT NULL,
 	user_id    INT          NOT NULL,
-	email      VARCHAR(320) NOT NULL,
 	expires_at DATETIME(6)  NOT NULL,
 
 	CONSTRAINT PRIMARY KEY (id),

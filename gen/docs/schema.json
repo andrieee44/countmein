@@ -431,11 +431,6 @@
           "nullable": false
         },
         {
-          "name": "email",
-          "type": "varchar(320)",
-          "nullable": false
-        },
-        {
           "name": "expires_at",
           "type": "datetime(6)",
           "nullable": false
@@ -483,7 +478,7 @@
           ]
         }
       ],
-      "def": "CREATE TABLE `users_sessions` (\n  `id` binary(16) NOT NULL,\n  `user_id` int(11) NOT NULL,\n  `email` varchar(320) NOT NULL,\n  `expires_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`id`),\n  KEY `fk_users_sessions_user_id` (`user_id`),\n  CONSTRAINT `fk_users_sessions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `users_sessions` (\n  `id` binary(16) NOT NULL,\n  `user_id` int(11) NOT NULL,\n  `expires_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`id`),\n  KEY `fk_users_sessions_user_id` (`user_id`),\n  CONSTRAINT `fk_users_sessions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     }
   ],
   "relations": [
@@ -577,6 +572,14 @@
       ],
       "parent_cardinality": "exactly_one",
       "def": "FOREIGN KEY (user_id) REFERENCES users (id)"
+    }
+  ],
+  "functions": [
+    {
+      "name": "SSELECT",
+      "return_type": "",
+      "arguments": "p_table varchar; p_database varchar; p_where varchar",
+      "type": "PROCEDURE"
     }
   ],
   "driver": {

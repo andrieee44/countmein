@@ -9,7 +9,13 @@
 | [users](users.md) | 6 |  | BASE TABLE |
 | [users_calendars_bans](users_calendars_bans.md) | 4 |  | BASE TABLE |
 | [calendars](calendars.md) | 7 |  | BASE TABLE |
-| [users_sessions](users_sessions.md) | 4 |  | BASE TABLE |
+| [users_sessions](users_sessions.md) | 3 |  | BASE TABLE |
+
+## Stored procedures and functions
+
+| Name | ReturnType | Arguments | Type |
+| ---- | ------- | ------- | ---- |
+| SSELECT |  | p_table varchar; p_database varchar; p_where varchar | PROCEDURE |
 
 ## Relations
 

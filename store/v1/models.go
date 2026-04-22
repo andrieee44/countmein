@@ -51,6 +51,5 @@ type UsersCalendarsBan struct {
 type UsersSession struct {
 	ID        []byte
 	UserID    int32
-	Email     string
 	ExpiresAt time.Time
 }

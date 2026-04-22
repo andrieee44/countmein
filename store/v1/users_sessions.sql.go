@@ -11,29 +11,23 @@ import (
 )
 
 const createUserSession = `-- name: CreateUserSession :exec
-INSERT INTO users_sessions (id, user_id, email, expires_at)
-VALUES (?, ?, ?, ?)
+INSERT INTO users_sessions (id, user_id, expires_at)
+VALUES (?, ?, ?)
 `
 
 type CreateUserSessionParams struct {
 	ID        []byte
 	UserID    int32
-	Email     string
 	ExpiresAt time.Time
 }
 
 func (q *Queries) CreateUserSession(ctx context.Context, arg CreateUserSessionParams) error {
-	_, err := q.db.ExecContext(ctx, createUserSession,
-		arg.ID,
-		arg.UserID,
-		arg.Email,
-		arg.ExpiresAt,
-	)
+	_, err := q.db.ExecContext(ctx, createUserSession, arg.ID, arg.UserID, arg.ExpiresAt)
 	return err
 }
 
 const getUserSession = `-- name: GetUserSession :one
-SELECT id, user_id, email, expires_at, NOW(6) AS db_time
+SELECT id, user_id, expires_at, NOW(6) AS db_time
 FROM users_sessions
 WHERE id = ?
 `
@@ -41,7 +35,6 @@ WHERE id = ?
 type GetUserSessionRow struct {
 	ID        []byte
 	UserID    int32
-	Email     string
 	ExpiresAt time.Time
 	DBTime    time.Time
 }
@@ -52,7 +45,6 @@ func (q *Queries) GetUserSession(ctx context.Context, id []byte) (GetUserSession
 	err := row.Scan(
 		&i.ID,
 		&i.UserID,
-		&i.Email,
 		&i.ExpiresAt,
 		&i.DBTime,
 	)

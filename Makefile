@@ -1,19 +1,28 @@
-run: vet generate migrate
+run: clean generate format vet migrate
 	go run .
 
-build: vet generate migrate
+build: clean generate format vet migrate
 	nix build .#appimage
+
+format:
+	buf format -w
+	go fmt
 
 generate:
 	tbls doc -f
 	sqlc generate
 	buf generate
-	buf format -w
 
 migrate:
+	@printf 'find ./store/sprocs -name "*.sql" | %s | %s\n' \
+		"xargs cat" \
+		'mariadb "$(DB_NAME)"'
+	@find ./store/sprocs -name "*.sql" | xargs cat | \
+		mariadb -h "$(DB_HOST)" -u "$(DB_USERNAME)" \
+		"-p$(DB_PASSWORD)" --skip-ssl "$(DB_NAME)"
 	atlas schema apply --env prod
 
-deploy: clean build
+deploy: build
 	@echo "rsync -avz ./result $(DEPLOY_BIN_PATH)/countmein"
 	@sshpass -p "$(SSH_PASSWORD)" \
 		rsync -avz -e "ssh -p $(SSH_PORT)" --chmod=u+w --copy-links \
@@ -28,11 +37,11 @@ deploy: clean build
 	@sshpass -p "$(SSH_PASSWORD)" ssh -p $(SSH_PORT) \
 		"$(SSH_USER)@$(SSH_HOST)" \
 		"systemctl --user restart countmein-api.service"
-	rm -f result
+	rm -f ./result
 
 clean:
-	rm -f result
-	rm -rf ./gen/docs/
+	rm -f ./result ./store/v1/* ./store/v2/*
+	rm -rf ./gen
 	@printf 'mariadb "$(DB_DEV_NAME)" -e %s\n' \
 		'"DROP DATABASE $(DB_DEV_NAME); CREATE DATABASE $(DB_DEV_NAME);"'
 	@mariadb -h "$(DB_DEV_HOST)" -u "$(DB_DEV_USERNAME)" \
@@ -46,4 +55,4 @@ vet:
 	tbls lint
 	go vet
 
-.PHONY: run build generate migrate deploy clean vet
+.PHONY: run build format generate migrate deploy clean vet

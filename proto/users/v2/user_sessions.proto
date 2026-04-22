@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package users.v2;
+
+service UserSessionService {
+  rpc GetSessionUserID(GetSessionUserIDRequest) returns (GetSessionUserIDResponse);
+  rpc RevokeSession(RevokeSessionRequest) returns (RevokeSessionResponse);
+  rpc RevokeAllSessions(RevokeAllSessionsRequest) returns (RevokeAllSessionsResponse);
+}
+
+message GetSessionUserIDRequest {}
+
+message GetSessionUserIDResponse {
+  int32 user_id = 1;
+}
+
+message RevokeSessionRequest {}
+
+message RevokeSessionResponse {}
+
+message RevokeAllSessionsRequest {}
+
+message RevokeAllSessionsResponse {}

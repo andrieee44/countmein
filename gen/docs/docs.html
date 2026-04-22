@@ -466,6 +466,108 @@
             </ul>
           </li>
         
+          
+          <li>
+            <a href="#users%2fv2%2fuser_sessions.proto">users/v2/user_sessions.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#users.v2.GetSessionUserIDRequest"><span class="badge">M</span>GetSessionUserIDRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetSessionUserIDResponse"><span class="badge">M</span>GetSessionUserIDResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.RevokeAllSessionsRequest"><span class="badge">M</span>RevokeAllSessionsRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.RevokeAllSessionsResponse"><span class="badge">M</span>RevokeAllSessionsResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.RevokeSessionRequest"><span class="badge">M</span>RevokeSessionRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.RevokeSessionResponse"><span class="badge">M</span>RevokeSessionResponse</a>
+                </li>
+              
+              
+              
+              
+                <li>
+                  <a href="#users.v2.UserSessionService"><span class="badge">S</span>UserSessionService</a>
+                </li>
+              
+            </ul>
+          </li>
+        
+          
+          <li>
+            <a href="#users%2fv2%2fusers.proto">users/v2/users.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#users.v2.CreateUserRequest"><span class="badge">M</span>CreateUserRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.CreateUserResponse"><span class="badge">M</span>CreateUserResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.DeleteUserRequest"><span class="badge">M</span>DeleteUserRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.DeleteUserResponse"><span class="badge">M</span>DeleteUserResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserRequest"><span class="badge">M</span>GetUserRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserResponse"><span class="badge">M</span>GetUserResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.LoginUserRequest"><span class="badge">M</span>LoginUserRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.LoginUserResponse"><span class="badge">M</span>LoginUserResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.UpdateLoginUserRequest"><span class="badge">M</span>UpdateLoginUserRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.UpdateLoginUserResponse"><span class="badge">M</span>UpdateLoginUserResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.UpdateUserRequest"><span class="badge">M</span>UpdateUserRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.UpdateUserResponse"><span class="badge">M</span>UpdateUserResponse</a>
+                </li>
+              
+              
+              
+              
+                <li>
+                  <a href="#users.v2.UserService"><span class="badge">S</span>UserService</a>
+                </li>
+              
+            </ul>
+          </li>
+        
         <li><a href="#scalar-value-types">Scalar Value Types</a></li>
       </ul>
     </div>
@@ -2090,6 +2192,491 @@
                 <td>RevokeAll</td>
                 <td><a href="#users.v1.RevokeAllRequest">RevokeAllRequest</a></td>
                 <td><a href="#users.v1.RevokeAllResponse">RevokeAllResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+    
+      
+      <div class="file-heading">
+        <h2 id="users/v2/user_sessions.proto">users/v2/user_sessions.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="users.v2.GetSessionUserIDRequest">GetSessionUserIDRequest</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.GetSessionUserIDResponse">GetSessionUserIDResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.RevokeAllSessionsRequest">RevokeAllSessionsRequest</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.RevokeAllSessionsResponse">RevokeAllSessionsResponse</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.RevokeSessionRequest">RevokeSessionRequest</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.RevokeSessionResponse">RevokeSessionResponse</h3>
+        <p></p>
+
+        
+
+        
+      
+
+      
+
+      
+
+      
+        <h3 id="users.v2.UserSessionService">UserSessionService</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>GetSessionUserID</td>
+                <td><a href="#users.v2.GetSessionUserIDRequest">GetSessionUserIDRequest</a></td>
+                <td><a href="#users.v2.GetSessionUserIDResponse">GetSessionUserIDResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>RevokeSession</td>
+                <td><a href="#users.v2.RevokeSessionRequest">RevokeSessionRequest</a></td>
+                <td><a href="#users.v2.RevokeSessionResponse">RevokeSessionResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>RevokeAllSessions</td>
+                <td><a href="#users.v2.RevokeAllSessionsRequest">RevokeAllSessionsRequest</a></td>
+                <td><a href="#users.v2.RevokeAllSessionsResponse">RevokeAllSessionsResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+    
+      
+      <div class="file-heading">
+        <h2 id="users/v2/users.proto">users/v2/users.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="users.v2.CreateUserRequest">CreateUserRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>email</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>first_name</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>last_name</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>password</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>middle_name</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.CreateUserResponse">CreateUserResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>session_id</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.DeleteUserRequest">DeleteUserRequest</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.DeleteUserResponse">DeleteUserResponse</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.GetUserRequest">GetUserRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.GetUserResponse">GetUserResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>email</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>first_name</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>last_name</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>middle_name</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.LoginUserRequest">LoginUserRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>email</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>password</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.LoginUserResponse">LoginUserResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>session_id</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.UpdateLoginUserRequest">UpdateLoginUserRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>email</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>password</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.UpdateLoginUserResponse">UpdateLoginUserResponse</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.UpdateUserRequest">UpdateUserRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>first_name</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>last_name</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>middle_name</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.UpdateUserResponse">UpdateUserResponse</h3>
+        <p></p>
+
+        
+
+        
+      
+
+      
+
+      
+
+      
+        <h3 id="users.v2.UserService">UserService</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>CreateUser</td>
+                <td><a href="#users.v2.CreateUserRequest">CreateUserRequest</a></td>
+                <td><a href="#users.v2.CreateUserResponse">CreateUserResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>LoginUser</td>
+                <td><a href="#users.v2.LoginUserRequest">LoginUserRequest</a></td>
+                <td><a href="#users.v2.LoginUserResponse">LoginUserResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>GetUser</td>
+                <td><a href="#users.v2.GetUserRequest">GetUserRequest</a></td>
+                <td><a href="#users.v2.GetUserResponse">GetUserResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>UpdateUser</td>
+                <td><a href="#users.v2.UpdateUserRequest">UpdateUserRequest</a></td>
+                <td><a href="#users.v2.UpdateUserResponse">UpdateUserResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>UpdateLoginUser</td>
+                <td><a href="#users.v2.UpdateLoginUserRequest">UpdateLoginUserRequest</a></td>
+                <td><a href="#users.v2.UpdateLoginUserResponse">UpdateLoginUserResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>DeleteUser</td>
+                <td><a href="#users.v2.DeleteUserRequest">DeleteUserRequest</a></td>
+                <td><a href="#users.v2.DeleteUserResponse">DeleteUserResponse</a></td>
                 <td><p></p></td>
               </tr>
             

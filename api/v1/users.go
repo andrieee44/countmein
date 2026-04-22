@@ -11,7 +11,7 @@ import (
 	"connectrpc.com/connect"
 	usersv1 "github.com/andrieee44/countmein/gen/users/v1"
 	"github.com/andrieee44/countmein/gen/users/v1/usersv1connect"
-	"github.com/andrieee44/countmein/store"
+	"github.com/andrieee44/countmein/store/v1"
 	"github.com/google/uuid"
 )
 
@@ -365,7 +365,6 @@ func createSession(
 		store.CreateUserSessionParams{
 			ID:        sessionID[:],
 			UserID:    userID,
-			Email:     email,
 			ExpiresAt: current.Add(24 * time.Hour),
 		},
 	)

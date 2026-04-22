@@ -49,6 +49,8 @@
         packages = with pkgs; [
           atlas
           buf
+          coreutils
+          findutils
           gnumake
           go
           httpie

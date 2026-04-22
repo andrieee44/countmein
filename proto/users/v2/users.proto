@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package users.v2;
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+  rpc UpdateLoginUser(UpdateLoginUserRequest) returns (UpdateLoginUserResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+message CreateUserRequest {
+  string email = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string password = 4;
+  optional string middle_name = 5;
+}
+
+message CreateUserResponse {
+  int32 user_id = 1;
+  string session_id = 2;
+}
+
+message LoginUserRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginUserResponse {
+  int32 user_id = 1;
+  string session_id = 2;
+}
+
+message GetUserRequest {
+  int32 user_id = 1;
+}
+
+message GetUserResponse {
+  string email = 1;
+  string first_name = 2;
+  string last_name = 3;
+  optional string middle_name = 4;
+}
+
+message UpdateUserRequest {
+  optional string first_name = 1;
+  optional string last_name = 2;
+  optional string middle_name = 3;
+}
+
+message UpdateUserResponse {}
+
+message UpdateLoginUserRequest {
+  optional string email = 1;
+  optional string password = 2;
+}
+
+message UpdateLoginUserResponse {}
+
+message DeleteUserRequest {}
+
+message DeleteUserResponse {}

@@ -13,7 +13,7 @@ import (
 	"connectrpc.com/connect"
 	calendarsv1 "github.com/andrieee44/countmein/gen/calendars/v1"
 	"github.com/andrieee44/countmein/gen/calendars/v1/calendarsv1connect"
-	"github.com/andrieee44/countmein/store"
+	"github.com/andrieee44/countmein/store/v1"
 	ics "github.com/arran4/golang-ical"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )

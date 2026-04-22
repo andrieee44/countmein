@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"connectrpc.com/connect"
-	"github.com/andrieee44/countmein/store"
+	"github.com/andrieee44/countmein/store/v1"
 	"github.com/google/uuid"
 )
 
@@ -96,8 +96,7 @@ func NewAuthInterceptor(db store.DBTX) connect.UnaryInterceptorFunc {
 			}
 
 			return next(WithActor(ctx, UserActor{
-				ID:    row.UserID,
-				Email: row.Email,
+				ID: row.UserID,
 			}), req)
 		}
 	}

@@ -9,7 +9,6 @@
 CREATE TABLE `users_sessions` (
   `id` binary(16) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `email` varchar(320) NOT NULL,
   `expires_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_users_sessions_user_id` (`user_id`),
@@ -25,7 +24,6 @@ CREATE TABLE `users_sessions` (
 | ---- | ---- | ------- | -------- | -------- | ------- | ------- |
 | id | binary(16) |  | false |  |  |  |
 | user_id | int(11) |  | false |  | [users](users.md) |  |
-| email | varchar(320) |  | false |  |  |  |
 | expires_at | datetime(6) |  | false |  |  |  |
 
 ## Constraints

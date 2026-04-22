@@ -1,15 +1,47 @@
 version: "2"
 sql:
   - engine: "mysql"
-    queries: "./store/queries"
+    queries: "./store/queries/v1"
     schema: "./store/schema"
-    strict_function_checks: true
     database:
       uri: "${DB_USERNAME}:${DB_PASSWORD}@tcp(${DB_HOST}:3306)/${DB_NAME}"
     gen:
       go:
         package: "store"
-        out: "./store"
+        out: "./store/v1"
+        rename:
+          db_time: DBTime
+        overrides:
+          - db_type: "bool"
+            go_type: "database/sql.Null[bool]"
+            nullable: true
+          - db_type: "tinyint"
+            go_type: "database/sql.Null[bool]"
+            nullable: true
+          - db_type: "varchar"
+            go_type: "database/sql.Null[string]"
+            nullable: true
+          - db_type: "text"
+            go_type: "database/sql.Null[string]"
+            nullable: true
+          - db_type: "double"
+            go_type: "database/sql.Null[float64]"
+            nullable: true
+          - db_type: "varbinary"
+            go_type: "database/sql.Null[[]byte]"
+            nullable: true
+          - db_type: "binary"
+            go_type: "database/sql.Null[[]byte]"
+            nullable: true
+  - engine: "mysql"
+    queries: "./store/queries/v2"
+    schema: "./store/schema"
+    database:
+      uri: "${DB_USERNAME}:${DB_PASSWORD}@tcp(${DB_HOST}:3306)/${DB_NAME}"
+    gen:
+      go:
+        package: "store"
+        out: "./store/v2"
         rename:
           db_time: DBTime
         overrides:
