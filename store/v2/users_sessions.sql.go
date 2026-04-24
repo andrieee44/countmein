@@ -11,7 +11,7 @@ import (
 )
 
 const createUserSession = `-- name: CreateUserSession :exec
-INSERT INTO users_sessions (id, user_id, expires_at)
+INSERT INTO users_sessions (session_hash, user_id, expires_at)
 VALUES (
 	?,
 	?,
@@ -20,30 +20,30 @@ VALUES (
 `
 
 type CreateUserSessionParams struct {
-	ID         []byte
-	UserID     int32
-	TtlSeconds interface{}
+	SessionHash []byte
+	UserID      int64
+	TtlSeconds  interface{}
 }
 
 func (q *Queries) CreateUserSession(ctx context.Context, arg CreateUserSessionParams) error {
-	_, err := q.db.ExecContext(ctx, createUserSession, arg.ID, arg.UserID, arg.TtlSeconds)
+	_, err := q.db.ExecContext(ctx, createUserSession, arg.SessionHash, arg.UserID, arg.TtlSeconds)
 	return err
 }
 
 const getUserSession = `-- name: GetUserSession :one
 SELECT user_id, expires_at, NOW(6) AS db_time
 FROM users_sessions
-WHERE id = ?
+WHERE session_hash = ?
 `
 
 type GetUserSessionRow struct {
-	UserID    int32
+	UserID    int64
 	ExpiresAt time.Time
 	DBTime    time.Time
 }
 
-func (q *Queries) GetUserSession(ctx context.Context, sessionID []byte) (GetUserSessionRow, error) {
-	row := q.db.QueryRowContext(ctx, getUserSession, sessionID)
+func (q *Queries) GetUserSession(ctx context.Context, sessionHash []byte) (GetUserSessionRow, error) {
+	row := q.db.QueryRowContext(ctx, getUserSession, sessionHash)
 	var i GetUserSessionRow
 	err := row.Scan(&i.UserID, &i.ExpiresAt, &i.DBTime)
 	return i, err
@@ -54,17 +54,17 @@ DELETE FROM users_sessions
 WHERE user_id = ?
 `
 
-func (q *Queries) RevokeAllUserSessions(ctx context.Context, actorUserID int32) error {
+func (q *Queries) RevokeAllUserSessions(ctx context.Context, actorUserID int64) error {
 	_, err := q.db.ExecContext(ctx, revokeAllUserSessions, actorUserID)
 	return err
 }
 
 const revokeUserSession = `-- name: RevokeUserSession :exec
 DELETE FROM users_sessions
-WHERE id = ?
+WHERE session_hash = ?
 `
 
-func (q *Queries) RevokeUserSession(ctx context.Context, sessionID []byte) error {
-	_, err := q.db.ExecContext(ctx, revokeUserSession, sessionID)
+func (q *Queries) RevokeUserSession(ctx context.Context, sessionHash []byte) error {
+	_, err := q.db.ExecContext(ctx, revokeUserSession, sessionHash)
 	return err
 }

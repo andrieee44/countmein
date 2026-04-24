@@ -50,36 +50,36 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (int64, 
 
 const deleteUser = `-- name: DeleteUser :exec
 DELETE FROM users
-WHERE id = ?
+WHERE user_id = ?
 `
 
-func (q *Queries) DeleteUser(ctx context.Context, actorUserID int32) error {
+func (q *Queries) DeleteUser(ctx context.Context, actorUserID int64) error {
 	_, err := q.db.ExecContext(ctx, deleteUser, actorUserID)
 	return err
 }
 
 const getLoginUser = `-- name: GetLoginUser :one
-SELECT id, password_hash
+SELECT user_id, password_hash
 FROM users
 WHERE email = ?
 `
 
 type GetLoginUserRow struct {
-	ID           int32
+	UserID       int64
 	PasswordHash []byte
 }
 
 func (q *Queries) GetLoginUser(ctx context.Context, email string) (GetLoginUserRow, error) {
 	row := q.db.QueryRowContext(ctx, getLoginUser, email)
 	var i GetLoginUserRow
-	err := row.Scan(&i.ID, &i.PasswordHash)
+	err := row.Scan(&i.UserID, &i.PasswordHash)
 	return i, err
 }
 
 const getUser = `-- name: GetUser :one
 SELECT email, first_name, last_name, middle_name
 FROM users
-WHERE id = ?
+WHERE user_id = ?
 `
 
 type GetUserRow struct {
@@ -89,7 +89,7 @@ type GetUserRow struct {
 	MiddleName sql.Null[string]
 }
 
-func (q *Queries) GetUser(ctx context.Context, userID int32) (GetUserRow, error) {
+func (q *Queries) GetUser(ctx context.Context, userID int64) (GetUserRow, error) {
 	row := q.db.QueryRowContext(ctx, getUser, userID)
 	var i GetUserRow
 	err := row.Scan(
@@ -105,13 +105,13 @@ const updateLoginUser = `-- name: UpdateLoginUser :exec
 UPDATE users
 SET email = COALESCE(?, email),
 	password_hash = COALESCE(?, password_hash)
-WHERE id = ?
+WHERE user_id = ?
 `
 
 type UpdateLoginUserParams struct {
 	Email        sql.Null[string]
 	PasswordHash sql.Null[[]byte]
-	ActorUserID  int32
+	ActorUserID  int64
 }
 
 func (q *Queries) UpdateLoginUser(ctx context.Context, arg UpdateLoginUserParams) error {
@@ -124,14 +124,14 @@ UPDATE users
 SET first_name = COALESCE(?, first_name),
 	last_name = COALESCE(?, last_name),
 	middle_name = COALESCE(?, middle_name)
-WHERE id = ?
+WHERE user_id = ?
 `
 
 type UpdateUserParams struct {
 	FirstName   sql.Null[string]
 	LastName    sql.Null[string]
 	MiddleName  sql.Null[string]
-	ActorUserID int32
+	ActorUserID int64
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) error {

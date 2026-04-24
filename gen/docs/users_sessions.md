@@ -7,12 +7,12 @@
 
 ```sql
 CREATE TABLE `users_sessions` (
-  `id` binary(16) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `session_hash` binary(32) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
   `expires_at` datetime(6) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`session_hash`),
   KEY `fk_users_sessions_user_id` (`user_id`),
-  CONSTRAINT `fk_users_sessions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  CONSTRAINT `fk_users_sessions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ```
 
@@ -22,23 +22,23 @@ CREATE TABLE `users_sessions` (
 
 | Name | Type | Default | Nullable | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| id | binary(16) |  | false |  |  |  |
-| user_id | int(11) |  | false |  | [users](users.md) |  |
+| session_hash | binary(32) |  | false |  |  |  |
+| user_id | bigint(20) |  | false |  | [users](users.md) |  |
 | expires_at | datetime(6) |  | false |  |  |  |
 
 ## Constraints
 
 | Name | Type | Definition |
 | ---- | ---- | ---------- |
-| fk_users_sessions_user_id | FOREIGN KEY | FOREIGN KEY (user_id) REFERENCES users (id) |
-| PRIMARY | PRIMARY KEY | PRIMARY KEY (id) |
+| fk_users_sessions_user_id | FOREIGN KEY | FOREIGN KEY (user_id) REFERENCES users (user_id) |
+| PRIMARY | PRIMARY KEY | PRIMARY KEY (session_hash) |
 
 ## Indexes
 
 | Name | Definition |
 | ---- | ---------- |
 | fk_users_sessions_user_id | KEY fk_users_sessions_user_id (user_id) USING BTREE |
-| PRIMARY | PRIMARY KEY (id) USING BTREE |
+| PRIMARY | PRIMARY KEY (session_hash) USING BTREE |
 
 ## Relations
 

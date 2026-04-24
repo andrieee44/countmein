@@ -59,7 +59,7 @@ func (*GetSessionUserIDRequest) Descriptor() ([]byte, []int) {
 
 type GetSessionUserIDResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -94,7 +94,7 @@ func (*GetSessionUserIDResponse) Descriptor() ([]byte, []int) {
 	return file_users_v2_user_sessions_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetSessionUserIDResponse) GetUserId() int32 {
+func (x *GetSessionUserIDResponse) GetUserId() int64 {
 	if x != nil {
 		return x.UserId
 	}
@@ -252,7 +252,7 @@ const file_users_v2_user_sessions_proto_rawDesc = "" +
 	"\x1cusers/v2/user_sessions.proto\x12\busers.v2\"\x19\n" +
 	"\x17GetSessionUserIDRequest\"3\n" +
 	"\x18GetSessionUserIDResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x05R\x06userId\"\x16\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\"\x16\n" +
 	"\x14RevokeSessionRequest\"\x17\n" +
 	"\x15RevokeSessionResponse\"\x1a\n" +
 	"\x18RevokeAllSessionsRequest\"\x1b\n" +

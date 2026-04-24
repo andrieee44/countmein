@@ -2,102 +2,39 @@
   "name": "s25101270_countmein",
   "tables": [
     {
-      "name": "users_calendars",
+      "name": "member_moderations_history",
       "type": "BASE TABLE",
       "columns": [
         {
-          "name": "user_id",
-          "type": "int(11)",
-          "nullable": false
-        },
-        {
-          "name": "calendar_id",
-          "type": "int(11)",
-          "nullable": false
-        },
-        {
-          "name": "color",
-          "type": "varchar(6)",
-          "nullable": false
-        }
-      ],
-      "indexes": [
-        {
-          "name": "fk_users_calendars_calendar_id",
-          "def": "KEY fk_users_calendars_calendar_id (calendar_id) USING BTREE",
-          "table": "users_calendars",
-          "columns": [
-            "calendar_id"
-          ]
-        },
-        {
-          "name": "PRIMARY",
-          "def": "PRIMARY KEY (user_id, calendar_id) USING BTREE",
-          "table": "users_calendars",
-          "columns": [
-            "user_id",
-            "calendar_id"
-          ]
-        }
-      ],
-      "constraints": [
-        {
-          "name": "fk_users_calendars_calendar_id",
-          "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)",
-          "table": "users_calendars",
-          "referenced_table": "calendars",
-          "columns": [
-            "calendar_id"
-          ],
-          "referenced_columns": [
-            "id"
-          ]
-        },
-        {
-          "name": "fk_users_calendars_user_id",
-          "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (user_id) REFERENCES users (id)",
-          "table": "users_calendars",
-          "referenced_table": "users",
-          "columns": [
-            "user_id"
-          ],
-          "referenced_columns": [
-            "id"
-          ]
-        },
-        {
-          "name": "PRIMARY",
-          "type": "PRIMARY KEY",
-          "def": "PRIMARY KEY (user_id, calendar_id)",
-          "table": "users_calendars",
-          "columns": [
-            "user_id",
-            "calendar_id"
-          ]
-        }
-      ],
-      "def": "CREATE TABLE `users_calendars` (\n  `user_id` int(11) NOT NULL,\n  `calendar_id` int(11) NOT NULL,\n  `color` varchar(6) NOT NULL,\n  PRIMARY KEY (`user_id`,`calendar_id`),\n  KEY `fk_users_calendars_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_users_calendars_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_users_calendars_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
-    },
-    {
-      "name": "calendars_access_codes",
-      "type": "BASE TABLE",
-      "columns": [
-        {
-          "name": "id",
-          "type": "int(11)",
+          "name": "member_moderation_event_id",
+          "type": "bigint(20)",
           "nullable": false,
           "extra_def": "auto_increment"
         },
         {
-          "name": "calendar_id",
-          "type": "int(11)",
+          "name": "organization_id",
+          "type": "bigint(20)",
           "nullable": false
         },
         {
-          "name": "code",
-          "type": "varchar(64)",
+          "name": "member_user_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "admin_user_id",
+          "type": "bigint(20)",
+          "nullable": true,
+          "default": "NULL"
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false
+        },
+        {
+          "name": "reason",
+          "type": "varchar(255)",
           "nullable": false
         },
         {
@@ -105,76 +42,202 @@
           "type": "datetime(6)",
           "nullable": true,
           "default": "NULL"
+        },
+        {
+          "name": "action",
+          "type": "enum('ban','unban')",
+          "nullable": false
         }
       ],
       "indexes": [
         {
-          "name": "fk_calendars_access_codes_calendar_id",
-          "def": "KEY fk_calendars_access_codes_calendar_id (calendar_id) USING BTREE",
-          "table": "calendars_access_codes",
+          "name": "fk_member_moderations_history_admin_user_id",
+          "def": "KEY fk_member_moderations_history_admin_user_id (admin_user_id) USING BTREE",
+          "table": "member_moderations_history",
           "columns": [
-            "calendar_id"
+            "admin_user_id"
+          ]
+        },
+        {
+          "name": "fk_member_moderations_history_member_user_id",
+          "def": "KEY fk_member_moderations_history_member_user_id (member_user_id) USING BTREE",
+          "table": "member_moderations_history",
+          "columns": [
+            "member_user_id"
+          ]
+        },
+        {
+          "name": "fk_member_moderations_history_organization_id",
+          "def": "KEY fk_member_moderations_history_organization_id (organization_id) USING BTREE",
+          "table": "member_moderations_history",
+          "columns": [
+            "organization_id"
           ]
         },
         {
           "name": "PRIMARY",
-          "def": "PRIMARY KEY (id) USING BTREE",
-          "table": "calendars_access_codes",
+          "def": "PRIMARY KEY (member_moderation_event_id) USING BTREE",
+          "table": "member_moderations_history",
           "columns": [
-            "id"
-          ]
-        },
-        {
-          "name": "uq_calendars_access_codes_code",
-          "def": "UNIQUE KEY uq_calendars_access_codes_code (code) USING BTREE",
-          "table": "calendars_access_codes",
-          "columns": [
-            "code"
+            "member_moderation_event_id"
           ]
         }
       ],
       "constraints": [
         {
-          "name": "fk_calendars_access_codes_calendar_id",
+          "name": "fk_member_moderations_history_admin_user_id",
           "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)",
-          "table": "calendars_access_codes",
-          "referenced_table": "calendars",
+          "def": "FOREIGN KEY (admin_user_id) REFERENCES users (user_id)",
+          "table": "member_moderations_history",
+          "referenced_table": "users",
           "columns": [
-            "calendar_id"
+            "admin_user_id"
           ],
           "referenced_columns": [
-            "id"
+            "user_id"
+          ]
+        },
+        {
+          "name": "fk_member_moderations_history_member_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (member_user_id) REFERENCES users (user_id)",
+          "table": "member_moderations_history",
+          "referenced_table": "users",
+          "columns": [
+            "member_user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "fk_member_moderations_history_organization_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)",
+          "table": "member_moderations_history",
+          "referenced_table": "organizations",
+          "columns": [
+            "organization_id"
+          ],
+          "referenced_columns": [
+            "organization_id"
           ]
         },
         {
           "name": "PRIMARY",
           "type": "PRIMARY KEY",
-          "def": "PRIMARY KEY (id)",
-          "table": "calendars_access_codes",
+          "def": "PRIMARY KEY (member_moderation_event_id)",
+          "table": "member_moderations_history",
           "columns": [
-            "id"
-          ]
-        },
-        {
-          "name": "uq_calendars_access_codes_code",
-          "type": "UNIQUE",
-          "def": "UNIQUE KEY uq_calendars_access_codes_code (code)",
-          "table": "calendars_access_codes",
-          "columns": [
-            "code"
+            "member_moderation_event_id"
           ]
         }
       ],
-      "def": "CREATE TABLE `calendars_access_codes` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `calendar_id` int(11) NOT NULL,\n  `code` varchar(64) NOT NULL,\n  `expires_at` datetime(6) DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `uq_calendars_access_codes_code` (`code`),\n  KEY `fk_calendars_access_codes_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_calendars_access_codes_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `member_moderations_history` (\n  `member_moderation_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `organization_id` bigint(20) NOT NULL,\n  `member_user_id` bigint(20) NOT NULL,\n  `admin_user_id` bigint(20) DEFAULT NULL,\n  `created_at` datetime(6) NOT NULL,\n  `reason` varchar(255) NOT NULL,\n  `expires_at` datetime(6) DEFAULT NULL,\n  `action` enum('ban','unban') NOT NULL,\n  PRIMARY KEY (`member_moderation_event_id`),\n  KEY `fk_member_moderations_history_admin_user_id` (`admin_user_id`),\n  KEY `fk_member_moderations_history_member_user_id` (`member_user_id`),\n  KEY `fk_member_moderations_history_organization_id` (`organization_id`),\n  CONSTRAINT `fk_member_moderations_history_admin_user_id` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,\n  CONSTRAINT `fk_member_moderations_history_member_user_id` FOREIGN KEY (`member_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_member_moderations_history_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`organization_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
+      "name": "organization_members_history",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "organization_member_event_id",
+          "type": "bigint(20)",
+          "nullable": false,
+          "extra_def": "auto_increment"
+        },
+        {
+          "name": "organization_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "member_user_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "added",
+          "type": "tinyint(1)",
+          "nullable": false
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_organization_members_history_member_user_id",
+          "def": "KEY fk_organization_members_history_member_user_id (member_user_id) USING BTREE",
+          "table": "organization_members_history",
+          "columns": [
+            "member_user_id"
+          ]
+        },
+        {
+          "name": "fk_organization_members_history_organization_id",
+          "def": "KEY fk_organization_members_history_organization_id (organization_id) USING BTREE",
+          "table": "organization_members_history",
+          "columns": [
+            "organization_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (organization_member_event_id) USING BTREE",
+          "table": "organization_members_history",
+          "columns": [
+            "organization_member_event_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "fk_organization_members_history_member_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (member_user_id) REFERENCES users (user_id)",
+          "table": "organization_members_history",
+          "referenced_table": "users",
+          "columns": [
+            "member_user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "fk_organization_members_history_organization_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)",
+          "table": "organization_members_history",
+          "referenced_table": "organizations",
+          "columns": [
+            "organization_id"
+          ],
+          "referenced_columns": [
+            "organization_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (organization_member_event_id)",
+          "table": "organization_members_history",
+          "columns": [
+            "organization_member_event_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `organization_members_history` (\n  `organization_member_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `organization_id` bigint(20) NOT NULL,\n  `member_user_id` bigint(20) NOT NULL,\n  `added` tinyint(1) NOT NULL,\n  `created_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`organization_member_event_id`),\n  KEY `fk_organization_members_history_member_user_id` (`member_user_id`),\n  KEY `fk_organization_members_history_organization_id` (`organization_id`),\n  CONSTRAINT `fk_organization_members_history_member_user_id` FOREIGN KEY (`member_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_organization_members_history_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`organization_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "users",
       "type": "BASE TABLE",
       "columns": [
         {
-          "name": "id",
-          "type": "int(11)",
+          "name": "user_id",
+          "type": "bigint(20)",
           "nullable": false,
           "extra_def": "auto_increment"
         },
@@ -208,10 +271,10 @@
       "indexes": [
         {
           "name": "PRIMARY",
-          "def": "PRIMARY KEY (id) USING BTREE",
+          "def": "PRIMARY KEY (user_id) USING BTREE",
           "table": "users",
           "columns": [
-            "id"
+            "user_id"
           ]
         },
         {
@@ -227,10 +290,10 @@
         {
           "name": "PRIMARY",
           "type": "PRIMARY KEY",
-          "def": "PRIMARY KEY (id)",
+          "def": "PRIMARY KEY (user_id)",
           "table": "users",
           "columns": [
-            "id"
+            "user_id"
           ]
         },
         {
@@ -243,106 +306,117 @@
           ]
         }
       ],
-      "def": "CREATE TABLE `users` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `email` varchar(320) NOT NULL,\n  `first_name` varchar(255) NOT NULL,\n  `last_name` varchar(255) NOT NULL,\n  `password_hash` varbinary(255) NOT NULL,\n  `middle_name` varchar(255) DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `uq_users_email` (`email`)\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `users` (\n  `user_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `email` varchar(320) NOT NULL,\n  `first_name` varchar(255) NOT NULL,\n  `last_name` varchar(255) NOT NULL,\n  `password_hash` varbinary(255) NOT NULL,\n  `middle_name` varchar(255) DEFAULT NULL,\n  PRIMARY KEY (`user_id`),\n  UNIQUE KEY `uq_users_email` (`email`)\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
-      "name": "users_calendars_bans",
+      "name": "join_responses_history",
       "type": "BASE TABLE",
       "columns": [
         {
+          "name": "join_response_event_id",
+          "type": "bigint(20)",
+          "nullable": false,
+          "extra_def": "auto_increment"
+        },
+        {
+          "name": "join_prompt_event_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
           "name": "user_id",
-          "type": "int(11)",
+          "type": "bigint(20)",
           "nullable": false
         },
         {
-          "name": "calendar_id",
-          "type": "int(11)",
+          "name": "response",
+          "type": "text",
           "nullable": false
         },
         {
-          "name": "reason",
-          "type": "varchar(255)",
-          "nullable": false
-        },
-        {
-          "name": "expires_at",
+          "name": "created_at",
           "type": "datetime(6)",
-          "nullable": true,
-          "default": "NULL"
+          "nullable": false
         }
       ],
       "indexes": [
         {
-          "name": "fk_users_calendars_bans_calendar_id",
-          "def": "KEY fk_users_calendars_bans_calendar_id (calendar_id) USING BTREE",
-          "table": "users_calendars_bans",
+          "name": "fk_join_responses_history_join_prompt_event_id",
+          "def": "KEY fk_join_responses_history_join_prompt_event_id (join_prompt_event_id) USING BTREE",
+          "table": "join_responses_history",
           "columns": [
-            "calendar_id"
+            "join_prompt_event_id"
+          ]
+        },
+        {
+          "name": "fk_join_responses_history_user_id",
+          "def": "KEY fk_join_responses_history_user_id (user_id) USING BTREE",
+          "table": "join_responses_history",
+          "columns": [
+            "user_id"
           ]
         },
         {
           "name": "PRIMARY",
-          "def": "PRIMARY KEY (user_id, calendar_id) USING BTREE",
-          "table": "users_calendars_bans",
+          "def": "PRIMARY KEY (join_response_event_id) USING BTREE",
+          "table": "join_responses_history",
           "columns": [
-            "user_id",
-            "calendar_id"
+            "join_response_event_id"
           ]
         }
       ],
       "constraints": [
         {
-          "name": "fk_users_calendars_bans_calendar_id",
+          "name": "fk_join_responses_history_join_prompt_event_id",
           "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)",
-          "table": "users_calendars_bans",
-          "referenced_table": "calendars",
+          "def": "FOREIGN KEY (join_prompt_event_id) REFERENCES join_prompts_history (join_prompt_event_id)",
+          "table": "join_responses_history",
+          "referenced_table": "join_prompts_history",
           "columns": [
-            "calendar_id"
+            "join_prompt_event_id"
           ],
           "referenced_columns": [
-            "id"
+            "join_prompt_event_id"
           ]
         },
         {
-          "name": "fk_users_calendars_bans_user_id",
+          "name": "fk_join_responses_history_user_id",
           "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (user_id) REFERENCES users (id)",
-          "table": "users_calendars_bans",
+          "def": "FOREIGN KEY (user_id) REFERENCES users (user_id)",
+          "table": "join_responses_history",
           "referenced_table": "users",
           "columns": [
             "user_id"
           ],
           "referenced_columns": [
-            "id"
+            "user_id"
           ]
         },
         {
           "name": "PRIMARY",
           "type": "PRIMARY KEY",
-          "def": "PRIMARY KEY (user_id, calendar_id)",
-          "table": "users_calendars_bans",
+          "def": "PRIMARY KEY (join_response_event_id)",
+          "table": "join_responses_history",
           "columns": [
-            "user_id",
-            "calendar_id"
+            "join_response_event_id"
           ]
         }
       ],
-      "def": "CREATE TABLE `users_calendars_bans` (\n  `user_id` int(11) NOT NULL,\n  `calendar_id` int(11) NOT NULL,\n  `reason` varchar(255) NOT NULL,\n  `expires_at` datetime(6) DEFAULT NULL,\n  PRIMARY KEY (`user_id`,`calendar_id`),\n  KEY `fk_users_calendars_bans_calendar_id` (`calendar_id`),\n  CONSTRAINT `fk_users_calendars_bans_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_users_calendars_bans_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `join_responses_history` (\n  `join_response_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `join_prompt_event_id` bigint(20) NOT NULL,\n  `user_id` bigint(20) NOT NULL,\n  `response` text NOT NULL,\n  `created_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`join_response_event_id`),\n  KEY `fk_join_responses_history_join_prompt_event_id` (`join_prompt_event_id`),\n  KEY `fk_join_responses_history_user_id` (`user_id`),\n  CONSTRAINT `fk_join_responses_history_join_prompt_event_id` FOREIGN KEY (`join_prompt_event_id`) REFERENCES `join_prompts_history` (`join_prompt_event_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_join_responses_history_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "calendars",
       "type": "BASE TABLE",
       "columns": [
         {
-          "name": "id",
-          "type": "int(11)",
+          "name": "calendar_id",
+          "type": "bigint(20)",
           "nullable": false,
           "extra_def": "auto_increment"
         },
         {
-          "name": "owner_id",
-          "type": "int(11)",
+          "name": "owner_user_id",
+          "type": "bigint(20)",
           "nullable": false
         },
         {
@@ -351,83 +425,390 @@
           "nullable": false
         },
         {
+          "name": "color",
+          "type": "varchar(6)",
+          "nullable": false
+        },
+        {
           "name": "description",
           "type": "text",
           "nullable": true,
           "default": "NULL"
-        },
-        {
-          "name": "ical",
-          "type": "longblob",
-          "nullable": false
-        },
-        {
-          "name": "members_only",
-          "type": "tinyint(1)",
-          "nullable": false
-        },
-        {
-          "name": "color",
-          "type": "varchar(6)",
-          "nullable": false
         }
       ],
       "indexes": [
         {
-          "name": "fk_calendars_owner_id",
-          "def": "KEY fk_calendars_owner_id (owner_id) USING BTREE",
+          "name": "fk_calendars_owner_user_id",
+          "def": "KEY fk_calendars_owner_user_id (owner_user_id) USING BTREE",
           "table": "calendars",
           "columns": [
-            "owner_id"
+            "owner_user_id"
           ]
         },
         {
           "name": "PRIMARY",
-          "def": "PRIMARY KEY (id) USING BTREE",
+          "def": "PRIMARY KEY (calendar_id) USING BTREE",
           "table": "calendars",
           "columns": [
-            "id"
+            "calendar_id"
           ]
         }
       ],
       "constraints": [
         {
-          "name": "fk_calendars_owner_id",
+          "name": "fk_calendars_owner_user_id",
           "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (owner_id) REFERENCES users (id)",
+          "def": "FOREIGN KEY (owner_user_id) REFERENCES users (user_id)",
           "table": "calendars",
           "referenced_table": "users",
           "columns": [
-            "owner_id"
+            "owner_user_id"
           ],
           "referenced_columns": [
-            "id"
+            "user_id"
           ]
         },
         {
           "name": "PRIMARY",
           "type": "PRIMARY KEY",
-          "def": "PRIMARY KEY (id)",
+          "def": "PRIMARY KEY (calendar_id)",
           "table": "calendars",
           "columns": [
-            "id"
+            "calendar_id"
           ]
         }
       ],
-      "def": "CREATE TABLE `calendars` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `owner_id` int(11) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `description` text DEFAULT NULL,\n  `ical` longblob NOT NULL,\n  `members_only` tinyint(1) NOT NULL,\n  `color` varchar(6) NOT NULL,\n  PRIMARY KEY (`id`),\n  KEY `fk_calendars_owner_id` (`owner_id`),\n  CONSTRAINT `fk_calendars_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `calendars` (\n  `calendar_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `owner_user_id` bigint(20) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `color` varchar(6) NOT NULL,\n  `description` text DEFAULT NULL,\n  PRIMARY KEY (`calendar_id`),\n  KEY `fk_calendars_owner_user_id` (`owner_user_id`),\n  CONSTRAINT `fk_calendars_owner_user_id` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
+      "name": "join_prompts_history",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "join_prompt_event_id",
+          "type": "bigint(20)",
+          "nullable": false,
+          "extra_def": "auto_increment"
+        },
+        {
+          "name": "organization_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "owner_user_id",
+          "type": "bigint(20)",
+          "nullable": true,
+          "default": "NULL"
+        },
+        {
+          "name": "prompt",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_join_prompts_history_organization_id",
+          "def": "KEY fk_join_prompts_history_organization_id (organization_id) USING BTREE",
+          "table": "join_prompts_history",
+          "columns": [
+            "organization_id"
+          ]
+        },
+        {
+          "name": "fk_join_prompts_history_owner_user_id",
+          "def": "KEY fk_join_prompts_history_owner_user_id (owner_user_id) USING BTREE",
+          "table": "join_prompts_history",
+          "columns": [
+            "owner_user_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (join_prompt_event_id) USING BTREE",
+          "table": "join_prompts_history",
+          "columns": [
+            "join_prompt_event_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "fk_join_prompts_history_organization_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)",
+          "table": "join_prompts_history",
+          "referenced_table": "organizations",
+          "columns": [
+            "organization_id"
+          ],
+          "referenced_columns": [
+            "organization_id"
+          ]
+        },
+        {
+          "name": "fk_join_prompts_history_owner_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (owner_user_id) REFERENCES users (user_id)",
+          "table": "join_prompts_history",
+          "referenced_table": "users",
+          "columns": [
+            "owner_user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (join_prompt_event_id)",
+          "table": "join_prompts_history",
+          "columns": [
+            "join_prompt_event_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `join_prompts_history` (\n  `join_prompt_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `organization_id` bigint(20) NOT NULL,\n  `owner_user_id` bigint(20) DEFAULT NULL,\n  `prompt` text NOT NULL,\n  `created_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`join_prompt_event_id`),\n  KEY `fk_join_prompts_history_organization_id` (`organization_id`),\n  KEY `fk_join_prompts_history_owner_user_id` (`owner_user_id`),\n  CONSTRAINT `fk_join_prompts_history_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`organization_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_join_prompts_history_owner_user_id` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
+      "name": "join_requests_history",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "join_request_event_id",
+          "type": "bigint(20)",
+          "nullable": false,
+          "extra_def": "auto_increment"
+        },
+        {
+          "name": "join_response_event_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "admin_user_id",
+          "type": "bigint(20)",
+          "nullable": true,
+          "default": "NULL"
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "enum('open','retracted','denied','accepted')",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_join_requests_history_admin_user_id",
+          "def": "KEY fk_join_requests_history_admin_user_id (admin_user_id) USING BTREE",
+          "table": "join_requests_history",
+          "columns": [
+            "admin_user_id"
+          ]
+        },
+        {
+          "name": "fk_join_requests_history_join_response_event_id",
+          "def": "KEY fk_join_requests_history_join_response_event_id (join_response_event_id) USING BTREE",
+          "table": "join_requests_history",
+          "columns": [
+            "join_response_event_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (join_request_event_id) USING BTREE",
+          "table": "join_requests_history",
+          "columns": [
+            "join_request_event_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "fk_join_requests_history_admin_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (admin_user_id) REFERENCES users (user_id)",
+          "table": "join_requests_history",
+          "referenced_table": "users",
+          "columns": [
+            "admin_user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "fk_join_requests_history_join_response_event_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (join_response_event_id) REFERENCES join_responses_history (join_response_event_id)",
+          "table": "join_requests_history",
+          "referenced_table": "join_responses_history",
+          "columns": [
+            "join_response_event_id"
+          ],
+          "referenced_columns": [
+            "join_response_event_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (join_request_event_id)",
+          "table": "join_requests_history",
+          "columns": [
+            "join_request_event_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `join_requests_history` (\n  `join_request_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `join_response_event_id` bigint(20) NOT NULL,\n  `admin_user_id` bigint(20) DEFAULT NULL,\n  `created_at` datetime(6) NOT NULL,\n  `status` enum('open','retracted','denied','accepted') NOT NULL,\n  PRIMARY KEY (`join_request_event_id`),\n  KEY `fk_join_requests_history_admin_user_id` (`admin_user_id`),\n  KEY `fk_join_requests_history_join_response_event_id` (`join_response_event_id`),\n  CONSTRAINT `fk_join_requests_history_admin_user_id` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,\n  CONSTRAINT `fk_join_requests_history_join_response_event_id` FOREIGN KEY (`join_response_event_id`) REFERENCES `join_responses_history` (`join_response_event_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
+      "name": "organization_calendars_history",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "organization_calendar_event_id",
+          "type": "bigint(20)",
+          "nullable": false,
+          "extra_def": "auto_increment"
+        },
+        {
+          "name": "organization_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "calendar_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "admin_user_id",
+          "type": "bigint(20)",
+          "nullable": true,
+          "default": "NULL"
+        },
+        {
+          "name": "added",
+          "type": "tinyint(1)",
+          "nullable": false
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_organization_calendars_history_admin_user_id",
+          "def": "KEY fk_organization_calendars_history_admin_user_id (admin_user_id) USING BTREE",
+          "table": "organization_calendars_history",
+          "columns": [
+            "admin_user_id"
+          ]
+        },
+        {
+          "name": "fk_organization_calendars_history_calendar_id",
+          "def": "KEY fk_organization_calendars_history_calendar_id (calendar_id) USING BTREE",
+          "table": "organization_calendars_history",
+          "columns": [
+            "calendar_id"
+          ]
+        },
+        {
+          "name": "fk_organization_calendars_history_organization_id",
+          "def": "KEY fk_organization_calendars_history_organization_id (organization_id) USING BTREE",
+          "table": "organization_calendars_history",
+          "columns": [
+            "organization_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (organization_calendar_event_id) USING BTREE",
+          "table": "organization_calendars_history",
+          "columns": [
+            "organization_calendar_event_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "fk_organization_calendars_history_admin_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (admin_user_id) REFERENCES users (user_id)",
+          "table": "organization_calendars_history",
+          "referenced_table": "users",
+          "columns": [
+            "admin_user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "fk_organization_calendars_history_calendar_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (calendar_id)",
+          "table": "organization_calendars_history",
+          "referenced_table": "calendars",
+          "columns": [
+            "calendar_id"
+          ],
+          "referenced_columns": [
+            "calendar_id"
+          ]
+        },
+        {
+          "name": "fk_organization_calendars_history_organization_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)",
+          "table": "organization_calendars_history",
+          "referenced_table": "organizations",
+          "columns": [
+            "organization_id"
+          ],
+          "referenced_columns": [
+            "organization_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (organization_calendar_event_id)",
+          "table": "organization_calendars_history",
+          "columns": [
+            "organization_calendar_event_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `organization_calendars_history` (\n  `organization_calendar_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `organization_id` bigint(20) NOT NULL,\n  `calendar_id` bigint(20) NOT NULL,\n  `admin_user_id` bigint(20) DEFAULT NULL,\n  `added` tinyint(1) NOT NULL,\n  `created_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`organization_calendar_event_id`),\n  KEY `fk_organization_calendars_history_admin_user_id` (`admin_user_id`),\n  KEY `fk_organization_calendars_history_calendar_id` (`calendar_id`),\n  KEY `fk_organization_calendars_history_organization_id` (`organization_id`),\n  CONSTRAINT `fk_organization_calendars_history_admin_user_id` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,\n  CONSTRAINT `fk_organization_calendars_history_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`calendar_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_organization_calendars_history_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`organization_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "users_sessions",
       "type": "BASE TABLE",
       "columns": [
         {
-          "name": "id",
-          "type": "binary(16)",
+          "name": "session_hash",
+          "type": "binary(32)",
           "nullable": false
         },
         {
           "name": "user_id",
-          "type": "int(11)",
+          "type": "bigint(20)",
           "nullable": false
         },
         {
@@ -447,10 +828,10 @@
         },
         {
           "name": "PRIMARY",
-          "def": "PRIMARY KEY (id) USING BTREE",
+          "def": "PRIMARY KEY (session_hash) USING BTREE",
           "table": "users_sessions",
           "columns": [
-            "id"
+            "session_hash"
           ]
         }
       ],
@@ -458,107 +839,499 @@
         {
           "name": "fk_users_sessions_user_id",
           "type": "FOREIGN KEY",
-          "def": "FOREIGN KEY (user_id) REFERENCES users (id)",
+          "def": "FOREIGN KEY (user_id) REFERENCES users (user_id)",
           "table": "users_sessions",
           "referenced_table": "users",
           "columns": [
             "user_id"
           ],
           "referenced_columns": [
-            "id"
+            "user_id"
           ]
         },
         {
           "name": "PRIMARY",
           "type": "PRIMARY KEY",
-          "def": "PRIMARY KEY (id)",
+          "def": "PRIMARY KEY (session_hash)",
           "table": "users_sessions",
           "columns": [
-            "id"
+            "session_hash"
           ]
         }
       ],
-      "def": "CREATE TABLE `users_sessions` (\n  `id` binary(16) NOT NULL,\n  `user_id` int(11) NOT NULL,\n  `expires_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`id`),\n  KEY `fk_users_sessions_user_id` (`user_id`),\n  CONSTRAINT `fk_users_sessions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `users_sessions` (\n  `session_hash` binary(32) NOT NULL,\n  `user_id` bigint(20) NOT NULL,\n  `expires_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`session_hash`),\n  KEY `fk_users_sessions_user_id` (`user_id`),\n  CONSTRAINT `fk_users_sessions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
+      "name": "member_roles_history",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "member_role_event_id",
+          "type": "bigint(20)",
+          "nullable": false,
+          "extra_def": "auto_increment"
+        },
+        {
+          "name": "organization_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "member_user_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "owner_user_id",
+          "type": "bigint(20)",
+          "nullable": true,
+          "default": "NULL"
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false
+        },
+        {
+          "name": "role",
+          "type": "enum('owner','admin','user')",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_member_roles_history_member_user_id",
+          "def": "KEY fk_member_roles_history_member_user_id (member_user_id) USING BTREE",
+          "table": "member_roles_history",
+          "columns": [
+            "member_user_id"
+          ]
+        },
+        {
+          "name": "fk_member_roles_history_organization_id",
+          "def": "KEY fk_member_roles_history_organization_id (organization_id) USING BTREE",
+          "table": "member_roles_history",
+          "columns": [
+            "organization_id"
+          ]
+        },
+        {
+          "name": "fk_member_roles_history_owner_user_id",
+          "def": "KEY fk_member_roles_history_owner_user_id (owner_user_id) USING BTREE",
+          "table": "member_roles_history",
+          "columns": [
+            "owner_user_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (member_role_event_id) USING BTREE",
+          "table": "member_roles_history",
+          "columns": [
+            "member_role_event_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "fk_member_roles_history_member_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (member_user_id) REFERENCES users (user_id)",
+          "table": "member_roles_history",
+          "referenced_table": "users",
+          "columns": [
+            "member_user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "fk_member_roles_history_organization_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)",
+          "table": "member_roles_history",
+          "referenced_table": "organizations",
+          "columns": [
+            "organization_id"
+          ],
+          "referenced_columns": [
+            "organization_id"
+          ]
+        },
+        {
+          "name": "fk_member_roles_history_owner_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (owner_user_id) REFERENCES users (user_id)",
+          "table": "member_roles_history",
+          "referenced_table": "users",
+          "columns": [
+            "owner_user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (member_role_event_id)",
+          "table": "member_roles_history",
+          "columns": [
+            "member_role_event_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `member_roles_history` (\n  `member_role_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `organization_id` bigint(20) NOT NULL,\n  `member_user_id` bigint(20) NOT NULL,\n  `owner_user_id` bigint(20) DEFAULT NULL,\n  `created_at` datetime(6) NOT NULL,\n  `role` enum('owner','admin','user') NOT NULL,\n  PRIMARY KEY (`member_role_event_id`),\n  KEY `fk_member_roles_history_member_user_id` (`member_user_id`),\n  KEY `fk_member_roles_history_organization_id` (`organization_id`),\n  KEY `fk_member_roles_history_owner_user_id` (`owner_user_id`),\n  CONSTRAINT `fk_member_roles_history_member_user_id` FOREIGN KEY (`member_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_member_roles_history_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`organization_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_member_roles_history_owner_user_id` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
+      "name": "calendar_writes_history",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "calendar_write_event_id",
+          "type": "bigint(20)",
+          "nullable": false,
+          "extra_def": "auto_increment"
+        },
+        {
+          "name": "calendar_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "writer_user_id",
+          "type": "bigint(20)",
+          "nullable": true,
+          "default": "NULL"
+        },
+        {
+          "name": "ical_encrypted",
+          "type": "longblob",
+          "nullable": false
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_calendar_writes_history_calendar_id",
+          "def": "KEY fk_calendar_writes_history_calendar_id (calendar_id) USING BTREE",
+          "table": "calendar_writes_history",
+          "columns": [
+            "calendar_id"
+          ]
+        },
+        {
+          "name": "fk_calendar_writes_history_writer_user_id",
+          "def": "KEY fk_calendar_writes_history_writer_user_id (writer_user_id) USING BTREE",
+          "table": "calendar_writes_history",
+          "columns": [
+            "writer_user_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (calendar_write_event_id) USING BTREE",
+          "table": "calendar_writes_history",
+          "columns": [
+            "calendar_write_event_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "fk_calendar_writes_history_calendar_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (calendar_id)",
+          "table": "calendar_writes_history",
+          "referenced_table": "calendars",
+          "columns": [
+            "calendar_id"
+          ],
+          "referenced_columns": [
+            "calendar_id"
+          ]
+        },
+        {
+          "name": "fk_calendar_writes_history_writer_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (writer_user_id) REFERENCES users (user_id)",
+          "table": "calendar_writes_history",
+          "referenced_table": "users",
+          "columns": [
+            "writer_user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (calendar_write_event_id)",
+          "table": "calendar_writes_history",
+          "columns": [
+            "calendar_write_event_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `calendar_writes_history` (\n  `calendar_write_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `calendar_id` bigint(20) NOT NULL,\n  `writer_user_id` bigint(20) DEFAULT NULL,\n  `ical_encrypted` longblob NOT NULL,\n  `created_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`calendar_write_event_id`),\n  KEY `fk_calendar_writes_history_calendar_id` (`calendar_id`),\n  KEY `fk_calendar_writes_history_writer_user_id` (`writer_user_id`),\n  CONSTRAINT `fk_calendar_writes_history_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`calendar_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_calendar_writes_history_writer_user_id` FOREIGN KEY (`writer_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
+      "name": "organizations",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "organization_id",
+          "type": "bigint(20)",
+          "nullable": false,
+          "extra_def": "auto_increment"
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "nullable": false
+        },
+        {
+          "name": "requires_join_request",
+          "type": "tinyint(1)",
+          "nullable": false
+        },
+        {
+          "name": "created_at",
+          "type": "datetime(6)",
+          "nullable": false
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "nullable": true,
+          "default": "NULL"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (organization_id) USING BTREE",
+          "table": "organizations",
+          "columns": [
+            "organization_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (organization_id)",
+          "table": "organizations",
+          "columns": [
+            "organization_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `organizations` (\n  `organization_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `name` varchar(255) NOT NULL,\n  `requires_join_request` tinyint(1) NOT NULL,\n  `created_at` datetime(6) NOT NULL,\n  `description` text DEFAULT NULL,\n  PRIMARY KEY (`organization_id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     }
   ],
   "relations": [
     {
-      "table": "users_calendars",
+      "table": "member_moderations_history",
       "columns": [
-        "calendar_id"
+        "admin_user_id"
       ],
       "cardinality": "zero_or_more",
-      "parent_table": "calendars",
+      "parent_table": "users",
       "parent_columns": [
-        "id"
+        "user_id"
       ],
-      "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)"
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (admin_user_id) REFERENCES users (user_id)"
     },
     {
-      "table": "users_calendars",
+      "table": "member_moderations_history",
+      "columns": [
+        "member_user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (member_user_id) REFERENCES users (user_id)"
+    },
+    {
+      "table": "member_moderations_history",
+      "columns": [
+        "organization_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "organizations",
+      "parent_columns": [
+        "organization_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)"
+    },
+    {
+      "table": "organization_members_history",
+      "columns": [
+        "member_user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (member_user_id) REFERENCES users (user_id)"
+    },
+    {
+      "table": "organization_members_history",
+      "columns": [
+        "organization_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "organizations",
+      "parent_columns": [
+        "organization_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)"
+    },
+    {
+      "table": "join_responses_history",
+      "columns": [
+        "join_prompt_event_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "join_prompts_history",
+      "parent_columns": [
+        "join_prompt_event_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (join_prompt_event_id) REFERENCES join_prompts_history (join_prompt_event_id)"
+    },
+    {
+      "table": "join_responses_history",
       "columns": [
         "user_id"
       ],
       "cardinality": "zero_or_more",
       "parent_table": "users",
       "parent_columns": [
-        "id"
-      ],
-      "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (user_id) REFERENCES users (id)"
-    },
-    {
-      "table": "calendars_access_codes",
-      "columns": [
-        "calendar_id"
-      ],
-      "cardinality": "zero_or_more",
-      "parent_table": "calendars",
-      "parent_columns": [
-        "id"
-      ],
-      "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)"
-    },
-    {
-      "table": "users_calendars_bans",
-      "columns": [
-        "calendar_id"
-      ],
-      "cardinality": "zero_or_more",
-      "parent_table": "calendars",
-      "parent_columns": [
-        "id"
-      ],
-      "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (id)"
-    },
-    {
-      "table": "users_calendars_bans",
-      "columns": [
         "user_id"
       ],
-      "cardinality": "zero_or_more",
-      "parent_table": "users",
-      "parent_columns": [
-        "id"
-      ],
       "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (user_id) REFERENCES users (id)"
+      "def": "FOREIGN KEY (user_id) REFERENCES users (user_id)"
     },
     {
       "table": "calendars",
       "columns": [
-        "owner_id"
+        "owner_user_id"
       ],
       "cardinality": "zero_or_more",
       "parent_table": "users",
       "parent_columns": [
-        "id"
+        "user_id"
       ],
       "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (owner_id) REFERENCES users (id)"
+      "def": "FOREIGN KEY (owner_user_id) REFERENCES users (user_id)"
+    },
+    {
+      "table": "join_prompts_history",
+      "columns": [
+        "organization_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "organizations",
+      "parent_columns": [
+        "organization_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)"
+    },
+    {
+      "table": "join_prompts_history",
+      "columns": [
+        "owner_user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (owner_user_id) REFERENCES users (user_id)"
+    },
+    {
+      "table": "join_requests_history",
+      "columns": [
+        "admin_user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (admin_user_id) REFERENCES users (user_id)"
+    },
+    {
+      "table": "join_requests_history",
+      "columns": [
+        "join_response_event_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "join_responses_history",
+      "parent_columns": [
+        "join_response_event_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (join_response_event_id) REFERENCES join_responses_history (join_response_event_id)"
+    },
+    {
+      "table": "organization_calendars_history",
+      "columns": [
+        "admin_user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (admin_user_id) REFERENCES users (user_id)"
+    },
+    {
+      "table": "organization_calendars_history",
+      "columns": [
+        "calendar_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "calendars",
+      "parent_columns": [
+        "calendar_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (calendar_id)"
+    },
+    {
+      "table": "organization_calendars_history",
+      "columns": [
+        "organization_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "organizations",
+      "parent_columns": [
+        "organization_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)"
     },
     {
       "table": "users_sessions",
@@ -568,13 +1341,84 @@
       "cardinality": "zero_or_more",
       "parent_table": "users",
       "parent_columns": [
-        "id"
+        "user_id"
       ],
       "parent_cardinality": "exactly_one",
-      "def": "FOREIGN KEY (user_id) REFERENCES users (id)"
+      "def": "FOREIGN KEY (user_id) REFERENCES users (user_id)"
+    },
+    {
+      "table": "member_roles_history",
+      "columns": [
+        "member_user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (member_user_id) REFERENCES users (user_id)"
+    },
+    {
+      "table": "member_roles_history",
+      "columns": [
+        "organization_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "organizations",
+      "parent_columns": [
+        "organization_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (organization_id) REFERENCES organizations (organization_id)"
+    },
+    {
+      "table": "member_roles_history",
+      "columns": [
+        "owner_user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (owner_user_id) REFERENCES users (user_id)"
+    },
+    {
+      "table": "calendar_writes_history",
+      "columns": [
+        "calendar_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "calendars",
+      "parent_columns": [
+        "calendar_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (calendar_id)"
+    },
+    {
+      "table": "calendar_writes_history",
+      "columns": [
+        "writer_user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (writer_user_id) REFERENCES users (user_id)"
     }
   ],
   "functions": [
+    {
+      "name": "create_calendar",
+      "return_type": "",
+      "arguments": "p_actor_user_id bigint; p_name varchar; p_color varchar; p_ical longblob; p_description text; p_AES_SECRET_KEY binary; out_calendar_id bigint",
+      "type": "PROCEDURE"
+    },
     {
       "name": "SSELECT",
       "return_type": "",

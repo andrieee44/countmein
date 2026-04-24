@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package calendars.v2;
+
+import "google/protobuf/timestamp.proto";
+
+service CalendarWriteService {
+  rpc GetCalendarWrite(GetCalendarWriteRequest) returns (GetCalendarWriteResponse);
+}
+
+message GetCalendarWriteRequest {
+  int64 calendar_write_event_id = 1;
+}
+
+message GetCalendarWriteResponse {
+  int64 calendar_id = 1;
+  optional int64 writer_user_id = 2;
+  bytes ical = 3;
+  google.protobuf.Timestamp created_at = 4;
+}

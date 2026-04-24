@@ -6,28 +6,227 @@ package store
 
 import (
 	"database/sql"
+	"database/sql/driver"
+	"fmt"
 	"time"
 )
 
+type JoinRequestsHistoryStatus string
+
+const (
+	JoinRequestsHistoryStatusOpen      JoinRequestsHistoryStatus = "open"
+	JoinRequestsHistoryStatusRetracted JoinRequestsHistoryStatus = "retracted"
+	JoinRequestsHistoryStatusDenied    JoinRequestsHistoryStatus = "denied"
+	JoinRequestsHistoryStatusAccepted  JoinRequestsHistoryStatus = "accepted"
+)
+
+func (e *JoinRequestsHistoryStatus) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = JoinRequestsHistoryStatus(s)
+	case string:
+		*e = JoinRequestsHistoryStatus(s)
+	default:
+		return fmt.Errorf("unsupported scan type for JoinRequestsHistoryStatus: %T", src)
+	}
+	return nil
+}
+
+type NullJoinRequestsHistoryStatus struct {
+	JoinRequestsHistoryStatus JoinRequestsHistoryStatus
+	Valid                     bool // Valid is true if JoinRequestsHistoryStatus is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullJoinRequestsHistoryStatus) Scan(value interface{}) error {
+	if value == nil {
+		ns.JoinRequestsHistoryStatus, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.JoinRequestsHistoryStatus.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullJoinRequestsHistoryStatus) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.JoinRequestsHistoryStatus), nil
+}
+
+type MemberModerationsHistoryAction string
+
+const (
+	MemberModerationsHistoryActionBan   MemberModerationsHistoryAction = "ban"
+	MemberModerationsHistoryActionUnban MemberModerationsHistoryAction = "unban"
+)
+
+func (e *MemberModerationsHistoryAction) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = MemberModerationsHistoryAction(s)
+	case string:
+		*e = MemberModerationsHistoryAction(s)
+	default:
+		return fmt.Errorf("unsupported scan type for MemberModerationsHistoryAction: %T", src)
+	}
+	return nil
+}
+
+type NullMemberModerationsHistoryAction struct {
+	MemberModerationsHistoryAction MemberModerationsHistoryAction
+	Valid                          bool // Valid is true if MemberModerationsHistoryAction is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullMemberModerationsHistoryAction) Scan(value interface{}) error {
+	if value == nil {
+		ns.MemberModerationsHistoryAction, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.MemberModerationsHistoryAction.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullMemberModerationsHistoryAction) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.MemberModerationsHistoryAction), nil
+}
+
+type MemberRolesHistoryRole string
+
+const (
+	MemberRolesHistoryRoleOwner MemberRolesHistoryRole = "owner"
+	MemberRolesHistoryRoleAdmin MemberRolesHistoryRole = "admin"
+	MemberRolesHistoryRoleUser  MemberRolesHistoryRole = "user"
+)
+
+func (e *MemberRolesHistoryRole) Scan(src interface{}) error {
+	switch s := src.(type) {
+	case []byte:
+		*e = MemberRolesHistoryRole(s)
+	case string:
+		*e = MemberRolesHistoryRole(s)
+	default:
+		return fmt.Errorf("unsupported scan type for MemberRolesHistoryRole: %T", src)
+	}
+	return nil
+}
+
+type NullMemberRolesHistoryRole struct {
+	MemberRolesHistoryRole MemberRolesHistoryRole
+	Valid                  bool // Valid is true if MemberRolesHistoryRole is not NULL
+}
+
+// Scan implements the Scanner interface.
+func (ns *NullMemberRolesHistoryRole) Scan(value interface{}) error {
+	if value == nil {
+		ns.MemberRolesHistoryRole, ns.Valid = "", false
+		return nil
+	}
+	ns.Valid = true
+	return ns.MemberRolesHistoryRole.Scan(value)
+}
+
+// Value implements the driver Valuer interface.
+func (ns NullMemberRolesHistoryRole) Value() (driver.Value, error) {
+	if !ns.Valid {
+		return nil, nil
+	}
+	return string(ns.MemberRolesHistoryRole), nil
+}
+
 type Calendar struct {
-	ID          int32
-	OwnerID     int32
+	CalendarID  int64
+	OwnerUserID int64
 	Name        string
-	Ical        []byte
-	MembersOnly bool
 	Color       string
 	Description sql.Null[string]
 }
 
-type CalendarsAccessCode struct {
-	ID         int32
-	CalendarID int32
-	Code       string
-	ExpiresAt  sql.NullTime
+type CalendarWritesHistory struct {
+	CalendarWriteEventID int64
+	CalendarID           int64
+	WriterUserID         sql.Null[int64]
+	IcalEncrypted        []byte
+	CreatedAt            time.Time
+}
+
+type JoinPromptsHistory struct {
+	JoinPromptEventID int64
+	OrganizationID    int64
+	OwnerUserID       sql.Null[int64]
+	Prompt            string
+	CreatedAt         time.Time
+}
+
+type JoinRequestsHistory struct {
+	JoinRequestEventID  int64
+	JoinResponseEventID int64
+	AdminUserID         sql.Null[int64]
+	CreatedAt           time.Time
+	Status              JoinRequestsHistoryStatus
+}
+
+type JoinResponsesHistory struct {
+	JoinResponseEventID int64
+	JoinPromptEventID   int64
+	UserID              int64
+	Response            string
+	CreatedAt           time.Time
+}
+
+type MemberModerationsHistory struct {
+	MemberModerationEventID int64
+	OrganizationID          int64
+	MemberUserID            int64
+	AdminUserID             sql.Null[int64]
+	CreatedAt               time.Time
+	Reason                  string
+	ExpiresAt               sql.NullTime
+	Action                  MemberModerationsHistoryAction
+}
+
+type MemberRolesHistory struct {
+	MemberRoleEventID int64
+	OrganizationID    int64
+	MemberUserID      int64
+	OwnerUserID       sql.Null[int64]
+	CreatedAt         time.Time
+	Role              MemberRolesHistoryRole
+}
+
+type Organization struct {
+	OrganizationID      int64
+	Name                string
+	RequiresJoinRequest bool
+	CreatedAt           time.Time
+	Description         sql.Null[string]
+}
+
+type OrganizationCalendarsHistory struct {
+	OrganizationCalendarEventID int64
+	OrganizationID              int64
+	CalendarID                  int64
+	AdminUserID                 sql.Null[int64]
+	Added                       bool
+	CreatedAt                   time.Time
+}
+
+type OrganizationMembersHistory struct {
+	OrganizationMemberEventID int64
+	OrganizationID            int64
+	MemberUserID              int64
+	Added                     bool
+	CreatedAt                 time.Time
 }
 
 type User struct {
-	ID           int32
+	UserID       int64
 	Email        string
 	FirstName    string
 	LastName     string
@@ -35,21 +234,8 @@ type User struct {
 	MiddleName   sql.Null[string]
 }
 
-type UsersCalendar struct {
-	UserID     int32
-	CalendarID int32
-	Color      string
-}
-
-type UsersCalendarsBan struct {
-	UserID     int32
-	CalendarID int32
-	Reason     string
-	ExpiresAt  sql.NullTime
-}
-
 type UsersSession struct {
-	ID        []byte
-	UserID    int32
-	ExpiresAt time.Time
+	SessionHash []byte
+	UserID      int64
+	ExpiresAt   time.Time
 }

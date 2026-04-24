@@ -31,7 +31,7 @@
         default = pkgs.buildGoModule {
           pname = "countmein";
           version = "0.0.1";
-          vendorHash = "sha256-ki2Nd3XWgKBO1NF4LVAkGLi7pMt58HvE2CT6GlLMsg4=";
+          vendorHash = "sha256-dyhDOEv7IUPhdz+PL1C0AC55oxna2XRdmwFRPleHS8s=";
           src = self;
           nativeBuildInputs = with pkgs; [ pkg-config ];
           meta.mainProgram = "countmein";

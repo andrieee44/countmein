@@ -40,7 +40,7 @@ deploy: build
 	rm -f ./result
 
 clean:
-	rm -f ./result ./store/v1/* ./store/v2/*
+	rm -f ./result ./store/v2/*
 	rm -rf ./gen
 	@printf 'mariadb "$(DB_DEV_NAME)" -e %s\n' \
 		'"DROP DATABASE $(DB_DEV_NAME); CREATE DATABASE $(DB_DEV_NAME);"'

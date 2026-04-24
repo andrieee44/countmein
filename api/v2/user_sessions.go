@@ -2,7 +2,10 @@ package api
 
 import (
 	"context"
+	"crypto/rand"
+	"crypto/sha256"
 	"database/sql"
+	"encoding/base64"
 	"net/http"
 	"strings"
 	"time"
@@ -11,8 +14,27 @@ import (
 	"github.com/andrieee44/countmein/gen/users/v2"
 	"github.com/andrieee44/countmein/gen/users/v2/usersv2connect"
 	"github.com/andrieee44/countmein/store/v2"
-	"github.com/google/uuid"
 )
+
+type actorKey struct{}
+
+func ActorFromContext(ctx context.Context) (UserActor, error) {
+	var (
+		actor UserActor
+		ok    bool
+	)
+
+	actor, ok = ctx.Value(actorKey{}).(UserActor)
+	if !ok {
+		return UserActor{}, ErrAuthRequired
+	}
+
+	return actor, nil
+}
+
+func withActor(ctx context.Context, actor UserActor) context.Context {
+	return context.WithValue(ctx, actorKey{}, actor)
+}
 
 type UserSessionService struct {
 	db *sql.DB
@@ -48,16 +70,16 @@ func (u *UserSessionService) RevokeSession(
 	req *connect.Request[usersv2.RevokeSessionRequest],
 ) (*connect.Response[usersv2.RevokeSessionResponse], error) {
 	var (
-		id  uuid.UUID
-		err error
+		sessionHash []byte
+		err         error
 	)
 
-	id, err = u.tokenIDFromHeader(req.Header())
+	sessionHash, err = u.sessionHashFromHeader(req.Header())
 	if err != nil {
 		return nil, err
 	}
 
-	err = store.New(u.db).RevokeUserSession(ctx, id[:])
+	err = store.New(u.db).RevokeUserSession(ctx, sessionHash)
 	if err != nil {
 		return nil, err
 	}
@@ -89,31 +111,35 @@ func (u *UserSessionService) RevokeAllSessions(
 
 func (u *UserSessionService) createSession(
 	ctx context.Context,
-	userID int32,
-) (uuid.UUID, error) {
+	userID int64,
+) (string, error) {
 	var (
-		sessionID uuid.UUID
-		err       error
+		sessionToken []byte
+		sessionHash  [32]byte
+		err          error
 	)
 
-	sessionID, err = uuid.NewRandom()
+	sessionToken = make([]byte, 32)
+	_, err = rand.Read(sessionToken)
 	if err != nil {
-		return uuid.Nil, err
+		return "", err
 	}
+
+	sessionHash = sha256.Sum256(sessionToken)
 
 	err = store.New(u.db).CreateUserSession(
 		ctx,
 		store.CreateUserSessionParams{
-			ID:         sessionID[:],
-			UserID:     userID,
-			TtlSeconds: int64(24 * time.Hour / time.Second),
+			SessionHash: sessionHash[:],
+			UserID:      userID,
+			TtlSeconds:  int64(24 * time.Hour / time.Second),
 		},
 	)
 	if err != nil {
-		return uuid.Nil, err
+		return "", err
 	}
 
-	return sessionID, nil
+	return base64.StdEncoding.EncodeToString(sessionToken), nil
 }
 
 func (u *UserSessionService) AuthInterceptor() connect.UnaryInterceptorFunc {
@@ -123,27 +149,31 @@ func (u *UserSessionService) AuthInterceptor() connect.UnaryInterceptorFunc {
 			req connect.AnyRequest,
 		) (connect.AnyResponse, error) {
 			var (
-				id  uuid.UUID
-				row store.GetUserSessionRow
-				err error
+				sessionHash []byte
+				tx          *sql.Tx
+				row         store.GetUserSessionRow
+				err         error
 			)
 
-			id, err = u.tokenIDFromHeader(req.Header())
-			if id == uuid.Nil && err == nil {
+			sessionHash, err = u.sessionHashFromHeader(req.Header())
+			if sessionHash == nil && err == nil {
 				return next(ctx, req)
 			}
 
+			tx, err = u.db.BeginTx(ctx, nil)
 			if err != nil {
 				return nil, err
 			}
 
-			row, err = store.New(u.db).GetUserSession(ctx, id[:])
+			defer tx.Rollback()
+
+			row, err = store.New(tx).GetUserSession(ctx, sessionHash)
 			if err != nil {
 				return nil, err
 			}
 
 			if row.DBTime.After(row.ExpiresAt) {
-				err = store.New(u.db).RevokeUserSession(ctx, id[:])
+				err = store.New(tx).RevokeUserSession(ctx, sessionHash)
 				if err != nil {
 					return nil, err
 				}
@@ -151,35 +181,43 @@ func (u *UserSessionService) AuthInterceptor() connect.UnaryInterceptorFunc {
 				return nil, ErrSessionExpired
 			}
 
-			return next(WithActor(ctx, UserActor{
+			err = tx.Commit()
+			if err != nil {
+				return nil, err
+			}
+
+			return next(withActor(ctx, UserActor{
 				UserID: row.UserID,
 			}), req)
 		}
 	}
 }
 
-func (UserSessionService) tokenIDFromHeader(
+func (UserSessionService) sessionHashFromHeader(
 	header http.Header,
-) (uuid.UUID, error) {
+) ([]byte, error) {
 	var (
-		token string
-		id    uuid.UUID
-		err   error
+		headerToken  string
+		sessionToken []byte
+		sessionHash  [32]byte
+		err          error
 	)
 
-	token = header.Get("Authorization")
-	token = strings.TrimPrefix(token, "Bearer ")
+	headerToken = header.Get("Authorization")
+	headerToken = strings.TrimPrefix(headerToken, "Bearer ")
 
-	if token == "" {
-		return uuid.Nil, nil
+	if headerToken == "" {
+		return nil, nil
 	}
 
-	id, err = uuid.Parse(token)
+	sessionToken, err = base64.StdEncoding.DecodeString(headerToken)
 	if err != nil {
-		return uuid.Nil, err
+		return nil, err
 	}
 
-	return id, nil
+	sessionHash = sha256.Sum256(sessionToken)
+
+	return sessionHash[:], nil
 }
 
 func UserSessionHandler(

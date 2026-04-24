@@ -7,13 +7,13 @@
 
 ```sql
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `email` varchar(320) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `password_hash` varbinary(255) NOT NULL,
   `middle_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`user_id`),
   UNIQUE KEY `uq_users_email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ```
@@ -24,7 +24,7 @@ CREATE TABLE `users` (
 
 | Name | Type | Default | Nullable | Extra Definition | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | ---------------- | -------- | ------- | ------- |
-| id | int(11) |  | false | auto_increment | [users_calendars](users_calendars.md) [users_calendars_bans](users_calendars_bans.md) [calendars](calendars.md) [users_sessions](users_sessions.md) |  |  |
+| user_id | bigint(20) |  | false | auto_increment | [member_moderations_history](member_moderations_history.md) [organization_members_history](organization_members_history.md) [join_responses_history](join_responses_history.md) [calendars](calendars.md) [join_prompts_history](join_prompts_history.md) [join_requests_history](join_requests_history.md) [organization_calendars_history](organization_calendars_history.md) [users_sessions](users_sessions.md) [member_roles_history](member_roles_history.md) [calendar_writes_history](calendar_writes_history.md) |  |  |
 | email | varchar(320) |  | false |  |  |  |  |
 | first_name | varchar(255) |  | false |  |  |  |  |
 | last_name | varchar(255) |  | false |  |  |  |  |
@@ -35,14 +35,14 @@ CREATE TABLE `users` (
 
 | Name | Type | Definition |
 | ---- | ---- | ---------- |
-| PRIMARY | PRIMARY KEY | PRIMARY KEY (id) |
+| PRIMARY | PRIMARY KEY | PRIMARY KEY (user_id) |
 | uq_users_email | UNIQUE | UNIQUE KEY uq_users_email (email) |
 
 ## Indexes
 
 | Name | Definition |
 | ---- | ---------- |
-| PRIMARY | PRIMARY KEY (id) USING BTREE |
+| PRIMARY | PRIMARY KEY (user_id) USING BTREE |
 | uq_users_email | UNIQUE KEY uq_users_email (email) USING BTREE |
 
 ## Relations

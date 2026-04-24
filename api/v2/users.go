@@ -10,11 +10,10 @@ import (
 	"github.com/andrieee44/countmein/gen/users/v2"
 	"github.com/andrieee44/countmein/gen/users/v2/usersv2connect"
 	"github.com/andrieee44/countmein/store/v2"
-	"github.com/google/uuid"
 )
 
 type UserActor struct {
-	UserID int32
+	UserID int64
 }
 
 type UserService struct {
@@ -37,10 +36,10 @@ func (u *UserService) CreateUser(
 	req *connect.Request[usersv2.CreateUserRequest],
 ) (*connect.Response[usersv2.CreateUserResponse], error) {
 	var (
-		hash      []byte
-		userID    int64
-		sessionID uuid.UUID
-		err       error
+		passwordHash []byte
+		userID       int64
+		sessionToken string
+		err          error
 	)
 
 	err = u.validateEmail(req.Msg.Email)
@@ -48,7 +47,7 @@ func (u *UserService) CreateUser(
 		return nil, err
 	}
 
-	hash, err = Hash(req.Msg.Password)
+	passwordHash, err = Hash(req.Msg.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -57,25 +56,21 @@ func (u *UserService) CreateUser(
 		Email:        req.Msg.Email,
 		FirstName:    req.Msg.FirstName,
 		LastName:     req.Msg.LastName,
-		PasswordHash: hash,
+		PasswordHash: passwordHash,
 		MiddleName:   fromPtr(req.Msg.MiddleName),
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	if userID == 0 {
-		return nil, ErrForbidden
-	}
-
-	sessionID, err = u.sessionService.createSession(ctx, int32(userID))
+	sessionToken, err = u.sessionService.createSession(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
 
 	return connect.NewResponse(&usersv2.CreateUserResponse{
-		UserId:    int32(userID),
-		SessionId: sessionID.String(),
+		UserId:       userID,
+		SessionToken: sessionToken,
 	}), nil
 }
 
@@ -84,10 +79,10 @@ func (u *UserService) LoginUser(
 	req *connect.Request[usersv2.LoginUserRequest],
 ) (*connect.Response[usersv2.LoginUserResponse], error) {
 	var (
-		row       store.GetLoginUserRow
-		sessionID uuid.UUID
-		ok        bool
-		err       error
+		row          store.GetLoginUserRow
+		sessionToken string
+		ok           bool
+		err          error
 	)
 
 	row, err = store.New(u.db).GetLoginUser(ctx, req.Msg.Email)
@@ -104,14 +99,13 @@ func (u *UserService) LoginUser(
 		return nil, ErrInvalidPassword
 	}
 
-	sessionID, err = u.sessionService.createSession(ctx, int32(row.ID))
+	sessionToken, err = u.sessionService.createSession(ctx, row.UserID)
 	if err != nil {
 		return nil, err
 	}
 
 	return connect.NewResponse(&usersv2.LoginUserResponse{
-		UserId:    row.ID,
-		SessionId: sessionID.String(),
+		SessionToken: sessionToken,
 	}), nil
 }
 

@@ -7,17 +7,15 @@
 
 ```sql
 CREATE TABLE `calendars` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `owner_id` int(11) NOT NULL,
+  `calendar_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `owner_user_id` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
-  `ical` longblob NOT NULL,
-  `members_only` tinyint(1) NOT NULL,
   `color` varchar(6) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_calendars_owner_id` (`owner_id`),
-  CONSTRAINT `fk_calendars_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  `description` text DEFAULT NULL,
+  PRIMARY KEY (`calendar_id`),
+  KEY `fk_calendars_owner_user_id` (`owner_user_id`),
+  CONSTRAINT `fk_calendars_owner_user_id` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ```
 
 </details>
@@ -26,27 +24,25 @@ CREATE TABLE `calendars` (
 
 | Name | Type | Default | Nullable | Extra Definition | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | ---------------- | -------- | ------- | ------- |
-| id | int(11) |  | false | auto_increment | [users_calendars](users_calendars.md) [calendars_access_codes](calendars_access_codes.md) [users_calendars_bans](users_calendars_bans.md) |  |  |
-| owner_id | int(11) |  | false |  |  | [users](users.md) |  |
+| calendar_id | bigint(20) |  | false | auto_increment | [organization_calendars_history](organization_calendars_history.md) [calendar_writes_history](calendar_writes_history.md) |  |  |
+| owner_user_id | bigint(20) |  | false |  |  | [users](users.md) |  |
 | name | varchar(255) |  | false |  |  |  |  |
-| description | text | NULL | true |  |  |  |  |
-| ical | longblob |  | false |  |  |  |  |
-| members_only | tinyint(1) |  | false |  |  |  |  |
 | color | varchar(6) |  | false |  |  |  |  |
+| description | text | NULL | true |  |  |  |  |
 
 ## Constraints
 
 | Name | Type | Definition |
 | ---- | ---- | ---------- |
-| fk_calendars_owner_id | FOREIGN KEY | FOREIGN KEY (owner_id) REFERENCES users (id) |
-| PRIMARY | PRIMARY KEY | PRIMARY KEY (id) |
+| fk_calendars_owner_user_id | FOREIGN KEY | FOREIGN KEY (owner_user_id) REFERENCES users (user_id) |
+| PRIMARY | PRIMARY KEY | PRIMARY KEY (calendar_id) |
 
 ## Indexes
 
 | Name | Definition |
 | ---- | ---------- |
-| fk_calendars_owner_id | KEY fk_calendars_owner_id (owner_id) USING BTREE |
-| PRIMARY | PRIMARY KEY (id) USING BTREE |
+| fk_calendars_owner_user_id | KEY fk_calendars_owner_user_id (owner_user_id) USING BTREE |
+| PRIMARY | PRIMARY KEY (calendar_id) USING BTREE |
 
 ## Relations
 

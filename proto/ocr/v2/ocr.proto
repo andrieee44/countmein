@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package ocr.v2;
+
+service OCRService {
+  rpc ImageToText(ImageToTextRequest) returns (ImageToTextResponse);
+}
+
+message ImageToTextRequest {
+  bytes image = 1;
+}
+
+message ImageToTextResponse {
+  string text = 1;
+}

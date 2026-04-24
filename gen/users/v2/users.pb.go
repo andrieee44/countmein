@@ -99,8 +99,8 @@ func (x *CreateUserRequest) GetMiddleName() string {
 
 type CreateUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	SessionId     string                 `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	SessionToken  string                 `protobuf:"bytes,2,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -135,16 +135,16 @@ func (*CreateUserResponse) Descriptor() ([]byte, []int) {
 	return file_users_v2_users_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateUserResponse) GetUserId() int32 {
+func (x *CreateUserResponse) GetUserId() int64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-func (x *CreateUserResponse) GetSessionId() string {
+func (x *CreateUserResponse) GetSessionToken() string {
 	if x != nil {
-		return x.SessionId
+		return x.SessionToken
 	}
 	return ""
 }
@@ -203,8 +203,7 @@ func (x *LoginUserRequest) GetPassword() string {
 
 type LoginUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	SessionId     string                 `protobuf:"bytes,2,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	SessionToken  string                 `protobuf:"bytes,2,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -239,23 +238,16 @@ func (*LoginUserResponse) Descriptor() ([]byte, []int) {
 	return file_users_v2_users_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *LoginUserResponse) GetUserId() int32 {
+func (x *LoginUserResponse) GetSessionToken() string {
 	if x != nil {
-		return x.UserId
-	}
-	return 0
-}
-
-func (x *LoginUserResponse) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
+		return x.SessionToken
 	}
 	return ""
 }
 
 type GetUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -290,7 +282,7 @@ func (*GetUserRequest) Descriptor() ([]byte, []int) {
 	return file_users_v2_users_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetUserRequest) GetUserId() int32 {
+func (x *GetUserRequest) GetUserId() int64 {
 	if x != nil {
 		return x.UserId
 	}
@@ -634,20 +626,17 @@ const file_users_v2_users_proto_rawDesc = "" +
 	"\bpassword\x18\x04 \x01(\tR\bpassword\x12$\n" +
 	"\vmiddle_name\x18\x05 \x01(\tH\x00R\n" +
 	"middleName\x88\x01\x01B\x0e\n" +
-	"\f_middle_name\"L\n" +
+	"\f_middle_name\"R\n" +
 	"\x12CreateUserResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x02 \x01(\tR\tsessionId\"D\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12#\n" +
+	"\rsession_token\x18\x02 \x01(\tR\fsessionToken\"D\n" +
 	"\x10LoginUserRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"K\n" +
-	"\x11LoginUserResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x02 \x01(\tR\tsessionId\")\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"8\n" +
+	"\x11LoginUserResponse\x12#\n" +
+	"\rsession_token\x18\x02 \x01(\tR\fsessionToken\")\n" +
 	"\x0eGetUserRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x05R\x06userId\"\x99\x01\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\"\x99\x01\n" +
 	"\x0fGetUserResponse\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1d\n" +
 	"\n" +

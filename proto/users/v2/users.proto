@@ -20,8 +20,8 @@ message CreateUserRequest {
 }
 
 message CreateUserResponse {
-  int32 user_id = 1;
-  string session_id = 2;
+  int64 user_id = 1;
+  string session_token = 2;
 }
 
 message LoginUserRequest {
@@ -30,12 +30,11 @@ message LoginUserRequest {
 }
 
 message LoginUserResponse {
-  int32 user_id = 1;
-  string session_id = 2;
+  string session_token = 2;
 }
 
 message GetUserRequest {
-  int32 user_id = 1;
+  int64 user_id = 1;
 }
 
 message GetUserResponse {

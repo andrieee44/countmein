@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package ai.v2;
+
+service AIService {
+  rpc TextToICal(TextToICalRequest) returns (TextToICalResponse);
+  rpc AnalyzeICal(AnalyzeICalRequest) returns (AnalyzeICalResponse);
+}
+
+message TextToICalRequest {
+  string text = 1;
+}
+
+message TextToICalResponse {
+  bytes ical = 1;
+}
+
+message AnalyzeICalRequest {
+  bytes ical = 1;
+}
+
+message AnalyzeICalResponse {
+  string analysis = 1;
+}
