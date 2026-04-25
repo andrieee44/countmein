@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package users.v2;
+
+service UserProfileService {
+  rpc GetUserOwnedCalendars(GetUserOwnedCalendarsRequest) returns (GetUserOwnedCalendarsResponse);
+  rpc GetUserOrganizations(GetUserOrganizationsRequest) returns (GetUserOrganizationsResponse);
+  rpc GetUserLabels(GetUserLabelsRequest) returns (GetUserLabelsResponse);
+  rpc GetUserCalendarLabels(GetUserCalendarLabelsRequest) returns (GetUserCalendarLabelsResponse);
+}
+
+message GetUserOwnedCalendarsRequest {}
+
+message GetUserOwnedCalendarsResponse {
+  repeated int64 calendar_ids = 1;
+}
+
+message GetUserOrganizationsRequest {}
+
+message GetUserOrganizationsResponse {
+  repeated int64 organization_ids = 1;
+}
+
+message GetUserLabelsRequest {}
+
+message GetUserLabelsResponse {
+  repeated int64 user_label_ids = 1;
+}
+
+message GetUserCalendarLabelsRequest {
+  int64 calendar_id = 1;
+}
+
+message GetUserCalendarLabelsResponse {
+  repeated int64 user_label_ids = 1;
+}

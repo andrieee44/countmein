@@ -17,7 +17,7 @@ CREATE TABLE `calendar_writes_history` (
   KEY `fk_calendar_writes_history_writer_user_id` (`writer_user_id`),
   CONSTRAINT `fk_calendar_writes_history_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`calendar_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_calendar_writes_history_writer_user_id` FOREIGN KEY (`writer_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ```
 
 </details>

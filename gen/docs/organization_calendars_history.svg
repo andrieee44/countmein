@@ -71,31 +71,28 @@
 <!-- calendars -->
 <g id="node3" class="node">
 <title>calendars</title>
-<polygon fill="#efefef" stroke="none" points="450.24,-212.6 450.24,-248.2 656.69,-248.2 656.69,-212.6 450.24,-212.6"/>
-<polygon fill="none" stroke="black" points="450.24,-212.6 450.24,-248.2 656.69,-248.2 656.69,-212.6 450.24,-212.6"/>
-<text text-anchor="start" x="457.24" y="-226" font-family="Arial Bold" font-size="18.00">calendars</text>
-<text text-anchor="start" x="525.2" y="-226" font-family="Arial" font-size="14.00">    </text>
-<text text-anchor="start" x="556.32" y="-226" font-family="Arial" font-size="14.00" fill="#666666">[BASE TABLE]</text>
-<polygon fill="none" stroke="black" points="450.24,-181.8 450.24,-212.6 656.69,-212.6 656.69,-181.8 450.24,-181.8"/>
-<text text-anchor="start" x="457.24" y="-194" font-family="Arial" font-size="14.00">calendar_id </text>
-<text text-anchor="start" x="533.52" y="-194" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
-<polygon fill="none" stroke="black" points="450.24,-151 450.24,-181.8 656.69,-181.8 656.69,-151 450.24,-151"/>
-<text text-anchor="start" x="457.24" y="-163.2" font-family="Arial" font-size="14.00">owner_user_id </text>
-<text text-anchor="start" x="552.97" y="-163.2" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
-<polygon fill="none" stroke="black" points="450.24,-120.2 450.24,-151 656.69,-151 656.69,-120.2 450.24,-120.2"/>
-<text text-anchor="start" x="457.24" y="-132.4" font-family="Arial" font-size="14.00">name </text>
-<text text-anchor="start" x="496.15" y="-132.4" font-family="Arial" font-size="14.00" fill="#666666">[varchar(255)]</text>
-<polygon fill="none" stroke="black" points="450.24,-89.4 450.24,-120.2 656.69,-120.2 656.69,-89.4 450.24,-89.4"/>
-<text text-anchor="start" x="457.24" y="-101.6" font-family="Arial" font-size="14.00">color </text>
-<text text-anchor="start" x="491.48" y="-101.6" font-family="Arial" font-size="14.00" fill="#666666">[varchar(6)]</text>
-<polygon fill="none" stroke="black" points="450.24,-58.6 450.24,-89.4 656.69,-89.4 656.69,-58.6 450.24,-58.6"/>
-<text text-anchor="start" x="457.24" y="-70.8" font-family="Arial" font-size="14.00">description </text>
-<text text-anchor="start" x="528.84" y="-70.8" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
+<polygon fill="#efefef" stroke="none" points="450.24,-197.2 450.24,-232.8 656.69,-232.8 656.69,-197.2 450.24,-197.2"/>
+<polygon fill="none" stroke="black" points="450.24,-197.2 450.24,-232.8 656.69,-232.8 656.69,-197.2 450.24,-197.2"/>
+<text text-anchor="start" x="457.24" y="-210.6" font-family="Arial Bold" font-size="18.00">calendars</text>
+<text text-anchor="start" x="525.2" y="-210.6" font-family="Arial" font-size="14.00">    </text>
+<text text-anchor="start" x="556.32" y="-210.6" font-family="Arial" font-size="14.00" fill="#666666">[BASE TABLE]</text>
+<polygon fill="none" stroke="black" points="450.24,-166.4 450.24,-197.2 656.69,-197.2 656.69,-166.4 450.24,-166.4"/>
+<text text-anchor="start" x="457.24" y="-178.6" font-family="Arial" font-size="14.00">calendar_id </text>
+<text text-anchor="start" x="533.52" y="-178.6" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
+<polygon fill="none" stroke="black" points="450.24,-135.6 450.24,-166.4 656.69,-166.4 656.69,-135.6 450.24,-135.6"/>
+<text text-anchor="start" x="457.24" y="-147.8" font-family="Arial" font-size="14.00">owner_user_id </text>
+<text text-anchor="start" x="552.97" y="-147.8" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
+<polygon fill="none" stroke="black" points="450.24,-104.8 450.24,-135.6 656.69,-135.6 656.69,-104.8 450.24,-104.8"/>
+<text text-anchor="start" x="457.24" y="-117" font-family="Arial" font-size="14.00">name </text>
+<text text-anchor="start" x="496.15" y="-117" font-family="Arial" font-size="14.00" fill="#666666">[varchar(255)]</text>
+<polygon fill="none" stroke="black" points="450.24,-74 450.24,-104.8 656.69,-104.8 656.69,-74 450.24,-74"/>
+<text text-anchor="start" x="457.24" y="-86.2" font-family="Arial" font-size="14.00">description </text>
+<text text-anchor="start" x="528.84" y="-86.2" font-family="Arial" font-size="14.00" fill="#666666">[text]</text>
 </g>
 <!-- organization_calendars_history&#45;&gt;calendars -->
 <g id="edge2" class="edge">
 <title>organization_calendars_history:calendar_id&#45;&gt;calendars:calendar_id</title>
-<path fill="none" stroke="black" d="M746.88,-496.02C799.94,-487.14 755.89,-404.26 735.67,-342.8 729.49,-324 719.56,-323.82 709.47,-306.8 681.99,-260.46 711.56,-197.2 657.69,-197.2"/>
+<path fill="none" stroke="black" d="M746.88,-496.02C799.94,-487.14 755.89,-404.26 735.67,-342.8 729.49,-324 719.14,-324.06 709.47,-306.8 680.06,-254.35 717.82,-181.8 657.69,-181.8"/>
 <polygon fill="black" stroke="black" points="746.98,-496.01 736.66,-492.29 741.66,-496.42 737.34,-496.75 737.34,-496.75 737.34,-496.75 741.66,-496.42 737.35,-501.26 746.98,-496.01"/>
 <text text-anchor="start" x="743.67" y="-506.8" font-family="Arial" font-size="10.00">FOREIGN KEY (calendar_id) REFERENCES calendars (calendar_id)</text>
 </g>

@@ -87,10 +87,13 @@ func initAPI() {
 	rpcHandlers = []api.RPCHandlerFn{
 		api.UserHandler(db, sessionStore, opts...),
 		api.UserSessionHandler(db, opts...),
+		api.UserProfileHandler(db, opts...),
+		api.UserLabelHandler(db, opts...),
 		api.OCRHandler(opts...),
 		api.AIHandler(logger, opts...),
 		api.CalendarHandler(db, _AES_SECRET_KEY, opts...),
 		api.CalendarWriteHandler(db, _AES_SECRET_KEY, opts...),
+		// api.OrganizationHandler(db, opts...),
 	}
 }
 

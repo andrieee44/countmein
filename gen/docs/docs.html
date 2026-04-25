@@ -315,6 +315,116 @@
         
           
           <li>
+            <a href="#users%2fv2%2fuser_labels.proto">users/v2/user_labels.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#users.v2.AttachUserLabelRequest"><span class="badge">M</span>AttachUserLabelRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.AttachUserLabelResponse"><span class="badge">M</span>AttachUserLabelResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.CreateUserLabelRequest"><span class="badge">M</span>CreateUserLabelRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.CreateUserLabelResponse"><span class="badge">M</span>CreateUserLabelResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.DeleteUserLabelRequest"><span class="badge">M</span>DeleteUserLabelRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.DeleteUserLabelResponse"><span class="badge">M</span>DeleteUserLabelResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.DetachUserLabelRequest"><span class="badge">M</span>DetachUserLabelRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.DetachUserLabelResponse"><span class="badge">M</span>DetachUserLabelResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserLabelRequest"><span class="badge">M</span>GetUserLabelRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserLabelResponse"><span class="badge">M</span>GetUserLabelResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.UpdateUserLabelRequest"><span class="badge">M</span>UpdateUserLabelRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.UpdateUserLabelResponse"><span class="badge">M</span>UpdateUserLabelResponse</a>
+                </li>
+              
+              
+              
+              
+                <li>
+                  <a href="#users.v2.UserLabelService"><span class="badge">S</span>UserLabelService</a>
+                </li>
+              
+            </ul>
+          </li>
+        
+          
+          <li>
+            <a href="#users%2fv2%2fuser_profiles.proto">users/v2/user_profiles.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#users.v2.GetUserCalendarLabelsRequest"><span class="badge">M</span>GetUserCalendarLabelsRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserCalendarLabelsResponse"><span class="badge">M</span>GetUserCalendarLabelsResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserLabelsRequest"><span class="badge">M</span>GetUserLabelsRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserLabelsResponse"><span class="badge">M</span>GetUserLabelsResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserOrganizationsRequest"><span class="badge">M</span>GetUserOrganizationsRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserOrganizationsResponse"><span class="badge">M</span>GetUserOrganizationsResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserOwnedCalendarsRequest"><span class="badge">M</span>GetUserOwnedCalendarsRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#users.v2.GetUserOwnedCalendarsResponse"><span class="badge">M</span>GetUserOwnedCalendarsResponse</a>
+                </li>
+              
+              
+              
+              
+                <li>
+                  <a href="#users.v2.UserProfileService"><span class="badge">S</span>UserProfileService</a>
+                </li>
+              
+            </ul>
+          </li>
+        
+          
+          <li>
             <a href="#users%2fv2%2fuser_sessions.proto">users/v2/user_sessions.proto</a>
             <ul>
               
@@ -690,13 +800,6 @@
                 </tr>
               
                 <tr>
-                  <td>color</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
                   <td>description</td>
                   <td><a href="#string">string</a></td>
                   <td>optional</td>
@@ -814,13 +917,6 @@
                 </tr>
               
                 <tr>
-                  <td>color</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
                   <td>ical</td>
                   <td><a href="#bytes">bytes</a></td>
                   <td></td>
@@ -915,13 +1011,6 @@
               
                 <tr>
                   <td>name</td>
-                  <td><a href="#string">string</a></td>
-                  <td>optional</td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
-                  <td>color</td>
                   <td><a href="#string">string</a></td>
                   <td>optional</td>
                   <td><p> </p></td>
@@ -1130,6 +1219,531 @@
     
       
       <div class="file-heading">
+        <h2 id="users/v2/user_labels.proto">users/v2/user_labels.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="users.v2.AttachUserLabelRequest">AttachUserLabelRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_label_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>calendar_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.AttachUserLabelResponse">AttachUserLabelResponse</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.CreateUserLabelRequest">CreateUserLabelRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>name</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>color</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.CreateUserLabelResponse">CreateUserLabelResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_label_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.DeleteUserLabelRequest">DeleteUserLabelRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_label_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.DeleteUserLabelResponse">DeleteUserLabelResponse</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.DetachUserLabelRequest">DetachUserLabelRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_label_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>calendar_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.DetachUserLabelResponse">DetachUserLabelResponse</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.GetUserLabelRequest">GetUserLabelRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_label_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.GetUserLabelResponse">GetUserLabelResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>name</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>color</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.UpdateUserLabelRequest">UpdateUserLabelRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_label_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>name</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>color</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.UpdateUserLabelResponse">UpdateUserLabelResponse</h3>
+        <p></p>
+
+        
+
+        
+      
+
+      
+
+      
+
+      
+        <h3 id="users.v2.UserLabelService">UserLabelService</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>CreateUserLabel</td>
+                <td><a href="#users.v2.CreateUserLabelRequest">CreateUserLabelRequest</a></td>
+                <td><a href="#users.v2.CreateUserLabelResponse">CreateUserLabelResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>GetUserLabel</td>
+                <td><a href="#users.v2.GetUserLabelRequest">GetUserLabelRequest</a></td>
+                <td><a href="#users.v2.GetUserLabelResponse">GetUserLabelResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>UpdateUserLabel</td>
+                <td><a href="#users.v2.UpdateUserLabelRequest">UpdateUserLabelRequest</a></td>
+                <td><a href="#users.v2.UpdateUserLabelResponse">UpdateUserLabelResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>DeleteUserLabel</td>
+                <td><a href="#users.v2.DeleteUserLabelRequest">DeleteUserLabelRequest</a></td>
+                <td><a href="#users.v2.DeleteUserLabelResponse">DeleteUserLabelResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>AttachUserLabel</td>
+                <td><a href="#users.v2.AttachUserLabelRequest">AttachUserLabelRequest</a></td>
+                <td><a href="#users.v2.AttachUserLabelResponse">AttachUserLabelResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>DetachUserLabel</td>
+                <td><a href="#users.v2.DetachUserLabelRequest">DetachUserLabelRequest</a></td>
+                <td><a href="#users.v2.DetachUserLabelResponse">DetachUserLabelResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+    
+      
+      <div class="file-heading">
+        <h2 id="users/v2/user_profiles.proto">users/v2/user_profiles.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="users.v2.GetUserCalendarLabelsRequest">GetUserCalendarLabelsRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>calendar_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.GetUserCalendarLabelsResponse">GetUserCalendarLabelsResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_label_ids</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.GetUserLabelsRequest">GetUserLabelsRequest</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.GetUserLabelsResponse">GetUserLabelsResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_label_ids</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.GetUserOrganizationsRequest">GetUserOrganizationsRequest</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.GetUserOrganizationsResponse">GetUserOrganizationsResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>organization_ids</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="users.v2.GetUserOwnedCalendarsRequest">GetUserOwnedCalendarsRequest</h3>
+        <p></p>
+
+        
+
+        
+      
+        <h3 id="users.v2.GetUserOwnedCalendarsResponse">GetUserOwnedCalendarsResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>calendar_ids</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+
+      
+
+      
+        <h3 id="users.v2.UserProfileService">UserProfileService</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>GetUserOwnedCalendars</td>
+                <td><a href="#users.v2.GetUserOwnedCalendarsRequest">GetUserOwnedCalendarsRequest</a></td>
+                <td><a href="#users.v2.GetUserOwnedCalendarsResponse">GetUserOwnedCalendarsResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>GetUserOrganizations</td>
+                <td><a href="#users.v2.GetUserOrganizationsRequest">GetUserOrganizationsRequest</a></td>
+                <td><a href="#users.v2.GetUserOrganizationsResponse">GetUserOrganizationsResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>GetUserLabels</td>
+                <td><a href="#users.v2.GetUserLabelsRequest">GetUserLabelsRequest</a></td>
+                <td><a href="#users.v2.GetUserLabelsResponse">GetUserLabelsResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>GetUserCalendarLabels</td>
+                <td><a href="#users.v2.GetUserCalendarLabelsRequest">GetUserCalendarLabelsRequest</a></td>
+                <td><a href="#users.v2.GetUserCalendarLabelsResponse">GetUserCalendarLabelsResponse</a></td>
+                <td><p></p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+    
+      
+      <div class="file-heading">
         <h2 id="users/v2/user_sessions.proto">users/v2/user_sessions.proto</h2><a href="#title">Top</a>
       </div>
       <p></p>
@@ -1304,13 +1918,6 @@
             <tbody>
               
                 <tr>
-                  <td>user_id</td>
-                  <td><a href="#int64">int64</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
-              
-                <tr>
                   <td>session_token</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
@@ -1371,13 +1978,6 @@
               <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
             </thead>
             <tbody>
-              
-                <tr>
-                  <td>email</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p> </p></td>
-                </tr>
               
                 <tr>
                   <td>first_name</td>

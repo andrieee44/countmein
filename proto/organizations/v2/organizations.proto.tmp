@@ -16,7 +16,8 @@ service CalendarService {
 message CreateCalendarRequest {
   string name = 1;
   bytes ical = 2;
-  optional string description = 3;
+  string color = 4;
+  optional string description = 5;
 }
 
 message CreateCalendarResponse {
@@ -30,9 +31,10 @@ message GetCalendarRequest {
 message GetCalendarResponse {
   int64 owner_user_id = 1;
   string name = 2;
-  bytes ical = 3;
-  google.protobuf.Timestamp updated_at = 4;
-  optional string description = 5;
+  string color = 3;
+  bytes ical = 4;
+  google.protobuf.Timestamp updated_at = 5;
+  optional string description = 6;
 }
 
 message GetCalendarWritesRequest {
@@ -53,7 +55,8 @@ message WriteCalendarResponse {}
 message UpdateCalendarMetadataRequest {
   int64 calendar_id = 1;
   optional string name = 2;
-  optional string description = 3;
+  optional string color = 3;
+  optional string description = 4;
 }
 
 message UpdateCalendarMetadataResponse {}

@@ -69,7 +69,6 @@ func (u *UserService) CreateUser(
 	}
 
 	return connect.NewResponse(&usersv2.CreateUserResponse{
-		UserId:       userID,
 		SessionToken: sessionToken,
 	}), nil
 }
@@ -124,7 +123,6 @@ func (u *UserService) GetUser(
 	}
 
 	return connect.NewResponse(&usersv2.GetUserResponse{
-		Email:      row.Email,
 		FirstName:  row.FirstName,
 		LastName:   row.LastName,
 		MiddleName: toPtr(row.MiddleName),

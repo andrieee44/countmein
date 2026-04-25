@@ -99,8 +99,7 @@ func (x *CreateUserRequest) GetMiddleName() string {
 
 type CreateUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	SessionToken  string                 `protobuf:"bytes,2,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
+	SessionToken  string                 `protobuf:"bytes,1,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -133,13 +132,6 @@ func (x *CreateUserResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateUserResponse.ProtoReflect.Descriptor instead.
 func (*CreateUserResponse) Descriptor() ([]byte, []int) {
 	return file_users_v2_users_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreateUserResponse) GetUserId() int64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
 }
 
 func (x *CreateUserResponse) GetSessionToken() string {
@@ -203,7 +195,7 @@ func (x *LoginUserRequest) GetPassword() string {
 
 type LoginUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionToken  string                 `protobuf:"bytes,2,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
+	SessionToken  string                 `protobuf:"bytes,1,opt,name=session_token,json=sessionToken,proto3" json:"session_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -291,10 +283,9 @@ func (x *GetUserRequest) GetUserId() int64 {
 
 type GetUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	FirstName     string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
-	LastName      string                 `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
-	MiddleName    *string                `protobuf:"bytes,4,opt,name=middle_name,json=middleName,proto3,oneof" json:"middle_name,omitempty"`
+	FirstName     string                 `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName      string                 `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	MiddleName    *string                `protobuf:"bytes,3,opt,name=middle_name,json=middleName,proto3,oneof" json:"middle_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -327,13 +318,6 @@ func (x *GetUserResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GetUserResponse.ProtoReflect.Descriptor instead.
 func (*GetUserResponse) Descriptor() ([]byte, []int) {
 	return file_users_v2_users_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *GetUserResponse) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
 }
 
 func (x *GetUserResponse) GetFirstName() string {
@@ -626,23 +610,21 @@ const file_users_v2_users_proto_rawDesc = "" +
 	"\bpassword\x18\x04 \x01(\tR\bpassword\x12$\n" +
 	"\vmiddle_name\x18\x05 \x01(\tH\x00R\n" +
 	"middleName\x88\x01\x01B\x0e\n" +
-	"\f_middle_name\"R\n" +
-	"\x12CreateUserResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12#\n" +
-	"\rsession_token\x18\x02 \x01(\tR\fsessionToken\"D\n" +
+	"\f_middle_name\"9\n" +
+	"\x12CreateUserResponse\x12#\n" +
+	"\rsession_token\x18\x01 \x01(\tR\fsessionToken\"D\n" +
 	"\x10LoginUserRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"8\n" +
 	"\x11LoginUserResponse\x12#\n" +
-	"\rsession_token\x18\x02 \x01(\tR\fsessionToken\")\n" +
+	"\rsession_token\x18\x01 \x01(\tR\fsessionToken\")\n" +
 	"\x0eGetUserRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"\x99\x01\n" +
-	"\x0fGetUserResponse\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1d\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\"\x83\x01\n" +
+	"\x0fGetUserResponse\x12\x1d\n" +
 	"\n" +
-	"first_name\x18\x02 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x03 \x01(\tR\blastName\x12$\n" +
-	"\vmiddle_name\x18\x04 \x01(\tH\x00R\n" +
+	"first_name\x18\x01 \x01(\tR\tfirstName\x12\x1b\n" +
+	"\tlast_name\x18\x02 \x01(\tR\blastName\x12$\n" +
+	"\vmiddle_name\x18\x03 \x01(\tH\x00R\n" +
 	"middleName\x88\x01\x01B\x0e\n" +
 	"\f_middle_name\"\xac\x01\n" +
 	"\x11UpdateUserRequest\x12\"\n" +

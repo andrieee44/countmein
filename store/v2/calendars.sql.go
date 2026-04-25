@@ -18,7 +18,6 @@ CALL create_calendar(
 	?,
 	?,
 	?,
-	?,
 	@out_calendar_id
 )
 `
@@ -26,7 +25,6 @@ CALL create_calendar(
 type CreateCalendarParams struct {
 	ActorUserID  interface{}
 	Name         interface{}
-	Color        interface{}
 	Ical         interface{}
 	Description  interface{}
 	AesSecretKey interface{}
@@ -36,7 +34,6 @@ func (q *Queries) CreateCalendar(ctx context.Context, arg CreateCalendarParams) 
 	_, err := q.db.ExecContext(ctx, createCalendar,
 		arg.ActorUserID,
 		arg.Name,
-		arg.Color,
 		arg.Ical,
 		arg.Description,
 		arg.AesSecretKey,
@@ -67,7 +64,6 @@ const getCalendar = `-- name: GetCalendar :one
 SELECT
 	owner_user_id,
 	name,
-	color,
 	description,
 	AES_DECRYPT(cwh.ical_encrypted, ?) AS ical,
 	cwh.created_at AS updated_at
@@ -115,7 +111,6 @@ type GetCalendarParams struct {
 type GetCalendarRow struct {
 	OwnerUserID int64
 	Name        string
-	Color       string
 	Description sql.Null[string]
 	Ical        string
 	UpdatedAt   time.Time
@@ -132,7 +127,6 @@ func (q *Queries) GetCalendar(ctx context.Context, arg GetCalendarParams) (GetCa
 	err := row.Scan(
 		&i.OwnerUserID,
 		&i.Name,
-		&i.Color,
 		&i.Description,
 		&i.Ical,
 		&i.UpdatedAt,
@@ -143,7 +137,6 @@ func (q *Queries) GetCalendar(ctx context.Context, arg GetCalendarParams) (GetCa
 const updateCalendarMetadata = `-- name: UpdateCalendarMetadata :execrows
 UPDATE calendars
 SET name = COALESCE(?, name),
-	color = COALESCE(?, color),
 	description = COALESCE(?, description)
 WHERE calendar_id = ?
 	AND owner_user_id = ?
@@ -151,7 +144,6 @@ WHERE calendar_id = ?
 
 type UpdateCalendarMetadataParams struct {
 	Name        sql.Null[string]
-	Color       sql.Null[string]
 	Description sql.Null[string]
 	CalendarID  int64
 	ActorUserID int64
@@ -160,7 +152,6 @@ type UpdateCalendarMetadataParams struct {
 func (q *Queries) UpdateCalendarMetadata(ctx context.Context, arg UpdateCalendarMetadataParams) (int64, error) {
 	result, err := q.db.ExecContext(ctx, updateCalendarMetadata,
 		arg.Name,
-		arg.Color,
 		arg.Description,
 		arg.CalendarID,
 		arg.ActorUserID,

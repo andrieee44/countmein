@@ -27,11 +27,26 @@ CREATE TABLE users_sessions (
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE users_labels (
+	user_label_id BIGINT       NOT NULL AUTO_INCREMENT,
+	user_id       BIGINT       NOT NULL,
+	name          VARCHAR(255) NOT NULL,
+	color         CHAR(6)      NOT NULL,
+
+	CONSTRAINT PRIMARY KEY (user_label_id),
+
+	CONSTRAINT fk_users_labels_user_id
+		FOREIGN KEY (user_id)
+		REFERENCES users(user_id)
+		ON DELETE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE calendars (
 	calendar_id    BIGINT       NOT NULL AUTO_INCREMENT,
 	owner_user_id  BIGINT       NOT NULL,
 	name           VARCHAR(255) NOT NULL,
-	color          VARCHAR(6)   NOT NULL,
 	description    TEXT,
 
 	CONSTRAINT PRIMARY KEY (calendar_id),
@@ -62,6 +77,25 @@ CREATE TABLE calendar_writes_history (
 		FOREIGN KEY (writer_user_id)
 		REFERENCES users(user_id)
 		ON DELETE SET NULL
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE calendars_users_labels (
+	calendar_id   BIGINT NOT NULL,
+	user_label_id BIGINT NOT NULL,
+
+	CONSTRAINT PRIMARY KEY (calendar_id, user_label_id),
+
+	CONSTRAINT fk_calendars_users_labels_calendar_id
+		FOREIGN KEY (calendar_id)
+		REFERENCES calendars(calendar_id)
+		ON DELETE CASCADE,
+
+	CONSTRAINT fk_calendars_users_labels_user_label_id
+		FOREIGN KEY (user_label_id)
+		REFERENCES users_labels(user_label_id)
+		ON DELETE CASCADE
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;

@@ -2,7 +2,6 @@
 CALL create_calendar(
 	sqlc.arg(actor_user_id),
 	sqlc.arg(name),
-	sqlc.arg(color),
 	sqlc.arg(ical),
 	sqlc.arg(description),
 	sqlc.arg(AES_SECRET_KEY),
@@ -13,7 +12,6 @@ CALL create_calendar(
 SELECT
 	owner_user_id,
 	name,
-	color,
 	description,
 	AES_DECRYPT(cwh.ical_encrypted, sqlc.arg(AES_SECRET_KEY)) AS ical,
 	cwh.created_at AS updated_at
@@ -54,7 +52,6 @@ WHERE c.calendar_id = ?
 -- name: UpdateCalendarMetadata :execrows
 UPDATE calendars
 SET name = COALESCE(sqlc.narg(name), name),
-	color = COALESCE(sqlc.narg(color), color),
 	description = COALESCE(sqlc.narg(description), description)
 WHERE calendar_id = ?
 	AND owner_user_id = sqlc.arg(actor_user_id);

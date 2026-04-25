@@ -5,7 +5,6 @@ DROP PROCEDURE IF EXISTS create_calendar$$
 CREATE PROCEDURE create_calendar(
 	IN p_actor_user_id  BIGINT,
 	IN p_name           VARCHAR(255),
-	IN p_color          VARCHAR(6),
 	IN p_ical           LONGBLOB,
 	IN p_description    TEXT,
 	IN p_AES_SECRET_KEY BINARY(32),
@@ -22,12 +21,10 @@ CREATE PROCEDURE create_calendar(
 	INSERT INTO calendars (
 		owner_user_id,
 		name,
-		color,
 		description
 	) VALUES (
 		p_actor_user_id,
 		p_name,
-		p_color,
 		p_description
 	);
 

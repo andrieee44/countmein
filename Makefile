@@ -1,7 +1,7 @@
-run: clean generate format vet migrate
+run: clean migrate generate format vet
 	go run .
 
-build: clean generate format vet migrate
+build: clean migrate generate format vet
 	nix build .#appimage
 
 format:

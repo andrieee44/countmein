@@ -11,7 +11,7 @@ CREATE PROCEDURE SSELECT(
 
 	SELECT CONCAT(
 		'SELECT ',
-		GROUP_CONCAT('HEX(`', COLUMN_NAME, '`) AS `', COLUMN_NAME, '`' SEPARATOR ', '),
+		GROUP_CONCAT('TO_BASE64(`', COLUMN_NAME, '`) AS `', COLUMN_NAME, '`' SEPARATOR ', '),
 		' FROM `', p_database, '`.`', p_table, '`',
 		IF (p_where IS NOT NULL, CONCAT(' WHERE ', p_where), '')
 	)

@@ -2,6 +2,80 @@
   "name": "s25101270_countmein",
   "tables": [
     {
+      "name": "calendars_users_labels",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "calendar_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "user_label_id",
+          "type": "bigint(20)",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_calendars_users_labels_user_label_id",
+          "def": "KEY fk_calendars_users_labels_user_label_id (user_label_id) USING BTREE",
+          "table": "calendars_users_labels",
+          "columns": [
+            "user_label_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (calendar_id, user_label_id) USING BTREE",
+          "table": "calendars_users_labels",
+          "columns": [
+            "calendar_id",
+            "user_label_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "fk_calendars_users_labels_calendar_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (calendar_id)",
+          "table": "calendars_users_labels",
+          "referenced_table": "calendars",
+          "columns": [
+            "calendar_id"
+          ],
+          "referenced_columns": [
+            "calendar_id"
+          ]
+        },
+        {
+          "name": "fk_calendars_users_labels_user_label_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (user_label_id) REFERENCES users_labels (user_label_id)",
+          "table": "calendars_users_labels",
+          "referenced_table": "users_labels",
+          "columns": [
+            "user_label_id"
+          ],
+          "referenced_columns": [
+            "user_label_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (calendar_id, user_label_id)",
+          "table": "calendars_users_labels",
+          "columns": [
+            "calendar_id",
+            "user_label_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `calendars_users_labels` (\n  `calendar_id` bigint(20) NOT NULL,\n  `user_label_id` bigint(20) NOT NULL,\n  PRIMARY KEY (`calendar_id`,`user_label_id`),\n  KEY `fk_calendars_users_labels_user_label_id` (`user_label_id`),\n  CONSTRAINT `fk_calendars_users_labels_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`calendar_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_calendars_users_labels_user_label_id` FOREIGN KEY (`user_label_id`) REFERENCES `users_labels` (`user_label_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
       "name": "member_moderations_history",
       "type": "BASE TABLE",
       "columns": [
@@ -425,11 +499,6 @@
           "nullable": false
         },
         {
-          "name": "color",
-          "type": "varchar(6)",
-          "nullable": false
-        },
-        {
           "name": "description",
           "type": "text",
           "nullable": true,
@@ -478,7 +547,7 @@
           ]
         }
       ],
-      "def": "CREATE TABLE `calendars` (\n  `calendar_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `owner_user_id` bigint(20) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `color` varchar(6) NOT NULL,\n  `description` text DEFAULT NULL,\n  PRIMARY KEY (`calendar_id`),\n  KEY `fk_calendars_owner_user_id` (`owner_user_id`),\n  CONSTRAINT `fk_calendars_owner_user_id` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `calendars` (\n  `calendar_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `owner_user_id` bigint(20) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `description` text DEFAULT NULL,\n  PRIMARY KEY (`calendar_id`),\n  KEY `fk_calendars_owner_user_id` (`owner_user_id`),\n  CONSTRAINT `fk_calendars_owner_user_id` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "join_prompts_history",
@@ -673,6 +742,76 @@
         }
       ],
       "def": "CREATE TABLE `join_requests_history` (\n  `join_request_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `join_response_event_id` bigint(20) NOT NULL,\n  `admin_user_id` bigint(20) DEFAULT NULL,\n  `created_at` datetime(6) NOT NULL,\n  `status` enum('open','retracted','denied','accepted') NOT NULL,\n  PRIMARY KEY (`join_request_event_id`),\n  KEY `fk_join_requests_history_admin_user_id` (`admin_user_id`),\n  KEY `fk_join_requests_history_join_response_event_id` (`join_response_event_id`),\n  CONSTRAINT `fk_join_requests_history_admin_user_id` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,\n  CONSTRAINT `fk_join_requests_history_join_response_event_id` FOREIGN KEY (`join_response_event_id`) REFERENCES `join_responses_history` (`join_response_event_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
+      "name": "users_labels",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "user_label_id",
+          "type": "bigint(20)",
+          "nullable": false,
+          "extra_def": "auto_increment"
+        },
+        {
+          "name": "user_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "nullable": false
+        },
+        {
+          "name": "color",
+          "type": "char(6)",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "fk_users_labels_user_id",
+          "def": "KEY fk_users_labels_user_id (user_id) USING BTREE",
+          "table": "users_labels",
+          "columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "def": "PRIMARY KEY (user_label_id) USING BTREE",
+          "table": "users_labels",
+          "columns": [
+            "user_label_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "fk_users_labels_user_id",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (user_id) REFERENCES users (user_id)",
+          "table": "users_labels",
+          "referenced_table": "users",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "PRIMARY",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (user_label_id)",
+          "table": "users_labels",
+          "columns": [
+            "user_label_id"
+          ]
+        }
+      ],
+      "def": "CREATE TABLE `users_labels` (\n  `user_label_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `user_id` bigint(20) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `color` char(6) NOT NULL,\n  PRIMARY KEY (`user_label_id`),\n  KEY `fk_users_labels_user_id` (`user_id`),\n  CONSTRAINT `fk_users_labels_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "organization_calendars_history",
@@ -1079,7 +1218,7 @@
           ]
         }
       ],
-      "def": "CREATE TABLE `calendar_writes_history` (\n  `calendar_write_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `calendar_id` bigint(20) NOT NULL,\n  `writer_user_id` bigint(20) DEFAULT NULL,\n  `ical_encrypted` longblob NOT NULL,\n  `created_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`calendar_write_event_id`),\n  KEY `fk_calendar_writes_history_calendar_id` (`calendar_id`),\n  KEY `fk_calendar_writes_history_writer_user_id` (`writer_user_id`),\n  CONSTRAINT `fk_calendar_writes_history_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`calendar_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_calendar_writes_history_writer_user_id` FOREIGN KEY (`writer_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `calendar_writes_history` (\n  `calendar_write_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `calendar_id` bigint(20) NOT NULL,\n  `writer_user_id` bigint(20) DEFAULT NULL,\n  `ical_encrypted` longblob NOT NULL,\n  `created_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`calendar_write_event_id`),\n  KEY `fk_calendar_writes_history_calendar_id` (`calendar_id`),\n  KEY `fk_calendar_writes_history_writer_user_id` (`writer_user_id`),\n  CONSTRAINT `fk_calendar_writes_history_calendar_id` FOREIGN KEY (`calendar_id`) REFERENCES `calendars` (`calendar_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_calendar_writes_history_writer_user_id` FOREIGN KEY (`writer_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL\n) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "organizations",
@@ -1138,6 +1277,32 @@
     }
   ],
   "relations": [
+    {
+      "table": "calendars_users_labels",
+      "columns": [
+        "calendar_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "calendars",
+      "parent_columns": [
+        "calendar_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (calendar_id) REFERENCES calendars (calendar_id)"
+    },
+    {
+      "table": "calendars_users_labels",
+      "columns": [
+        "user_label_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users_labels",
+      "parent_columns": [
+        "user_label_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (user_label_id) REFERENCES users_labels (user_label_id)"
+    },
     {
       "table": "member_moderations_history",
       "columns": [
@@ -1295,6 +1460,19 @@
       "def": "FOREIGN KEY (join_response_event_id) REFERENCES join_responses_history (join_response_event_id)"
     },
     {
+      "table": "users_labels",
+      "columns": [
+        "user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (user_id) REFERENCES users (user_id)"
+    },
+    {
       "table": "organization_calendars_history",
       "columns": [
         "admin_user_id"
@@ -1416,7 +1594,7 @@
     {
       "name": "create_calendar",
       "return_type": "",
-      "arguments": "p_actor_user_id bigint; p_name varchar; p_color varchar; p_ical longblob; p_description text; p_AES_SECRET_KEY binary; out_calendar_id bigint",
+      "arguments": "p_actor_user_id bigint; p_name varchar; p_ical longblob; p_description text; p_AES_SECRET_KEY binary; out_calendar_id bigint",
       "type": "PROCEDURE"
     },
     {

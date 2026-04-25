@@ -24,7 +24,7 @@ CREATE TABLE `users` (
 
 | Name | Type | Default | Nullable | Extra Definition | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | ---------------- | -------- | ------- | ------- |
-| user_id | bigint(20) |  | false | auto_increment | [member_moderations_history](member_moderations_history.md) [organization_members_history](organization_members_history.md) [join_responses_history](join_responses_history.md) [calendars](calendars.md) [join_prompts_history](join_prompts_history.md) [join_requests_history](join_requests_history.md) [organization_calendars_history](organization_calendars_history.md) [users_sessions](users_sessions.md) [member_roles_history](member_roles_history.md) [calendar_writes_history](calendar_writes_history.md) |  |  |
+| user_id | bigint(20) |  | false | auto_increment | [member_moderations_history](member_moderations_history.md) [organization_members_history](organization_members_history.md) [join_responses_history](join_responses_history.md) [calendars](calendars.md) [join_prompts_history](join_prompts_history.md) [join_requests_history](join_requests_history.md) [users_labels](users_labels.md) [organization_calendars_history](organization_calendars_history.md) [users_sessions](users_sessions.md) [member_roles_history](member_roles_history.md) [calendar_writes_history](calendar_writes_history.md) |  |  |
 | email | varchar(320) |  | false |  |  |  |  |
 | first_name | varchar(255) |  | false |  |  |  |  |
 | last_name | varchar(255) |  | false |  |  |  |  |

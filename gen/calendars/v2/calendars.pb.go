@@ -26,8 +26,7 @@ type CreateCalendarRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Ical          []byte                 `protobuf:"bytes,2,opt,name=ical,proto3" json:"ical,omitempty"`
-	Color         string                 `protobuf:"bytes,4,opt,name=color,proto3" json:"color,omitempty"`
-	Description   *string                `protobuf:"bytes,5,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Description   *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -74,13 +73,6 @@ func (x *CreateCalendarRequest) GetIcal() []byte {
 		return x.Ical
 	}
 	return nil
-}
-
-func (x *CreateCalendarRequest) GetColor() string {
-	if x != nil {
-		return x.Color
-	}
-	return ""
 }
 
 func (x *CreateCalendarRequest) GetDescription() string {
@@ -182,10 +174,9 @@ type GetCalendarResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	OwnerUserId   int64                  `protobuf:"varint,1,opt,name=owner_user_id,json=ownerUserId,proto3" json:"owner_user_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Color         string                 `protobuf:"bytes,3,opt,name=color,proto3" json:"color,omitempty"`
-	Ical          []byte                 `protobuf:"bytes,4,opt,name=ical,proto3" json:"ical,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	Description   *string                `protobuf:"bytes,6,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Ical          []byte                 `protobuf:"bytes,3,opt,name=ical,proto3" json:"ical,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Description   *string                `protobuf:"bytes,5,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -230,13 +221,6 @@ func (x *GetCalendarResponse) GetOwnerUserId() int64 {
 func (x *GetCalendarResponse) GetName() string {
 	if x != nil {
 		return x.Name
-	}
-	return ""
-}
-
-func (x *GetCalendarResponse) GetColor() string {
-	if x != nil {
-		return x.Color
 	}
 	return ""
 }
@@ -442,8 +426,7 @@ type UpdateCalendarMetadataRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CalendarId    int64                  `protobuf:"varint,1,opt,name=calendar_id,json=calendarId,proto3" json:"calendar_id,omitempty"`
 	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	Color         *string                `protobuf:"bytes,3,opt,name=color,proto3,oneof" json:"color,omitempty"`
-	Description   *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Description   *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -488,13 +471,6 @@ func (x *UpdateCalendarMetadataRequest) GetCalendarId() int64 {
 func (x *UpdateCalendarMetadataRequest) GetName() string {
 	if x != nil && x.Name != nil {
 		return *x.Name
-	}
-	return ""
-}
-
-func (x *UpdateCalendarMetadataRequest) GetColor() string {
-	if x != nil && x.Color != nil {
-		return *x.Color
 	}
 	return ""
 }
@@ -626,27 +602,25 @@ var File_calendars_v2_calendars_proto protoreflect.FileDescriptor
 
 const file_calendars_v2_calendars_proto_rawDesc = "" +
 	"\n" +
-	"\x1ccalendars/v2/calendars.proto\x12\fcalendars.v2\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8c\x01\n" +
+	"\x1ccalendars/v2/calendars.proto\x12\fcalendars.v2\x1a\x1fgoogle/protobuf/timestamp.proto\"v\n" +
 	"\x15CreateCalendarRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
-	"\x04ical\x18\x02 \x01(\fR\x04ical\x12\x14\n" +
-	"\x05color\x18\x04 \x01(\tR\x05color\x12%\n" +
-	"\vdescription\x18\x05 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
+	"\x04ical\x18\x02 \x01(\fR\x04ical\x12%\n" +
+	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"9\n" +
 	"\x16CreateCalendarResponse\x12\x1f\n" +
 	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
 	"calendarId\"5\n" +
 	"\x12GetCalendarRequest\x12\x1f\n" +
 	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
-	"calendarId\"\xe9\x01\n" +
+	"calendarId\"\xd3\x01\n" +
 	"\x13GetCalendarResponse\x12\"\n" +
 	"\rowner_user_id\x18\x01 \x01(\x03R\vownerUserId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
-	"\x05color\x18\x03 \x01(\tR\x05color\x12\x12\n" +
-	"\x04ical\x18\x04 \x01(\fR\x04ical\x129\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
+	"\x04ical\x18\x03 \x01(\fR\x04ical\x129\n" +
 	"\n" +
-	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12%\n" +
-	"\vdescription\x18\x06 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
+	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12%\n" +
+	"\vdescription\x18\x05 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\";\n" +
 	"\x18GetCalendarWritesRequest\x12\x1f\n" +
 	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
@@ -657,15 +631,13 @@ const file_calendars_v2_calendars_proto_rawDesc = "" +
 	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
 	"calendarId\x12\x12\n" +
 	"\x04ical\x18\x02 \x01(\fR\x04ical\"\x17\n" +
-	"\x15WriteCalendarResponse\"\xbe\x01\n" +
+	"\x15WriteCalendarResponse\"\x99\x01\n" +
 	"\x1dUpdateCalendarMetadataRequest\x12\x1f\n" +
 	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
 	"calendarId\x12\x17\n" +
-	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12\x19\n" +
-	"\x05color\x18\x03 \x01(\tH\x01R\x05color\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x04 \x01(\tH\x02R\vdescription\x88\x01\x01B\a\n" +
-	"\x05_nameB\b\n" +
-	"\x06_colorB\x0e\n" +
+	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
+	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01B\a\n" +
+	"\x05_nameB\x0e\n" +
 	"\f_description\" \n" +
 	"\x1eUpdateCalendarMetadataResponse\"8\n" +
 	"\x15DeleteCalendarRequest\x12\x1f\n" +

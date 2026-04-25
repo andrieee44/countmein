@@ -144,7 +144,6 @@ type Calendar struct {
 	CalendarID  int64
 	OwnerUserID int64
 	Name        string
-	Color       string
 	Description sql.Null[string]
 }
 
@@ -154,6 +153,11 @@ type CalendarWritesHistory struct {
 	WriterUserID         sql.Null[int64]
 	IcalEncrypted        []byte
 	CreatedAt            time.Time
+}
+
+type CalendarsUsersLabel struct {
+	CalendarID  int64
+	UserLabelID int64
 }
 
 type JoinPromptsHistory struct {
@@ -232,6 +236,13 @@ type User struct {
 	LastName     string
 	PasswordHash []byte
 	MiddleName   sql.Null[string]
+}
+
+type UsersLabel struct {
+	UserLabelID int64
+	UserID      int64
+	Name        string
+	Color       string
 }
 
 type UsersSession struct {

@@ -10,12 +10,11 @@ CREATE TABLE `calendars` (
   `calendar_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `owner_user_id` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `color` varchar(6) NOT NULL,
   `description` text DEFAULT NULL,
   PRIMARY KEY (`calendar_id`),
   KEY `fk_calendars_owner_user_id` (`owner_user_id`),
   CONSTRAINT `fk_calendars_owner_user_id` FOREIGN KEY (`owner_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+) ENGINE=InnoDB AUTO_INCREMENT=[Redacted by tbls] DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ```
 
 </details>
@@ -24,10 +23,9 @@ CREATE TABLE `calendars` (
 
 | Name | Type | Default | Nullable | Extra Definition | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | ---------------- | -------- | ------- | ------- |
-| calendar_id | bigint(20) |  | false | auto_increment | [organization_calendars_history](organization_calendars_history.md) [calendar_writes_history](calendar_writes_history.md) |  |  |
+| calendar_id | bigint(20) |  | false | auto_increment | [calendars_users_labels](calendars_users_labels.md) [organization_calendars_history](organization_calendars_history.md) [calendar_writes_history](calendar_writes_history.md) |  |  |
 | owner_user_id | bigint(20) |  | false |  |  | [users](users.md) |  |
 | name | varchar(255) |  | false |  |  |  |  |
-| color | varchar(6) |  | false |  |  |  |  |
 | description | text | NULL | true |  |  |  |  |
 
 ## Constraints

@@ -61,7 +61,6 @@ func (c *CalendarService) CreateCalendar(
 	err = store.New(tx).CreateCalendar(ctx, store.CreateCalendarParams{
 		ActorUserID:  actor.UserID,
 		Name:         req.Msg.Name,
-		Color:        req.Msg.Color,
 		Ical:         req.Msg.Ical,
 		Description:  req.Msg.Description,
 		AesSecretKey: c._AES_SECRET_KEY,
@@ -114,7 +113,6 @@ func (c *CalendarService) GetCalendar(
 	return connect.NewResponse(&calendarsv2.GetCalendarResponse{
 		OwnerUserId: row.OwnerUserID,
 		Name:        row.Name,
-		Color:       row.Color,
 		Ical:        []byte(row.Ical),
 		UpdatedAt:   timestamppb.New(row.UpdatedAt),
 		Description: toPtr(row.Description),
@@ -218,7 +216,6 @@ func (c *CalendarService) UpdateCalendarMetadata(
 			ActorUserID: actor.UserID,
 			CalendarID:  req.Msg.CalendarId,
 			Name:        fromPtr(req.Msg.Name),
-			Color:       fromPtr(req.Msg.Color),
 			Description: fromPtr(req.Msg.Description),
 		},
 	)
