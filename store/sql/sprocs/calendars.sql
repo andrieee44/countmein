@@ -1,7 +1,5 @@
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS create_calendar$$
-
 CREATE PROCEDURE create_calendar(
 	IN p_actor_user_id  BIGINT,
 	IN p_name           VARCHAR(255),

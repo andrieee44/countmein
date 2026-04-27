@@ -90,15 +90,8 @@ func (q *Queries) GetUserLabels(ctx context.Context, actorUserID int64) ([]int64
 
 const getUserOrganizations = `-- name: GetUserOrganizations :many
 SELECT organization_id
-FROM organization_members_history AS omh
-WHERE omh.member_user_id = ?
-	AND omh.added = TRUE
-	AND omh.created_at = (
-		SELECT MAX(created_at)
-		FROM organization_members_history AS omh2
-		WHERE omh2.organization_id = omh.organization_id
-			AND omh2.member_user_id = omh.member_user_id
-	)
+FROM current_memberships
+WHERE member_user_id = ?
 `
 
 func (q *Queries) GetUserOrganizations(ctx context.Context, actorUserID int64) ([]int64, error) {

@@ -2,7 +2,9 @@ version: "2"
 sql:
   - engine: "mysql"
     queries: "./store/queries/v2"
-    schema: "./store/schema"
+    schema:
+      - "./store/schema"
+      - "./store/sql/views"
     database:
       uri: "${DB_USERNAME}:${DB_PASSWORD}@tcp(${DB_HOST}:3306)/${DB_NAME}"
     gen:

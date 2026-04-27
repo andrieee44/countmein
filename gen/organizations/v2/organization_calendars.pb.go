@@ -22,10 +22,11 @@ const (
 )
 
 type ToggleShareUserCalendarRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CalendarId    int64                  `protobuf:"varint,1,opt,name=calendar_id,json=calendarId,proto3" json:"calendar_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId int64                  `protobuf:"varint,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	CalendarId     int64                  `protobuf:"varint,2,opt,name=calendar_id,json=calendarId,proto3" json:"calendar_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ToggleShareUserCalendarRequest) Reset() {
@@ -56,6 +57,13 @@ func (x *ToggleShareUserCalendarRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ToggleShareUserCalendarRequest.ProtoReflect.Descriptor instead.
 func (*ToggleShareUserCalendarRequest) Descriptor() ([]byte, []int) {
 	return file_organizations_v2_organization_calendars_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ToggleShareUserCalendarRequest) GetOrganizationId() int64 {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return 0
 }
 
 func (x *ToggleShareUserCalendarRequest) GetCalendarId() int64 {
@@ -193,9 +201,10 @@ var File_organizations_v2_organization_calendars_proto protoreflect.FileDescript
 
 const file_organizations_v2_organization_calendars_proto_rawDesc = "" +
 	"\n" +
-	"-organizations/v2/organization_calendars.proto\x12\x10organizations.v2\"A\n" +
-	"\x1eToggleShareUserCalendarRequest\x12\x1f\n" +
-	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
+	"-organizations/v2/organization_calendars.proto\x12\x10organizations.v2\"j\n" +
+	"\x1eToggleShareUserCalendarRequest\x12'\n" +
+	"\x0forganization_id\x18\x01 \x01(\x03R\x0eorganizationId\x12\x1f\n" +
+	"\vcalendar_id\x18\x02 \x01(\x03R\n" +
 	"calendarId\"!\n" +
 	"\x1fToggleShareUserCalendarResponse\"J\n" +
 	"\x1fGetOrganizationCalendarsRequest\x12'\n" +

@@ -12,7 +12,10 @@ func Hash(plain string) ([]byte, error) {
 		err  error
 	)
 
-	hash, err = bcrypt.GenerateFromPassword([]byte(plain), bcrypt.DefaultCost)
+	hash, err = bcrypt.GenerateFromPassword(
+		[]byte(plain),
+		bcrypt.DefaultCost,
+	)
 	if err != nil {
 		if errors.Is(err, bcrypt.ErrPasswordTooLong) {
 			return nil, err

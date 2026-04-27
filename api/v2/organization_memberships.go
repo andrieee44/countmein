@@ -89,9 +89,10 @@ func OrganizationMembershipHandler(
 	opts ...connect.HandlerOption,
 ) RPCHandlerFn {
 	return func() (string, http.Handler) {
-		return organizationsv2connect.NewOrganizationMembershipServiceHandler(
-			NewOrganizationMembershipService(db),
-			opts...,
-		)
+		return organizationsv2connect.
+			NewOrganizationMembershipServiceHandler(
+				NewOrganizationMembershipService(db),
+				opts...,
+			)
 	}
 }

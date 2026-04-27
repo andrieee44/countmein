@@ -2,6 +2,54 @@
   "name": "s25101270_countmein",
   "tables": [
     {
+      "name": "current_organization_calendars",
+      "type": "VIEW",
+      "comment": "VIEW",
+      "columns": [
+        {
+          "name": "organization_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "calendar_id",
+          "type": "bigint(20)",
+          "nullable": false
+        }
+      ],
+      "def": "CREATE VIEW current_organization_calendars AS (select `och`.`organization_id` AS `organization_id`,`och`.`calendar_id` AS `calendar_id` from `s25101270_countmein`.`organization_calendars_history` `och` where `och`.`added` = 1 and `och`.`created_at` = (select max(`och2`.`created_at`) from `s25101270_countmein`.`organization_calendars_history` `och2` where `och`.`organization_id` = `och2`.`organization_id` and `och`.`calendar_id` = `och2`.`calendar_id`))",
+      "referenced_tables": [
+        "organization_calendars_history"
+      ]
+    },
+    {
+      "name": "current_member_roles",
+      "type": "VIEW",
+      "comment": "VIEW",
+      "columns": [
+        {
+          "name": "organization_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "member_user_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "role",
+          "type": "enum('owner','admin','user')",
+          "nullable": false
+        }
+      ],
+      "def": "CREATE VIEW current_member_roles AS (select `mrh`.`organization_id` AS `organization_id`,`mrh`.`member_user_id` AS `member_user_id`,`mrh`.`role` AS `role` from (`s25101270_countmein`.`member_roles_history` `mrh` join `s25101270_countmein`.`current_memberships` `cm` on(`mrh`.`organization_id` = `cm`.`organization_id` and `mrh`.`member_user_id` = `cm`.`member_user_id`)) where `mrh`.`created_at` = (select max(`mrh2`.`created_at`) from `s25101270_countmein`.`member_roles_history` `mrh2` where `mrh`.`organization_id` = `mrh2`.`organization_id` and `mrh`.`member_user_id` = `mrh2`.`member_user_id`))",
+      "referenced_tables": [
+        "member_roles_history",
+        "current_memberships"
+      ]
+    },
+    {
       "name": "calendars_users_labels",
       "type": "BASE TABLE",
       "columns": [
@@ -304,6 +352,27 @@
         }
       ],
       "def": "CREATE TABLE `organization_members_history` (\n  `organization_member_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `organization_id` bigint(20) NOT NULL,\n  `member_user_id` bigint(20) NOT NULL,\n  `added` tinyint(1) NOT NULL,\n  `created_at` datetime(6) NOT NULL,\n  PRIMARY KEY (`organization_member_event_id`),\n  KEY `fk_organization_members_history_member_user_id` (`member_user_id`),\n  KEY `fk_organization_members_history_organization_id` (`organization_id`),\n  CONSTRAINT `fk_organization_members_history_member_user_id` FOREIGN KEY (`member_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,\n  CONSTRAINT `fk_organization_members_history_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`organization_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    },
+    {
+      "name": "current_memberships",
+      "type": "VIEW",
+      "comment": "VIEW",
+      "columns": [
+        {
+          "name": "organization_id",
+          "type": "bigint(20)",
+          "nullable": false
+        },
+        {
+          "name": "member_user_id",
+          "type": "bigint(20)",
+          "nullable": false
+        }
+      ],
+      "def": "CREATE VIEW current_memberships AS (select `omh`.`organization_id` AS `organization_id`,`omh`.`member_user_id` AS `member_user_id` from `s25101270_countmein`.`organization_members_history` `omh` where `omh`.`added` = 1 and `omh`.`created_at` = (select max(`omh2`.`created_at`) from `s25101270_countmein`.`organization_members_history` `omh2` where `omh`.`organization_id` = `omh2`.`organization_id` and `omh`.`member_user_id` = `omh2`.`member_user_id`))",
+      "referenced_tables": [
+        "organization_members_history"
+      ]
     },
     {
       "name": "users",
@@ -1604,12 +1673,6 @@
       "type": "PROCEDURE"
     },
     {
-      "name": "is_member",
-      "return_type": "tinyint",
-      "arguments": "p_organization_id bigint; p_user_id bigint",
-      "type": "FUNCTION"
-    },
-    {
       "name": "join_organization",
       "return_type": "",
       "arguments": "p_actor_user_id bigint; p_organization_id bigint",
@@ -1625,6 +1688,12 @@
       "name": "SSELECT",
       "return_type": "",
       "arguments": "p_table varchar; p_database varchar; p_where varchar",
+      "type": "PROCEDURE"
+    },
+    {
+      "name": "toggle_share_user_calendar",
+      "return_type": "",
+      "arguments": "p_actor_user_id bigint; p_organization_id bigint; p_calendar_id bigint",
       "type": "PROCEDURE"
     }
   ],

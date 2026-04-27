@@ -159,6 +159,22 @@ type CalendarsUsersLabel struct {
 	UserLabelID int64
 }
 
+type CurrentMemberRole struct {
+	OrganizationID int64
+	MemberUserID   int64
+	Role           MemberRolesHistoryRole
+}
+
+type CurrentMembership struct {
+	OrganizationID int64
+	MemberUserID   int64
+}
+
+type CurrentOrganizationCalendar struct {
+	OrganizationID int64
+	CalendarID     int64
+}
+
 type JoinPromptsHistory struct {
 	JoinPromptEventID int64
 	OrganizationID    int64

@@ -1,7 +1,5 @@
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS create_organization$$
-
 CREATE PROCEDURE create_organization(
 	IN p_actor_user_id         BIGINT,
 	IN p_name                  VARCHAR(255),

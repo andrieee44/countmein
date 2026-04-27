@@ -164,8 +164,8 @@ func (o *OrganizationService) DeleteOrganization(
 	n, err = store.New(o.db).DeleteOrganization(
 		ctx,
 		store.DeleteOrganizationParams{
-			ActorUserID:         actor.UserID,
-			OrganizationID:      req.Msg.OrganizationId,
+			ActorUserID:    actor.UserID,
+			OrganizationID: req.Msg.OrganizationId,
 		},
 	)
 	if err != nil {

@@ -4,9 +4,12 @@
 
 | Name | Columns | Comment | Type |
 | ---- | ------- | ------- | ---- |
+| [current_organization_calendars](current_organization_calendars.md) | 2 | VIEW | VIEW |
+| [current_member_roles](current_member_roles.md) | 3 | VIEW | VIEW |
 | [calendars_users_labels](calendars_users_labels.md) | 2 |  | BASE TABLE |
 | [member_moderations_history](member_moderations_history.md) | 8 |  | BASE TABLE |
 | [organization_members_history](organization_members_history.md) | 5 |  | BASE TABLE |
+| [current_memberships](current_memberships.md) | 2 | VIEW | VIEW |
 | [users](users.md) | 6 |  | BASE TABLE |
 | [join_responses_history](join_responses_history.md) | 5 |  | BASE TABLE |
 | [calendars](calendars.md) | 4 |  | BASE TABLE |
@@ -25,10 +28,10 @@
 | ---- | ------- | ------- | ---- |
 | create_calendar |  | p_actor_user_id bigint; p_name varchar; p_ical longblob; p_description text; p_AES_SECRET_KEY binary; out_calendar_id bigint | PROCEDURE |
 | create_organization |  | p_actor_user_id bigint; p_name varchar; p_requires_join_request tinyint; p_description text; out_organization_id bigint | PROCEDURE |
-| is_member | tinyint | p_organization_id bigint; p_user_id bigint | FUNCTION |
 | join_organization |  | p_actor_user_id bigint; p_organization_id bigint | PROCEDURE |
 | leave_organization |  | p_actor_user_id bigint; p_organization_id bigint | PROCEDURE |
 | SSELECT |  | p_table varchar; p_database varchar; p_where varchar | PROCEDURE |
+| toggle_share_user_calendar |  | p_actor_user_id bigint; p_organization_id bigint; p_calendar_id bigint | PROCEDURE |
 
 ## Relations
 

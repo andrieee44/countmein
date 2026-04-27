@@ -1,7 +1,5 @@
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS join_organization$$
-
 CREATE PROCEDURE join_organization(
 	IN p_actor_user_id   BIGINT,
 	IN p_organization_id BIGINT
@@ -23,7 +21,12 @@ CREATE PROCEDURE join_organization(
 			SET MESSAGE_TEXT = 'resource not found or access denied';
 	END IF;
 
-	IF is_member(p_organization_id, p_actor_user_id) IS NOT FALSE THEN
+	IF EXISTS (
+		SELECT 1
+		FROM current_memberships
+		WHERE organization_id = p_organization_id
+			AND member_user_id = p_actor_user_id
+	) THEN
 		SIGNAL SQLSTATE '45000'
 			SET MESSAGE_TEXT = 'membership already exists';
 	END IF;
@@ -51,10 +54,9 @@ CREATE PROCEDURE join_organization(
 		p_actor_user_id,
 		(
 			SELECT member_user_id
-			FROM member_roles_history
+			FROM current_member_roles
 			WHERE organization_id = p_organization_id
 				AND role = 'owner'
-			ORDER BY created_at DESC
 			LIMIT 1
 		),
 		NOW(6),
@@ -63,8 +65,6 @@ CREATE PROCEDURE join_organization(
 
 	COMMIT;
 END$$
-
-DROP PROCEDURE IF EXISTS leave_organization$$
 
 CREATE PROCEDURE leave_organization(
 	IN p_actor_user_id   BIGINT,
@@ -78,7 +78,12 @@ CREATE PROCEDURE leave_organization(
 
 	START TRANSACTION;
 
-	IF is_member(p_organization_id, p_actor_user_id) IS NOT TRUE THEN
+	IF NOT EXISTS (
+		SELECT 1
+		FROM current_memberships
+		WHERE organization_id = p_organization_id
+			AND member_user_id = p_actor_user_id
+	) THEN
 		SIGNAL SQLSTATE '45000'
 			SET MESSAGE_TEXT = 'membership doesn''t exist';
 	END IF;
@@ -103,34 +108,20 @@ CREATE PROCEDURE leave_organization(
 		created_at
 	) SELECT
 		p_organization_id,
-		och.calendar_id,
+		coc.calendar_id,
 		p_actor_user_id,
 		FALSE,
 		NOW(6)
-	FROM organization_calendars_history AS och
+	FROM current_organization_calendars AS coc
 	INNER JOIN calendars AS c
-		ON och.calendar_id = c.calendar_id
-	WHERE och.organization_id = p_organization_id
-		AND c.owner_user_id = p_actor_user_id
-		AND och.added = TRUE
-		AND och.created_at = (
-			SELECT MAX(created_at)
-			FROM organization_calendars_history AS och2
-			WHERE och2.calendar_id = och.calendar_id
-		);
+		ON coc.calendar_id = c.calendar_id
+	WHERE coc.organization_id = p_organization_id
+		AND c.owner_user_id = p_actor_user_id;
 
 	IF NOT EXISTS (
 		SELECT 1
-		FROM organization_members_history AS och
+		FROM current_memberships
 		WHERE organization_id = p_organization_id
-			AND added = TRUE
-			AND created_at = (
-				SELECT MAX(created_at)
-				FROM organization_members_history AS och2
-				WHERE och.organization_id = och2.organization_id
-					AND och.member_user_id = och2.member_user_id
-			)
-		LIMIT 1
 	) THEN
 		DELETE FROM organizations
 		WHERE organization_id = p_organization_id;
@@ -141,15 +132,9 @@ CREATE PROCEDURE leave_organization(
 
 	IF NOT EXISTS (
 		SELECT 1
-		FROM member_roles_history AS mrh
-		WHERE mrh.organization_id = p_organization_id
-			AND mrh.role = 'owner'
-			AND mrh.created_at = (
-				SELECT MAX(created_at)
-				FROM member_roles_history AS mrh2
-				WHERE mrh2.organization_id = mrh.organization_id
-					AND mrh2.member_user_id = mrh.member_user_id
-			)
+		FROM current_member_roles
+		WHERE organization_id = p_organization_id
+			AND role = 'owner'
 	) THEN
 		INSERT INTO member_roles_history (
 			organization_id,
@@ -159,31 +144,22 @@ CREATE PROCEDURE leave_organization(
 			role
 		) SELECT
 			p_organization_id,
-			omh.member_user_id,
-			omh.member_user_id,
+			cmr.member_user_id,
+			cmr.member_user_id,
 			NOW(6),
 			'owner'
-		FROM organization_members_history AS omh
-		INNER JOIN member_roles_history AS mrh
-			ON omh.organization_id = mrh.organization_id
-				AND omh.member_user_id = mrh.member_user_id
-		WHERE omh.organization_id = p_organization_id
-			AND omh.added = TRUE
-			AND omh.created_at = (
-				SELECT MAX(created_at)
-				FROM organization_members_history AS omh2
-				WHERE omh.organization_id = omh2.organization_id
-					AND omh.member_user_id = omh2.member_user_id
-			)
-			AND mrh.created_at = (
-				SELECT MAX(created_at)
-				FROM member_roles_history AS mrh2
-				WHERE mrh.organization_id = mrh2.organization_id
-					AND mrh.member_user_id = mrh2.member_user_id
-			)
+		FROM current_member_roles AS cmr
+		WHERE cmr.organization_id = p_organization_id
 		ORDER BY
-			FIELD(mrh.role, 'admin', 'user') ASC,
-    		omh.created_at ASC
+			FIELD(cmr.role, 'admin', 'user') ASC,
+			(
+				SELECT created_at
+				FROM organization_members_history
+				WHERE organization_id = p_organization_id
+					AND member_user_id = cmr.member_user_id
+				ORDER BY created_at ASC
+				LIMIT 1
+			) ASC
 		LIMIT 1;
 
 		COMMIT;

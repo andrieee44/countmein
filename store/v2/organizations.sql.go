@@ -41,17 +41,11 @@ func (q *Queries) CreateOrganization(ctx context.Context, arg CreateOrganization
 const deleteOrganization = `-- name: DeleteOrganization :execrows
 DELETE o
 FROM organizations AS o
-INNER JOIN member_roles_history AS mrh
-	ON o.organization_id = mrh.organization_id
+INNER JOIN current_member_roles AS cmr
+	ON o.organization_id = cmr.organization_id
+		AND cmr.role = 'owner'
 WHERE o.organization_id = ?
-	AND mrh.member_user_id = ?
-	AND mrh.role = 'owner'
-	AND mrh.created_at = (
-		SELECT MAX(created_at)
-		FROM member_roles_history AS mrh2
-		WHERE o.organization_id = mrh2.organization_id
-			AND mrh.member_user_id = mrh2.member_user_id
-	)
+	AND cmr.member_user_id = ?
 `
 
 type DeleteOrganizationParams struct {
@@ -122,8 +116,9 @@ func (q *Queries) GetOrganizations(ctx context.Context) ([]int64, error) {
 
 const updateOrganization = `-- name: UpdateOrganization :execrows
 UPDATE organizations AS o
-INNER JOIN member_roles_history AS mrh
-	ON o.organization_id = mrh.organization_id
+INNER JOIN current_member_roles AS cmr
+	ON o.organization_id = cmr.organization_id
+		AND cmr.role = 'owner'
 SET o.name = COALESCE(?, o.name),
 	o.description = COALESCE(?, o.description),
 	o.requires_join_request = COALESCE(
@@ -131,14 +126,7 @@ SET o.name = COALESCE(?, o.name),
 		o.requires_join_request
 	)
 WHERE o.organization_id = ?
-	AND mrh.member_user_id = ?
-	AND mrh.role = 'owner'
-	AND mrh.created_at = (
-		SELECT MAX(created_at)
-		FROM member_roles_history AS mrh2
-		WHERE o.organization_id = mrh2.organization_id
-			AND mrh.member_user_id = mrh2.member_user_id
-	)
+	AND cmr.member_user_id = ?
 `
 
 type UpdateOrganizationParams struct {

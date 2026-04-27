@@ -1,7 +1,7 @@
-run: clean migrate generate format vet
+run: clean sroutines migrate generate format vet
 	go run .
 
-build: clean migrate generate format vet
+build: clean sroutines migrate generate format vet
 	nix build .#appimage
 
 format:
@@ -13,19 +13,26 @@ generate:
 	sqlc generate
 	buf generate
 
+sroutines:
+	@mariadb -h "$(DB_HOST)" -u "$(DB_USERNAME)" "-p$(DB_PASSWORD)" \
+		--skip-ssl "$(DB_NAME)" -sN -e \
+		"SELECT CONCAT( \
+			'DROP ', ROUTINE_TYPE, ' ', ROUTINE_NAME, ';') \
+		FROM information_schema.ROUTINES \
+		WHERE ROUTINE_SCHEMA = DATABASE() \
+		UNION ALL \
+		SELECT CONCAT('DROP VIEW ', TABLE_NAME, ';') \
+		FROM information_schema.VIEWS \
+		WHERE TABLE_SCHEMA = DATABASE();" | \
+		tee /dev/stderr | \
+		mariadb -h "$(DB_HOST)" -u "$(DB_USERNAME)" "-p$(DB_PASSWORD)" \
+		--skip-ssl "$(DB_NAME)"
+	@find ./store/sql/views ./store/sql/sfuncs ./store/sql/sprocs -type f \
+		| tee /dev/stderr | xargs cat | \
+		mariadb -h "$(DB_HOST)" -u "$(DB_USERNAME)" \
+		"-p$(DB_PASSWORD)" --skip-ssl "$(DB_NAME)"
+
 migrate:
-	@printf 'find ./store/sfuncs -name "*.sql" | %s | %s\n' \
-		"xargs cat" \
-		'mariadb "$(DB_NAME)"'
-	@find ./store/sfuncs -name "*.sql" | xargs cat | \
-		mariadb -h "$(DB_HOST)" -u "$(DB_USERNAME)" \
-		"-p$(DB_PASSWORD)" --skip-ssl "$(DB_NAME)"
-	@printf 'find ./store/sprocs -name "*.sql" | %s | %s\n' \
-		"xargs cat" \
-		'mariadb "$(DB_NAME)"'
-	@find ./store/sprocs -name "*.sql" | xargs cat | \
-		mariadb -h "$(DB_HOST)" -u "$(DB_USERNAME)" \
-		"-p$(DB_PASSWORD)" --skip-ssl "$(DB_NAME)"
 	atlas schema apply --env prod
 
 deploy: build
@@ -61,4 +68,4 @@ vet:
 	tbls lint
 	go vet
 
-.PHONY: run build format generate migrate deploy clean vet
+.PHONY: run build format generate sroutines migrate deploy clean vet

@@ -9,8 +9,7 @@ CALL create_calendar(
 );
 
 -- name: GetCalendar :one
-SELECT
-	owner_user_id,
+SELECT owner_user_id,
 	name,
 	description,
 	AES_DECRYPT(cwh.ical_encrypted, sqlc.arg(AES_SECRET_KEY)) AS ical,
@@ -18,34 +17,20 @@ SELECT
 FROM calendars AS c
 INNER JOIN calendar_writes_history AS cwh
 	ON c.calendar_id = cwh.calendar_id
-WHERE c.calendar_id = ?
+WHERE c.calendar_id = sqlc.arg(calendar_id)
 	AND cwh.created_at = (
 		SELECT MAX(created_at)
 		FROM calendar_writes_history AS cwh2
 		WHERE cwh2.calendar_id = cwh.calendar_id
-	)
-	AND (
+	) AND (
 		c.owner_user_id = sqlc.arg(actor_user_id)
 		OR EXISTS (
 			SELECT 1
-			FROM organization_calendars_history AS och
-			INNER JOIN organization_members_history AS omh
-				ON och.organization_id = omh.organization_id
-			WHERE och.calendar_id = c.calendar_id
-				AND och.added = TRUE
-				AND och.created_at = (
-					SELECT MAX(created_at)
-					FROM organization_calendars_history AS och2
-					WHERE och2.calendar_id = och.calendar_id
-				)
-				AND omh.member_user_id = sqlc.arg(actor_user_id)
-				AND omh.added = TRUE
-				AND omh.created_at = (
-					SELECT MAX(created_at)
-					FROM organization_members_history AS omh2
-					WHERE omh2.organization_id = omh.organization_id
-						AND omh2.member_user_id = omh.member_user_id
-				)
+			FROM current_organization_calendars AS coc
+			INNER JOIN current_memberships AS cm
+				ON coc.organization_id = cm.organization_id
+					AND cm.member_user_id = sqlc.arg(actor_user_id)
+			WHERE coc.calendar_id = c.calendar_id
 		)
 	);
 
