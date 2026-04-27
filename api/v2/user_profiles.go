@@ -142,6 +142,31 @@ func (u *UserProfileService) GetUserCalendarLabels(
 	}), nil
 }
 
+func (u *UserProfileService) GetUserEmail(
+	ctx context.Context,
+	req *connect.Request[usersv2.GetUserEmailRequest],
+) (*connect.Response[usersv2.GetUserEmailResponse], error) {
+	var (
+		actor UserActor
+		email string
+		err   error
+	)
+
+	actor, err = ActorFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	email, err = store.New(u.db).GetUserEmail(ctx, actor.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(&usersv2.GetUserEmailResponse{
+		Email: email,
+	}), nil
+}
+
 func UserProfileHandler(
 	db *sql.DB,
 	opts ...connect.HandlerOption,

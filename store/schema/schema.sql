@@ -214,9 +214,8 @@ CREATE TABLE join_requests_history (
 
 	status ENUM(
 		'open',
-		'retracted',
-		'denied',
-		'accepted'
+		'accepted',
+		'denied'
 	) NOT NULL,
 
 	CONSTRAINT PRIMARY KEY (join_request_event_id),

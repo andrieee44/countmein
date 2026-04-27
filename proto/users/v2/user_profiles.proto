@@ -7,6 +7,7 @@ service UserProfileService {
   rpc GetUserOrganizations(GetUserOrganizationsRequest) returns (GetUserOrganizationsResponse);
   rpc GetUserLabels(GetUserLabelsRequest) returns (GetUserLabelsResponse);
   rpc GetUserCalendarLabels(GetUserCalendarLabelsRequest) returns (GetUserCalendarLabelsResponse);
+  rpc GetUserEmail(GetUserEmailRequest) returns (GetUserEmailResponse);
 }
 
 message GetUserOwnedCalendarsRequest {}
@@ -33,4 +34,10 @@ message GetUserCalendarLabelsRequest {
 
 message GetUserCalendarLabelsResponse {
   repeated int64 user_label_ids = 1;
+}
+
+message GetUserEmailRequest {}
+
+message GetUserEmailResponse {
+  string email = 1;
 }

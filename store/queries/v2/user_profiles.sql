@@ -27,3 +27,8 @@ INNER JOIN calendars_users_labels AS cul
     ON cul.user_label_id = ul.user_label_id
 WHERE cul.calendar_id = ?
     AND ul.user_id = sqlc.arg(actor_user_id);
+
+-- name: GetUserEmail :one
+SELECT email
+FROM users
+WHERE user_id = sqlc.arg(actor_user_id)

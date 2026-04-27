@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package organizations.v2;
+
+service OrganizationMembershipService {
+  rpc JoinOrganization(JoinOrganizationRequest) returns (JoinOrganizationResponse);
+  // rpc GetOrganizationJoinPrompt(GetOrganizationJoinPromptRequest) returns (GetOrganizationJoinPromptResponse);
+  // rpc SubmitOrganizationJoinRequest(SubmitOrganizationJoinRequestRequest) returns (SubmitOrganizationJoinRequestResponse);
+  rpc LeaveOrganization(LeaveOrganizationRequest) returns (LeaveOrganizationResponse);
+}
+
+message JoinOrganizationRequest {
+  int64 organization_id = 1;
+}
+
+message JoinOrganizationResponse {}
+
+/*
+   message GetOrganizationJoinPromptRequest {
+     int64 organization_id = 1;
+   }
+
+   message GetOrganizationJoinPromptResponse {
+     int64 join_prompt_event_id = 1;
+   }
+
+   message SubmitOrganizationJoinRequestRequest {
+     int64 join_response_event_id = 1;
+   }
+
+   message SubmitOrganizationJoinRequestResponse {
+   }
+
+*/
+
+message LeaveOrganizationRequest {
+  int64 organization_id = 1;
+}
+
+message LeaveOrganizationResponse {}

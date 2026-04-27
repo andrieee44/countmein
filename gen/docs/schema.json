@@ -674,7 +674,7 @@
         },
         {
           "name": "status",
-          "type": "enum('open','retracted','denied','accepted')",
+          "type": "enum('open','accepted','denied')",
           "nullable": false
         }
       ],
@@ -741,7 +741,7 @@
           ]
         }
       ],
-      "def": "CREATE TABLE `join_requests_history` (\n  `join_request_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `join_response_event_id` bigint(20) NOT NULL,\n  `admin_user_id` bigint(20) DEFAULT NULL,\n  `created_at` datetime(6) NOT NULL,\n  `status` enum('open','retracted','denied','accepted') NOT NULL,\n  PRIMARY KEY (`join_request_event_id`),\n  KEY `fk_join_requests_history_admin_user_id` (`admin_user_id`),\n  KEY `fk_join_requests_history_join_response_event_id` (`join_response_event_id`),\n  CONSTRAINT `fk_join_requests_history_admin_user_id` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,\n  CONSTRAINT `fk_join_requests_history_join_response_event_id` FOREIGN KEY (`join_response_event_id`) REFERENCES `join_responses_history` (`join_response_event_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+      "def": "CREATE TABLE `join_requests_history` (\n  `join_request_event_id` bigint(20) NOT NULL AUTO_INCREMENT,\n  `join_response_event_id` bigint(20) NOT NULL,\n  `admin_user_id` bigint(20) DEFAULT NULL,\n  `created_at` datetime(6) NOT NULL,\n  `status` enum('open','accepted','denied') NOT NULL,\n  PRIMARY KEY (`join_request_event_id`),\n  KEY `fk_join_requests_history_admin_user_id` (`admin_user_id`),\n  KEY `fk_join_requests_history_join_response_event_id` (`join_response_event_id`),\n  CONSTRAINT `fk_join_requests_history_admin_user_id` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL,\n  CONSTRAINT `fk_join_requests_history_join_response_event_id` FOREIGN KEY (`join_response_event_id`) REFERENCES `join_responses_history` (`join_response_event_id`) ON DELETE CASCADE\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     },
     {
       "name": "users_labels",
@@ -1595,6 +1595,30 @@
       "name": "create_calendar",
       "return_type": "",
       "arguments": "p_actor_user_id bigint; p_name varchar; p_ical longblob; p_description text; p_AES_SECRET_KEY binary; out_calendar_id bigint",
+      "type": "PROCEDURE"
+    },
+    {
+      "name": "create_organization",
+      "return_type": "",
+      "arguments": "p_actor_user_id bigint; p_name varchar; p_requires_join_request tinyint; p_description text; out_organization_id bigint",
+      "type": "PROCEDURE"
+    },
+    {
+      "name": "is_member",
+      "return_type": "tinyint",
+      "arguments": "p_organization_id bigint; p_user_id bigint",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "join_organization",
+      "return_type": "",
+      "arguments": "p_actor_user_id bigint; p_organization_id bigint",
+      "type": "PROCEDURE"
+    },
+    {
+      "name": "leave_organization",
+      "return_type": "",
+      "arguments": "p_actor_user_id bigint; p_organization_id bigint",
       "type": "PROCEDURE"
     },
     {

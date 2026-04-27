@@ -24,6 +24,10 @@
 | Name | ReturnType | Arguments | Type |
 | ---- | ------- | ------- | ---- |
 | create_calendar |  | p_actor_user_id bigint; p_name varchar; p_ical longblob; p_description text; p_AES_SECRET_KEY binary; out_calendar_id bigint | PROCEDURE |
+| create_organization |  | p_actor_user_id bigint; p_name varchar; p_requires_join_request tinyint; p_description text; out_organization_id bigint | PROCEDURE |
+| is_member | tinyint | p_organization_id bigint; p_user_id bigint | FUNCTION |
+| join_organization |  | p_actor_user_id bigint; p_organization_id bigint | PROCEDURE |
+| leave_organization |  | p_actor_user_id bigint; p_organization_id bigint | PROCEDURE |
 | SSELECT |  | p_table varchar; p_database varchar; p_where varchar | PROCEDURE |
 
 ## Relations

@@ -14,6 +14,12 @@ generate:
 	buf generate
 
 migrate:
+	@printf 'find ./store/sfuncs -name "*.sql" | %s | %s\n' \
+		"xargs cat" \
+		'mariadb "$(DB_NAME)"'
+	@find ./store/sfuncs -name "*.sql" | xargs cat | \
+		mariadb -h "$(DB_HOST)" -u "$(DB_USERNAME)" \
+		"-p$(DB_PASSWORD)" --skip-ssl "$(DB_NAME)"
 	@printf 'find ./store/sprocs -name "*.sql" | %s | %s\n' \
 		"xargs cat" \
 		'mariadb "$(DB_NAME)"'

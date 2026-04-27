@@ -45,6 +45,9 @@ const (
 	// UserProfileServiceGetUserCalendarLabelsProcedure is the fully-qualified name of the
 	// UserProfileService's GetUserCalendarLabels RPC.
 	UserProfileServiceGetUserCalendarLabelsProcedure = "/users.v2.UserProfileService/GetUserCalendarLabels"
+	// UserProfileServiceGetUserEmailProcedure is the fully-qualified name of the UserProfileService's
+	// GetUserEmail RPC.
+	UserProfileServiceGetUserEmailProcedure = "/users.v2.UserProfileService/GetUserEmail"
 )
 
 // UserProfileServiceClient is a client for the users.v2.UserProfileService service.
@@ -53,6 +56,7 @@ type UserProfileServiceClient interface {
 	GetUserOrganizations(context.Context, *connect.Request[v2.GetUserOrganizationsRequest]) (*connect.Response[v2.GetUserOrganizationsResponse], error)
 	GetUserLabels(context.Context, *connect.Request[v2.GetUserLabelsRequest]) (*connect.Response[v2.GetUserLabelsResponse], error)
 	GetUserCalendarLabels(context.Context, *connect.Request[v2.GetUserCalendarLabelsRequest]) (*connect.Response[v2.GetUserCalendarLabelsResponse], error)
+	GetUserEmail(context.Context, *connect.Request[v2.GetUserEmailRequest]) (*connect.Response[v2.GetUserEmailResponse], error)
 }
 
 // NewUserProfileServiceClient constructs a client for the users.v2.UserProfileService service. By
@@ -90,6 +94,12 @@ func NewUserProfileServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(userProfileServiceMethods.ByName("GetUserCalendarLabels")),
 			connect.WithClientOptions(opts...),
 		),
+		getUserEmail: connect.NewClient[v2.GetUserEmailRequest, v2.GetUserEmailResponse](
+			httpClient,
+			baseURL+UserProfileServiceGetUserEmailProcedure,
+			connect.WithSchema(userProfileServiceMethods.ByName("GetUserEmail")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -99,6 +109,7 @@ type userProfileServiceClient struct {
 	getUserOrganizations  *connect.Client[v2.GetUserOrganizationsRequest, v2.GetUserOrganizationsResponse]
 	getUserLabels         *connect.Client[v2.GetUserLabelsRequest, v2.GetUserLabelsResponse]
 	getUserCalendarLabels *connect.Client[v2.GetUserCalendarLabelsRequest, v2.GetUserCalendarLabelsResponse]
+	getUserEmail          *connect.Client[v2.GetUserEmailRequest, v2.GetUserEmailResponse]
 }
 
 // GetUserOwnedCalendars calls users.v2.UserProfileService.GetUserOwnedCalendars.
@@ -121,12 +132,18 @@ func (c *userProfileServiceClient) GetUserCalendarLabels(ctx context.Context, re
 	return c.getUserCalendarLabels.CallUnary(ctx, req)
 }
 
+// GetUserEmail calls users.v2.UserProfileService.GetUserEmail.
+func (c *userProfileServiceClient) GetUserEmail(ctx context.Context, req *connect.Request[v2.GetUserEmailRequest]) (*connect.Response[v2.GetUserEmailResponse], error) {
+	return c.getUserEmail.CallUnary(ctx, req)
+}
+
 // UserProfileServiceHandler is an implementation of the users.v2.UserProfileService service.
 type UserProfileServiceHandler interface {
 	GetUserOwnedCalendars(context.Context, *connect.Request[v2.GetUserOwnedCalendarsRequest]) (*connect.Response[v2.GetUserOwnedCalendarsResponse], error)
 	GetUserOrganizations(context.Context, *connect.Request[v2.GetUserOrganizationsRequest]) (*connect.Response[v2.GetUserOrganizationsResponse], error)
 	GetUserLabels(context.Context, *connect.Request[v2.GetUserLabelsRequest]) (*connect.Response[v2.GetUserLabelsResponse], error)
 	GetUserCalendarLabels(context.Context, *connect.Request[v2.GetUserCalendarLabelsRequest]) (*connect.Response[v2.GetUserCalendarLabelsResponse], error)
+	GetUserEmail(context.Context, *connect.Request[v2.GetUserEmailRequest]) (*connect.Response[v2.GetUserEmailResponse], error)
 }
 
 // NewUserProfileServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -160,6 +177,12 @@ func NewUserProfileServiceHandler(svc UserProfileServiceHandler, opts ...connect
 		connect.WithSchema(userProfileServiceMethods.ByName("GetUserCalendarLabels")),
 		connect.WithHandlerOptions(opts...),
 	)
+	userProfileServiceGetUserEmailHandler := connect.NewUnaryHandler(
+		UserProfileServiceGetUserEmailProcedure,
+		svc.GetUserEmail,
+		connect.WithSchema(userProfileServiceMethods.ByName("GetUserEmail")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/users.v2.UserProfileService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case UserProfileServiceGetUserOwnedCalendarsProcedure:
@@ -170,6 +193,8 @@ func NewUserProfileServiceHandler(svc UserProfileServiceHandler, opts ...connect
 			userProfileServiceGetUserLabelsHandler.ServeHTTP(w, r)
 		case UserProfileServiceGetUserCalendarLabelsProcedure:
 			userProfileServiceGetUserCalendarLabelsHandler.ServeHTTP(w, r)
+		case UserProfileServiceGetUserEmailProcedure:
+			userProfileServiceGetUserEmailHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -193,4 +218,8 @@ func (UnimplementedUserProfileServiceHandler) GetUserLabels(context.Context, *co
 
 func (UnimplementedUserProfileServiceHandler) GetUserCalendarLabels(context.Context, *connect.Request[v2.GetUserCalendarLabelsRequest]) (*connect.Response[v2.GetUserCalendarLabelsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("users.v2.UserProfileService.GetUserCalendarLabels is not implemented"))
+}
+
+func (UnimplementedUserProfileServiceHandler) GetUserEmail(context.Context, *connect.Request[v2.GetUserEmailRequest]) (*connect.Response[v2.GetUserEmailResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("users.v2.UserProfileService.GetUserEmail is not implemented"))
 }

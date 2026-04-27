@@ -45,9 +45,9 @@ const (
 	// CalendarServiceWriteCalendarProcedure is the fully-qualified name of the CalendarService's
 	// WriteCalendar RPC.
 	CalendarServiceWriteCalendarProcedure = "/calendars.v2.CalendarService/WriteCalendar"
-	// CalendarServiceUpdateCalendarMetadataProcedure is the fully-qualified name of the
-	// CalendarService's UpdateCalendarMetadata RPC.
-	CalendarServiceUpdateCalendarMetadataProcedure = "/calendars.v2.CalendarService/UpdateCalendarMetadata"
+	// CalendarServiceUpdateCalendarProcedure is the fully-qualified name of the CalendarService's
+	// UpdateCalendar RPC.
+	CalendarServiceUpdateCalendarProcedure = "/calendars.v2.CalendarService/UpdateCalendar"
 	// CalendarServiceDeleteCalendarProcedure is the fully-qualified name of the CalendarService's
 	// DeleteCalendar RPC.
 	CalendarServiceDeleteCalendarProcedure = "/calendars.v2.CalendarService/DeleteCalendar"
@@ -59,7 +59,7 @@ type CalendarServiceClient interface {
 	GetCalendar(context.Context, *connect.Request[v2.GetCalendarRequest]) (*connect.Response[v2.GetCalendarResponse], error)
 	GetCalendarWrites(context.Context, *connect.Request[v2.GetCalendarWritesRequest]) (*connect.Response[v2.GetCalendarWritesResponse], error)
 	WriteCalendar(context.Context, *connect.Request[v2.WriteCalendarRequest]) (*connect.Response[v2.WriteCalendarResponse], error)
-	UpdateCalendarMetadata(context.Context, *connect.Request[v2.UpdateCalendarMetadataRequest]) (*connect.Response[v2.UpdateCalendarMetadataResponse], error)
+	UpdateCalendar(context.Context, *connect.Request[v2.UpdateCalendarRequest]) (*connect.Response[v2.UpdateCalendarResponse], error)
 	DeleteCalendar(context.Context, *connect.Request[v2.DeleteCalendarRequest]) (*connect.Response[v2.DeleteCalendarResponse], error)
 }
 
@@ -98,10 +98,10 @@ func NewCalendarServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(calendarServiceMethods.ByName("WriteCalendar")),
 			connect.WithClientOptions(opts...),
 		),
-		updateCalendarMetadata: connect.NewClient[v2.UpdateCalendarMetadataRequest, v2.UpdateCalendarMetadataResponse](
+		updateCalendar: connect.NewClient[v2.UpdateCalendarRequest, v2.UpdateCalendarResponse](
 			httpClient,
-			baseURL+CalendarServiceUpdateCalendarMetadataProcedure,
-			connect.WithSchema(calendarServiceMethods.ByName("UpdateCalendarMetadata")),
+			baseURL+CalendarServiceUpdateCalendarProcedure,
+			connect.WithSchema(calendarServiceMethods.ByName("UpdateCalendar")),
 			connect.WithClientOptions(opts...),
 		),
 		deleteCalendar: connect.NewClient[v2.DeleteCalendarRequest, v2.DeleteCalendarResponse](
@@ -115,12 +115,12 @@ func NewCalendarServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // calendarServiceClient implements CalendarServiceClient.
 type calendarServiceClient struct {
-	createCalendar         *connect.Client[v2.CreateCalendarRequest, v2.CreateCalendarResponse]
-	getCalendar            *connect.Client[v2.GetCalendarRequest, v2.GetCalendarResponse]
-	getCalendarWrites      *connect.Client[v2.GetCalendarWritesRequest, v2.GetCalendarWritesResponse]
-	writeCalendar          *connect.Client[v2.WriteCalendarRequest, v2.WriteCalendarResponse]
-	updateCalendarMetadata *connect.Client[v2.UpdateCalendarMetadataRequest, v2.UpdateCalendarMetadataResponse]
-	deleteCalendar         *connect.Client[v2.DeleteCalendarRequest, v2.DeleteCalendarResponse]
+	createCalendar    *connect.Client[v2.CreateCalendarRequest, v2.CreateCalendarResponse]
+	getCalendar       *connect.Client[v2.GetCalendarRequest, v2.GetCalendarResponse]
+	getCalendarWrites *connect.Client[v2.GetCalendarWritesRequest, v2.GetCalendarWritesResponse]
+	writeCalendar     *connect.Client[v2.WriteCalendarRequest, v2.WriteCalendarResponse]
+	updateCalendar    *connect.Client[v2.UpdateCalendarRequest, v2.UpdateCalendarResponse]
+	deleteCalendar    *connect.Client[v2.DeleteCalendarRequest, v2.DeleteCalendarResponse]
 }
 
 // CreateCalendar calls calendars.v2.CalendarService.CreateCalendar.
@@ -143,9 +143,9 @@ func (c *calendarServiceClient) WriteCalendar(ctx context.Context, req *connect.
 	return c.writeCalendar.CallUnary(ctx, req)
 }
 
-// UpdateCalendarMetadata calls calendars.v2.CalendarService.UpdateCalendarMetadata.
-func (c *calendarServiceClient) UpdateCalendarMetadata(ctx context.Context, req *connect.Request[v2.UpdateCalendarMetadataRequest]) (*connect.Response[v2.UpdateCalendarMetadataResponse], error) {
-	return c.updateCalendarMetadata.CallUnary(ctx, req)
+// UpdateCalendar calls calendars.v2.CalendarService.UpdateCalendar.
+func (c *calendarServiceClient) UpdateCalendar(ctx context.Context, req *connect.Request[v2.UpdateCalendarRequest]) (*connect.Response[v2.UpdateCalendarResponse], error) {
+	return c.updateCalendar.CallUnary(ctx, req)
 }
 
 // DeleteCalendar calls calendars.v2.CalendarService.DeleteCalendar.
@@ -159,7 +159,7 @@ type CalendarServiceHandler interface {
 	GetCalendar(context.Context, *connect.Request[v2.GetCalendarRequest]) (*connect.Response[v2.GetCalendarResponse], error)
 	GetCalendarWrites(context.Context, *connect.Request[v2.GetCalendarWritesRequest]) (*connect.Response[v2.GetCalendarWritesResponse], error)
 	WriteCalendar(context.Context, *connect.Request[v2.WriteCalendarRequest]) (*connect.Response[v2.WriteCalendarResponse], error)
-	UpdateCalendarMetadata(context.Context, *connect.Request[v2.UpdateCalendarMetadataRequest]) (*connect.Response[v2.UpdateCalendarMetadataResponse], error)
+	UpdateCalendar(context.Context, *connect.Request[v2.UpdateCalendarRequest]) (*connect.Response[v2.UpdateCalendarResponse], error)
 	DeleteCalendar(context.Context, *connect.Request[v2.DeleteCalendarRequest]) (*connect.Response[v2.DeleteCalendarResponse], error)
 }
 
@@ -194,10 +194,10 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect.Handl
 		connect.WithSchema(calendarServiceMethods.ByName("WriteCalendar")),
 		connect.WithHandlerOptions(opts...),
 	)
-	calendarServiceUpdateCalendarMetadataHandler := connect.NewUnaryHandler(
-		CalendarServiceUpdateCalendarMetadataProcedure,
-		svc.UpdateCalendarMetadata,
-		connect.WithSchema(calendarServiceMethods.ByName("UpdateCalendarMetadata")),
+	calendarServiceUpdateCalendarHandler := connect.NewUnaryHandler(
+		CalendarServiceUpdateCalendarProcedure,
+		svc.UpdateCalendar,
+		connect.WithSchema(calendarServiceMethods.ByName("UpdateCalendar")),
 		connect.WithHandlerOptions(opts...),
 	)
 	calendarServiceDeleteCalendarHandler := connect.NewUnaryHandler(
@@ -216,8 +216,8 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect.Handl
 			calendarServiceGetCalendarWritesHandler.ServeHTTP(w, r)
 		case CalendarServiceWriteCalendarProcedure:
 			calendarServiceWriteCalendarHandler.ServeHTTP(w, r)
-		case CalendarServiceUpdateCalendarMetadataProcedure:
-			calendarServiceUpdateCalendarMetadataHandler.ServeHTTP(w, r)
+		case CalendarServiceUpdateCalendarProcedure:
+			calendarServiceUpdateCalendarHandler.ServeHTTP(w, r)
 		case CalendarServiceDeleteCalendarProcedure:
 			calendarServiceDeleteCalendarHandler.ServeHTTP(w, r)
 		default:
@@ -245,8 +245,8 @@ func (UnimplementedCalendarServiceHandler) WriteCalendar(context.Context, *conne
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("calendars.v2.CalendarService.WriteCalendar is not implemented"))
 }
 
-func (UnimplementedCalendarServiceHandler) UpdateCalendarMetadata(context.Context, *connect.Request[v2.UpdateCalendarMetadataRequest]) (*connect.Response[v2.UpdateCalendarMetadataResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("calendars.v2.CalendarService.UpdateCalendarMetadata is not implemented"))
+func (UnimplementedCalendarServiceHandler) UpdateCalendar(context.Context, *connect.Request[v2.UpdateCalendarRequest]) (*connect.Response[v2.UpdateCalendarResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("calendars.v2.CalendarService.UpdateCalendar is not implemented"))
 }
 
 func (UnimplementedCalendarServiceHandler) DeleteCalendar(context.Context, *connect.Request[v2.DeleteCalendarRequest]) (*connect.Response[v2.DeleteCalendarResponse], error) {

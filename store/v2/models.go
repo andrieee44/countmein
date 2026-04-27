@@ -14,10 +14,9 @@ import (
 type JoinRequestsHistoryStatus string
 
 const (
-	JoinRequestsHistoryStatusOpen      JoinRequestsHistoryStatus = "open"
-	JoinRequestsHistoryStatusRetracted JoinRequestsHistoryStatus = "retracted"
-	JoinRequestsHistoryStatusDenied    JoinRequestsHistoryStatus = "denied"
-	JoinRequestsHistoryStatusAccepted  JoinRequestsHistoryStatus = "accepted"
+	JoinRequestsHistoryStatusOpen     JoinRequestsHistoryStatus = "open"
+	JoinRequestsHistoryStatusAccepted JoinRequestsHistoryStatus = "accepted"
+	JoinRequestsHistoryStatusDenied   JoinRequestsHistoryStatus = "denied"
 )
 
 func (e *JoinRequestsHistoryStatus) Scan(src interface{}) error {

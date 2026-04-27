@@ -11,7 +11,7 @@ CREATE TABLE `join_requests_history` (
   `join_response_event_id` bigint(20) NOT NULL,
   `admin_user_id` bigint(20) DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
-  `status` enum('open','retracted','denied','accepted') NOT NULL,
+  `status` enum('open','accepted','denied') NOT NULL,
   PRIMARY KEY (`join_request_event_id`),
   KEY `fk_join_requests_history_admin_user_id` (`admin_user_id`),
   KEY `fk_join_requests_history_join_response_event_id` (`join_response_event_id`),
@@ -30,7 +30,7 @@ CREATE TABLE `join_requests_history` (
 | join_response_event_id | bigint(20) |  | false |  |  | [join_responses_history](join_responses_history.md) |  |
 | admin_user_id | bigint(20) | NULL | true |  |  | [users](users.md) |  |
 | created_at | datetime(6) |  | false |  |  |  |  |
-| status | enum('open','retracted','denied','accepted') |  | false |  |  |  |  |
+| status | enum('open','accepted','denied') |  | false |  |  |  |  |
 
 ## Constraints
 

@@ -422,7 +422,7 @@ func (*WriteCalendarResponse) Descriptor() ([]byte, []int) {
 	return file_calendars_v2_calendars_proto_rawDescGZIP(), []int{7}
 }
 
-type UpdateCalendarMetadataRequest struct {
+type UpdateCalendarRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CalendarId    int64                  `protobuf:"varint,1,opt,name=calendar_id,json=calendarId,proto3" json:"calendar_id,omitempty"`
 	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
@@ -431,20 +431,20 @@ type UpdateCalendarMetadataRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateCalendarMetadataRequest) Reset() {
-	*x = UpdateCalendarMetadataRequest{}
+func (x *UpdateCalendarRequest) Reset() {
+	*x = UpdateCalendarRequest{}
 	mi := &file_calendars_v2_calendars_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateCalendarMetadataRequest) String() string {
+func (x *UpdateCalendarRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateCalendarMetadataRequest) ProtoMessage() {}
+func (*UpdateCalendarRequest) ProtoMessage() {}
 
-func (x *UpdateCalendarMetadataRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateCalendarRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_calendars_v2_calendars_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -456,52 +456,52 @@ func (x *UpdateCalendarMetadataRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateCalendarMetadataRequest.ProtoReflect.Descriptor instead.
-func (*UpdateCalendarMetadataRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateCalendarRequest.ProtoReflect.Descriptor instead.
+func (*UpdateCalendarRequest) Descriptor() ([]byte, []int) {
 	return file_calendars_v2_calendars_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *UpdateCalendarMetadataRequest) GetCalendarId() int64 {
+func (x *UpdateCalendarRequest) GetCalendarId() int64 {
 	if x != nil {
 		return x.CalendarId
 	}
 	return 0
 }
 
-func (x *UpdateCalendarMetadataRequest) GetName() string {
+func (x *UpdateCalendarRequest) GetName() string {
 	if x != nil && x.Name != nil {
 		return *x.Name
 	}
 	return ""
 }
 
-func (x *UpdateCalendarMetadataRequest) GetDescription() string {
+func (x *UpdateCalendarRequest) GetDescription() string {
 	if x != nil && x.Description != nil {
 		return *x.Description
 	}
 	return ""
 }
 
-type UpdateCalendarMetadataResponse struct {
+type UpdateCalendarResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateCalendarMetadataResponse) Reset() {
-	*x = UpdateCalendarMetadataResponse{}
+func (x *UpdateCalendarResponse) Reset() {
+	*x = UpdateCalendarResponse{}
 	mi := &file_calendars_v2_calendars_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateCalendarMetadataResponse) String() string {
+func (x *UpdateCalendarResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateCalendarMetadataResponse) ProtoMessage() {}
+func (*UpdateCalendarResponse) ProtoMessage() {}
 
-func (x *UpdateCalendarMetadataResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateCalendarResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_calendars_v2_calendars_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -513,8 +513,8 @@ func (x *UpdateCalendarMetadataResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateCalendarMetadataResponse.ProtoReflect.Descriptor instead.
-func (*UpdateCalendarMetadataResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateCalendarResponse.ProtoReflect.Descriptor instead.
+func (*UpdateCalendarResponse) Descriptor() ([]byte, []int) {
 	return file_calendars_v2_calendars_proto_rawDescGZIP(), []int{9}
 }
 
@@ -631,25 +631,25 @@ const file_calendars_v2_calendars_proto_rawDesc = "" +
 	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
 	"calendarId\x12\x12\n" +
 	"\x04ical\x18\x02 \x01(\fR\x04ical\"\x17\n" +
-	"\x15WriteCalendarResponse\"\x99\x01\n" +
-	"\x1dUpdateCalendarMetadataRequest\x12\x1f\n" +
+	"\x15WriteCalendarResponse\"\x91\x01\n" +
+	"\x15UpdateCalendarRequest\x12\x1f\n" +
 	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
 	"calendarId\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x01R\vdescription\x88\x01\x01B\a\n" +
 	"\x05_nameB\x0e\n" +
-	"\f_description\" \n" +
-	"\x1eUpdateCalendarMetadataResponse\"8\n" +
+	"\f_description\"\x18\n" +
+	"\x16UpdateCalendarResponse\"8\n" +
 	"\x15DeleteCalendarRequest\x12\x1f\n" +
 	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
 	"calendarId\"\x18\n" +
-	"\x16DeleteCalendarResponse2\xd4\x04\n" +
+	"\x16DeleteCalendarResponse2\xbc\x04\n" +
 	"\x0fCalendarService\x12[\n" +
 	"\x0eCreateCalendar\x12#.calendars.v2.CreateCalendarRequest\x1a$.calendars.v2.CreateCalendarResponse\x12R\n" +
 	"\vGetCalendar\x12 .calendars.v2.GetCalendarRequest\x1a!.calendars.v2.GetCalendarResponse\x12d\n" +
 	"\x11GetCalendarWrites\x12&.calendars.v2.GetCalendarWritesRequest\x1a'.calendars.v2.GetCalendarWritesResponse\x12X\n" +
-	"\rWriteCalendar\x12\".calendars.v2.WriteCalendarRequest\x1a#.calendars.v2.WriteCalendarResponse\x12s\n" +
-	"\x16UpdateCalendarMetadata\x12+.calendars.v2.UpdateCalendarMetadataRequest\x1a,.calendars.v2.UpdateCalendarMetadataResponse\x12[\n" +
+	"\rWriteCalendar\x12\".calendars.v2.WriteCalendarRequest\x1a#.calendars.v2.WriteCalendarResponse\x12[\n" +
+	"\x0eUpdateCalendar\x12#.calendars.v2.UpdateCalendarRequest\x1a$.calendars.v2.UpdateCalendarResponse\x12[\n" +
 	"\x0eDeleteCalendar\x12#.calendars.v2.DeleteCalendarRequest\x1a$.calendars.v2.DeleteCalendarResponseB\xb1\x01\n" +
 	"\x10com.calendars.v2B\x0eCalendarsProtoP\x01Z<github.com/andrieee44/countmein/gen/calendars/v2;calendarsv2\xa2\x02\x03CXX\xaa\x02\fCalendars.V2\xca\x02\fCalendars\\V2\xe2\x02\x18Calendars\\V2\\GPBMetadata\xea\x02\rCalendars::V2b\x06proto3"
 
@@ -667,19 +667,19 @@ func file_calendars_v2_calendars_proto_rawDescGZIP() []byte {
 
 var file_calendars_v2_calendars_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_calendars_v2_calendars_proto_goTypes = []any{
-	(*CreateCalendarRequest)(nil),          // 0: calendars.v2.CreateCalendarRequest
-	(*CreateCalendarResponse)(nil),         // 1: calendars.v2.CreateCalendarResponse
-	(*GetCalendarRequest)(nil),             // 2: calendars.v2.GetCalendarRequest
-	(*GetCalendarResponse)(nil),            // 3: calendars.v2.GetCalendarResponse
-	(*GetCalendarWritesRequest)(nil),       // 4: calendars.v2.GetCalendarWritesRequest
-	(*GetCalendarWritesResponse)(nil),      // 5: calendars.v2.GetCalendarWritesResponse
-	(*WriteCalendarRequest)(nil),           // 6: calendars.v2.WriteCalendarRequest
-	(*WriteCalendarResponse)(nil),          // 7: calendars.v2.WriteCalendarResponse
-	(*UpdateCalendarMetadataRequest)(nil),  // 8: calendars.v2.UpdateCalendarMetadataRequest
-	(*UpdateCalendarMetadataResponse)(nil), // 9: calendars.v2.UpdateCalendarMetadataResponse
-	(*DeleteCalendarRequest)(nil),          // 10: calendars.v2.DeleteCalendarRequest
-	(*DeleteCalendarResponse)(nil),         // 11: calendars.v2.DeleteCalendarResponse
-	(*timestamppb.Timestamp)(nil),          // 12: google.protobuf.Timestamp
+	(*CreateCalendarRequest)(nil),     // 0: calendars.v2.CreateCalendarRequest
+	(*CreateCalendarResponse)(nil),    // 1: calendars.v2.CreateCalendarResponse
+	(*GetCalendarRequest)(nil),        // 2: calendars.v2.GetCalendarRequest
+	(*GetCalendarResponse)(nil),       // 3: calendars.v2.GetCalendarResponse
+	(*GetCalendarWritesRequest)(nil),  // 4: calendars.v2.GetCalendarWritesRequest
+	(*GetCalendarWritesResponse)(nil), // 5: calendars.v2.GetCalendarWritesResponse
+	(*WriteCalendarRequest)(nil),      // 6: calendars.v2.WriteCalendarRequest
+	(*WriteCalendarResponse)(nil),     // 7: calendars.v2.WriteCalendarResponse
+	(*UpdateCalendarRequest)(nil),     // 8: calendars.v2.UpdateCalendarRequest
+	(*UpdateCalendarResponse)(nil),    // 9: calendars.v2.UpdateCalendarResponse
+	(*DeleteCalendarRequest)(nil),     // 10: calendars.v2.DeleteCalendarRequest
+	(*DeleteCalendarResponse)(nil),    // 11: calendars.v2.DeleteCalendarResponse
+	(*timestamppb.Timestamp)(nil),     // 12: google.protobuf.Timestamp
 }
 var file_calendars_v2_calendars_proto_depIdxs = []int32{
 	12, // 0: calendars.v2.GetCalendarResponse.updated_at:type_name -> google.protobuf.Timestamp
@@ -687,13 +687,13 @@ var file_calendars_v2_calendars_proto_depIdxs = []int32{
 	2,  // 2: calendars.v2.CalendarService.GetCalendar:input_type -> calendars.v2.GetCalendarRequest
 	4,  // 3: calendars.v2.CalendarService.GetCalendarWrites:input_type -> calendars.v2.GetCalendarWritesRequest
 	6,  // 4: calendars.v2.CalendarService.WriteCalendar:input_type -> calendars.v2.WriteCalendarRequest
-	8,  // 5: calendars.v2.CalendarService.UpdateCalendarMetadata:input_type -> calendars.v2.UpdateCalendarMetadataRequest
+	8,  // 5: calendars.v2.CalendarService.UpdateCalendar:input_type -> calendars.v2.UpdateCalendarRequest
 	10, // 6: calendars.v2.CalendarService.DeleteCalendar:input_type -> calendars.v2.DeleteCalendarRequest
 	1,  // 7: calendars.v2.CalendarService.CreateCalendar:output_type -> calendars.v2.CreateCalendarResponse
 	3,  // 8: calendars.v2.CalendarService.GetCalendar:output_type -> calendars.v2.GetCalendarResponse
 	5,  // 9: calendars.v2.CalendarService.GetCalendarWrites:output_type -> calendars.v2.GetCalendarWritesResponse
 	7,  // 10: calendars.v2.CalendarService.WriteCalendar:output_type -> calendars.v2.WriteCalendarResponse
-	9,  // 11: calendars.v2.CalendarService.UpdateCalendarMetadata:output_type -> calendars.v2.UpdateCalendarMetadataResponse
+	9,  // 11: calendars.v2.CalendarService.UpdateCalendar:output_type -> calendars.v2.UpdateCalendarResponse
 	11, // 12: calendars.v2.CalendarService.DeleteCalendar:output_type -> calendars.v2.DeleteCalendarResponse
 	7,  // [7:13] is the sub-list for method output_type
 	1,  // [1:7] is the sub-list for method input_type

@@ -349,6 +349,86 @@ func (x *GetUserCalendarLabelsResponse) GetUserLabelIds() []int64 {
 	return nil
 }
 
+type GetUserEmailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserEmailRequest) Reset() {
+	*x = GetUserEmailRequest{}
+	mi := &file_users_v2_user_profiles_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserEmailRequest) ProtoMessage() {}
+
+func (x *GetUserEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_users_v2_user_profiles_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserEmailRequest.ProtoReflect.Descriptor instead.
+func (*GetUserEmailRequest) Descriptor() ([]byte, []int) {
+	return file_users_v2_user_profiles_proto_rawDescGZIP(), []int{8}
+}
+
+type GetUserEmailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserEmailResponse) Reset() {
+	*x = GetUserEmailResponse{}
+	mi := &file_users_v2_user_profiles_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserEmailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserEmailResponse) ProtoMessage() {}
+
+func (x *GetUserEmailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_users_v2_user_profiles_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserEmailResponse.ProtoReflect.Descriptor instead.
+func (*GetUserEmailResponse) Descriptor() ([]byte, []int) {
+	return file_users_v2_user_profiles_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetUserEmailResponse) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
 var File_users_v2_user_profiles_proto protoreflect.FileDescriptor
 
 const file_users_v2_user_profiles_proto_rawDesc = "" +
@@ -367,12 +447,16 @@ const file_users_v2_user_profiles_proto_rawDesc = "" +
 	"\vcalendar_id\x18\x01 \x01(\x03R\n" +
 	"calendarId\"E\n" +
 	"\x1dGetUserCalendarLabelsResponse\x12$\n" +
-	"\x0euser_label_ids\x18\x01 \x03(\x03R\fuserLabelIds2\xa1\x03\n" +
+	"\x0euser_label_ids\x18\x01 \x03(\x03R\fuserLabelIds\"\x15\n" +
+	"\x13GetUserEmailRequest\",\n" +
+	"\x14GetUserEmailResponse\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email2\xf0\x03\n" +
 	"\x12UserProfileService\x12h\n" +
 	"\x15GetUserOwnedCalendars\x12&.users.v2.GetUserOwnedCalendarsRequest\x1a'.users.v2.GetUserOwnedCalendarsResponse\x12e\n" +
 	"\x14GetUserOrganizations\x12%.users.v2.GetUserOrganizationsRequest\x1a&.users.v2.GetUserOrganizationsResponse\x12P\n" +
 	"\rGetUserLabels\x12\x1e.users.v2.GetUserLabelsRequest\x1a\x1f.users.v2.GetUserLabelsResponse\x12h\n" +
-	"\x15GetUserCalendarLabels\x12&.users.v2.GetUserCalendarLabelsRequest\x1a'.users.v2.GetUserCalendarLabelsResponseB\x98\x01\n" +
+	"\x15GetUserCalendarLabels\x12&.users.v2.GetUserCalendarLabelsRequest\x1a'.users.v2.GetUserCalendarLabelsResponse\x12M\n" +
+	"\fGetUserEmail\x12\x1d.users.v2.GetUserEmailRequest\x1a\x1e.users.v2.GetUserEmailResponseB\x98\x01\n" +
 	"\fcom.users.v2B\x11UserProfilesProtoP\x01Z4github.com/andrieee44/countmein/gen/users/v2;usersv2\xa2\x02\x03UXX\xaa\x02\bUsers.V2\xca\x02\bUsers\\V2\xe2\x02\x14Users\\V2\\GPBMetadata\xea\x02\tUsers::V2b\x06proto3"
 
 var (
@@ -387,7 +471,7 @@ func file_users_v2_user_profiles_proto_rawDescGZIP() []byte {
 	return file_users_v2_user_profiles_proto_rawDescData
 }
 
-var file_users_v2_user_profiles_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_users_v2_user_profiles_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_users_v2_user_profiles_proto_goTypes = []any{
 	(*GetUserOwnedCalendarsRequest)(nil),  // 0: users.v2.GetUserOwnedCalendarsRequest
 	(*GetUserOwnedCalendarsResponse)(nil), // 1: users.v2.GetUserOwnedCalendarsResponse
@@ -397,18 +481,22 @@ var file_users_v2_user_profiles_proto_goTypes = []any{
 	(*GetUserLabelsResponse)(nil),         // 5: users.v2.GetUserLabelsResponse
 	(*GetUserCalendarLabelsRequest)(nil),  // 6: users.v2.GetUserCalendarLabelsRequest
 	(*GetUserCalendarLabelsResponse)(nil), // 7: users.v2.GetUserCalendarLabelsResponse
+	(*GetUserEmailRequest)(nil),           // 8: users.v2.GetUserEmailRequest
+	(*GetUserEmailResponse)(nil),          // 9: users.v2.GetUserEmailResponse
 }
 var file_users_v2_user_profiles_proto_depIdxs = []int32{
 	0, // 0: users.v2.UserProfileService.GetUserOwnedCalendars:input_type -> users.v2.GetUserOwnedCalendarsRequest
 	2, // 1: users.v2.UserProfileService.GetUserOrganizations:input_type -> users.v2.GetUserOrganizationsRequest
 	4, // 2: users.v2.UserProfileService.GetUserLabels:input_type -> users.v2.GetUserLabelsRequest
 	6, // 3: users.v2.UserProfileService.GetUserCalendarLabels:input_type -> users.v2.GetUserCalendarLabelsRequest
-	1, // 4: users.v2.UserProfileService.GetUserOwnedCalendars:output_type -> users.v2.GetUserOwnedCalendarsResponse
-	3, // 5: users.v2.UserProfileService.GetUserOrganizations:output_type -> users.v2.GetUserOrganizationsResponse
-	5, // 6: users.v2.UserProfileService.GetUserLabels:output_type -> users.v2.GetUserLabelsResponse
-	7, // 7: users.v2.UserProfileService.GetUserCalendarLabels:output_type -> users.v2.GetUserCalendarLabelsResponse
-	4, // [4:8] is the sub-list for method output_type
-	0, // [0:4] is the sub-list for method input_type
+	8, // 4: users.v2.UserProfileService.GetUserEmail:input_type -> users.v2.GetUserEmailRequest
+	1, // 5: users.v2.UserProfileService.GetUserOwnedCalendars:output_type -> users.v2.GetUserOwnedCalendarsResponse
+	3, // 6: users.v2.UserProfileService.GetUserOrganizations:output_type -> users.v2.GetUserOrganizationsResponse
+	5, // 7: users.v2.UserProfileService.GetUserLabels:output_type -> users.v2.GetUserLabelsResponse
+	7, // 8: users.v2.UserProfileService.GetUserCalendarLabels:output_type -> users.v2.GetUserCalendarLabelsResponse
+	9, // 9: users.v2.UserProfileService.GetUserEmail:output_type -> users.v2.GetUserEmailResponse
+	5, // [5:10] is the sub-list for method output_type
+	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -425,7 +513,7 @@ func file_users_v2_user_profiles_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_users_v2_user_profiles_proto_rawDesc), len(file_users_v2_user_profiles_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

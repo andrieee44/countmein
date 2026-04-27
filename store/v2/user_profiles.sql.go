@@ -46,6 +46,19 @@ func (q *Queries) GetUserCalendarLabels(ctx context.Context, arg GetUserCalendar
 	return items, nil
 }
 
+const getUserEmail = `-- name: GetUserEmail :one
+SELECT email
+FROM users
+WHERE user_id = ?
+`
+
+func (q *Queries) GetUserEmail(ctx context.Context, actorUserID int64) (string, error) {
+	row := q.db.QueryRowContext(ctx, getUserEmail, actorUserID)
+	var email string
+	err := row.Scan(&email)
+	return email, err
+}
+
 const getUserLabels = `-- name: GetUserLabels :many
 SELECT user_label_id
 FROM users_labels

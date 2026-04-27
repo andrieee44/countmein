@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package organizations.v2;
+
+service OrganizationCalendarService {
+  rpc ToggleShareUserCalendar(ToggleShareUserCalendarRequest) returns (ToggleShareUserCalendarResponse);
+  rpc GetOrganizationCalendars(GetOrganizationCalendarsRequest) returns (GetOrganizationCalendarsResponse);
+}
+
+message ToggleShareUserCalendarRequest {
+  int64 calendar_id = 1;
+}
+
+message ToggleShareUserCalendarResponse {}
+
+message GetOrganizationCalendarsRequest {
+  int64 organization_id = 1;
+}
+
+message GetOrganizationCalendarsResponse {
+  repeated int64 calendar_ids = 1;
+}

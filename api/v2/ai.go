@@ -52,9 +52,9 @@ func (a *AIService) TextToICal(
 ) (*connect.Response[aiv2.TextToICalResponse], error) {
 	var (
 		client *groq.Client
+		resp   groq.ChatCompletionResponse
 		text   string
 		ical   *ics.Calendar
-		resp   groq.ChatCompletionResponse
 		err    error
 	)
 
@@ -88,7 +88,7 @@ func (a *AIService) TextToICal(
 				},
 				{
 					Role:    groq.RoleUser,
-					Content: text,
+					Content: req.Msg.Text,
 				},
 			},
 		},
@@ -126,11 +126,12 @@ func (a *AIService) AnalyzeICal(
 ) (*connect.Response[aiv2.AnalyzeICalResponse], error) {
 	var (
 		client *groq.Client
+		ical   *ics.Calendar
 		resp   groq.ChatCompletionResponse
 		err    error
 	)
 
-	_, err = ics.ParseCalendar(bytes.NewReader(req.Msg.Ical))
+	ical, err = ics.ParseCalendar(bytes.NewReader(req.Msg.Ical))
 	if err != nil {
 		return nil, err
 	}
@@ -157,7 +158,7 @@ func (a *AIService) AnalyzeICal(
 				},
 				{
 					Role:    groq.RoleUser,
-					Content: req.Msg.String(),
+					Content: ical.Serialize(),
 				},
 			},
 		},

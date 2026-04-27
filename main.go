@@ -93,7 +93,9 @@ func initAPI() {
 		api.AIHandler(logger, opts...),
 		api.CalendarHandler(db, _AES_SECRET_KEY, opts...),
 		api.CalendarWriteHandler(db, _AES_SECRET_KEY, opts...),
-		// api.OrganizationHandler(db, opts...),
+		api.OrganizationHandler(db, opts...),
+		api.OrganizationMembershipHandler(db, opts...),
+		// api.OrganizationCalendarHandler(db, opts...),
 	}
 }
 

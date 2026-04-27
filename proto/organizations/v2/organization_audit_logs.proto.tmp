@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package organizations.v2;
+
+service OrganizationAuditLogService {
+  rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse);
+}
+
+message CreateOrganizationRequest {
+}
+
+message CreateOrganizationResponse {
+}
+
+message CreateOrganizationRequest {
+}
+
+message CreateOrganizationResponse {
+}

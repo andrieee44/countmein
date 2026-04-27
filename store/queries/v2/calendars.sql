@@ -49,7 +49,7 @@ WHERE c.calendar_id = ?
 		)
 	);
 
--- name: UpdateCalendarMetadata :execrows
+-- name: UpdateCalendar :execrows
 UPDATE calendars
 SET name = COALESCE(sqlc.narg(name), name),
 	description = COALESCE(sqlc.narg(description), description)

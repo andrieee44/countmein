@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package organizations.v2;
+
+service OrganizationJoinRequestService {
+  rpc GetOrganizationJoinRequests(GetOrganizationJoinRequestsRequest) returns (GetOrganizationJoinRequestsResponse);
+  rpc ResolveOrganizationJoinRequest(AcceptOrganizationJoinRequestRequest) returns (AcceptOrganizationJoinRequestResponse);
+}

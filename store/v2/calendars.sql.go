@@ -134,7 +134,7 @@ func (q *Queries) GetCalendar(ctx context.Context, arg GetCalendarParams) (GetCa
 	return i, err
 }
 
-const updateCalendarMetadata = `-- name: UpdateCalendarMetadata :execrows
+const updateCalendar = `-- name: UpdateCalendar :execrows
 UPDATE calendars
 SET name = COALESCE(?, name),
 	description = COALESCE(?, description)
@@ -142,15 +142,15 @@ WHERE calendar_id = ?
 	AND owner_user_id = ?
 `
 
-type UpdateCalendarMetadataParams struct {
+type UpdateCalendarParams struct {
 	Name        sql.Null[string]
 	Description sql.Null[string]
 	CalendarID  int64
 	ActorUserID int64
 }
 
-func (q *Queries) UpdateCalendarMetadata(ctx context.Context, arg UpdateCalendarMetadataParams) (int64, error) {
-	result, err := q.db.ExecContext(ctx, updateCalendarMetadata,
+func (q *Queries) UpdateCalendar(ctx context.Context, arg UpdateCalendarParams) (int64, error) {
+	result, err := q.db.ExecContext(ctx, updateCalendar,
 		arg.Name,
 		arg.Description,
 		arg.CalendarID,

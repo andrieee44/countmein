@@ -309,40 +309,40 @@
 <!-- join_requests_history -->
 <g id="node8" class="node">
 <title>join_requests_history</title>
-<polygon fill="#efefef" stroke="none" points="1672.11,-1287.2 1672.11,-1322.8 1997.78,-1322.8 1997.78,-1287.2 1672.11,-1287.2"/>
-<polygon fill="none" stroke="black" points="1672.11,-1287.2 1672.11,-1322.8 1997.78,-1322.8 1997.78,-1287.2 1672.11,-1287.2"/>
+<polygon fill="#efefef" stroke="none" points="1688.21,-1287.2 1688.21,-1322.8 1981.68,-1322.8 1981.68,-1287.2 1688.21,-1287.2"/>
+<polygon fill="none" stroke="black" points="1688.21,-1287.2 1688.21,-1322.8 1981.68,-1322.8 1981.68,-1287.2 1688.21,-1287.2"/>
 <text text-anchor="start" x="1695.21" y="-1300.6" font-family="Arial Bold" font-size="18.00">join_requests_history</text>
 <text text-anchor="start" x="1850.2" y="-1300.6" font-family="Arial" font-size="14.00">    </text>
 <text text-anchor="start" x="1881.31" y="-1300.6" font-family="Arial" font-size="14.00" fill="#666666">[BASE TABLE]</text>
-<polygon fill="none" stroke="black" points="1672.11,-1256.4 1672.11,-1287.2 1997.78,-1287.2 1997.78,-1256.4 1672.11,-1256.4"/>
-<text text-anchor="start" x="1679.11" y="-1268.6" font-family="Arial" font-size="14.00">join_request_event_id </text>
-<text text-anchor="start" x="1819.99" y="-1268.6" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
-<polygon fill="none" stroke="black" points="1672.11,-1225.6 1672.11,-1256.4 1997.78,-1256.4 1997.78,-1225.6 1672.11,-1225.6"/>
-<text text-anchor="start" x="1679.11" y="-1237.8" font-family="Arial" font-size="14.00">join_response_event_id </text>
-<text text-anchor="start" x="1830.89" y="-1237.8" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
-<polygon fill="none" stroke="black" points="1672.11,-1194.8 1672.11,-1225.6 1997.78,-1225.6 1997.78,-1194.8 1672.11,-1194.8"/>
-<text text-anchor="start" x="1679.11" y="-1207" font-family="Arial" font-size="14.00">admin_user_id </text>
-<text text-anchor="start" x="1774.83" y="-1207" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
-<polygon fill="none" stroke="black" points="1672.11,-1164 1672.11,-1194.8 1997.78,-1194.8 1997.78,-1164 1672.11,-1164"/>
-<text text-anchor="start" x="1679.11" y="-1176.2" font-family="Arial" font-size="14.00">created_at </text>
-<text text-anchor="start" x="1749.16" y="-1176.2" font-family="Arial" font-size="14.00" fill="#666666">[datetime(6)]</text>
-<polygon fill="none" stroke="black" points="1672.11,-1133.2 1672.11,-1164 1997.78,-1164 1997.78,-1133.2 1672.11,-1133.2"/>
-<text text-anchor="start" x="1679.11" y="-1145.4" font-family="Arial" font-size="14.00">status </text>
-<text text-anchor="start" x="1720.35" y="-1145.4" font-family="Arial" font-size="14.00" fill="#666666">[enum(&#39;open&#39;,&#39;retracted&#39;,&#39;denied&#39;,&#39;accepted&#39;)]</text>
+<polygon fill="none" stroke="black" points="1688.21,-1256.4 1688.21,-1287.2 1981.68,-1287.2 1981.68,-1256.4 1688.21,-1256.4"/>
+<text text-anchor="start" x="1695.21" y="-1268.6" font-family="Arial" font-size="14.00">join_request_event_id </text>
+<text text-anchor="start" x="1836.09" y="-1268.6" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
+<polygon fill="none" stroke="black" points="1688.21,-1225.6 1688.21,-1256.4 1981.68,-1256.4 1981.68,-1225.6 1688.21,-1225.6"/>
+<text text-anchor="start" x="1695.21" y="-1237.8" font-family="Arial" font-size="14.00">join_response_event_id </text>
+<text text-anchor="start" x="1846.99" y="-1237.8" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
+<polygon fill="none" stroke="black" points="1688.21,-1194.8 1688.21,-1225.6 1981.68,-1225.6 1981.68,-1194.8 1688.21,-1194.8"/>
+<text text-anchor="start" x="1695.21" y="-1207" font-family="Arial" font-size="14.00">admin_user_id </text>
+<text text-anchor="start" x="1790.93" y="-1207" font-family="Arial" font-size="14.00" fill="#666666">[bigint(20)]</text>
+<polygon fill="none" stroke="black" points="1688.21,-1164 1688.21,-1194.8 1981.68,-1194.8 1981.68,-1164 1688.21,-1164"/>
+<text text-anchor="start" x="1695.21" y="-1176.2" font-family="Arial" font-size="14.00">created_at </text>
+<text text-anchor="start" x="1765.26" y="-1176.2" font-family="Arial" font-size="14.00" fill="#666666">[datetime(6)]</text>
+<polygon fill="none" stroke="black" points="1688.21,-1133.2 1688.21,-1164 1981.68,-1164 1981.68,-1133.2 1688.21,-1133.2"/>
+<text text-anchor="start" x="1695.21" y="-1145.4" font-family="Arial" font-size="14.00">status </text>
+<text text-anchor="start" x="1736.45" y="-1145.4" font-family="Arial" font-size="14.00" fill="#666666">[enum(&#39;open&#39;,&#39;accepted&#39;,&#39;denied&#39;)]</text>
 </g>
 <!-- join_requests_history&#45;&gt;users -->
 <g id="edge13" class="edge">
 <title>join_requests_history:admin_user_id&#45;&gt;users:user_id</title>
-<path fill="none" stroke="black" d="M2008.77,-1209.19C2047.32,-1200.41 2015.57,-1136.37 1997.78,-1090 1990.13,-1070.06 1973.51,-1073.97 1965.95,-1054 1941.8,-990.24 1922.81,-800 1965.95,-747.2 2016.74,-685.04 2092.15,-773.36 2142.95,-711.2 2168.85,-679.5 2164.43,-377.64 2142.95,-342.8 2075.33,-233.13 2012.78,-212.6 1883.94,-212.6"/>
-<polygon fill="black" stroke="black" points="2009.06,-1209.16 1998.66,-1205.69 2003.76,-1209.7 1999.45,-1210.13 1999.45,-1210.13 1999.45,-1210.13 2003.76,-1209.7 1999.57,-1214.64 2009.06,-1209.16"/>
-<text text-anchor="start" x="2005.78" y="-1220.2" font-family="Arial" font-size="10.00">FOREIGN KEY (admin_user_id) REFERENCES users (user_id)</text>
+<path fill="none" stroke="black" d="M1993.03,-1209.11C2029.86,-1200.2 1992.01,-1138.37 1981.68,-1090 1978.04,-1072.92 1969.52,-1071.09 1965.95,-1054 1952,-987.26 1922.81,-800 1965.95,-747.2 2016.74,-685.04 2092.15,-773.36 2142.95,-711.2 2168.85,-679.5 2164.43,-377.64 2142.95,-342.8 2075.33,-233.13 2012.78,-212.6 1883.94,-212.6"/>
+<polygon fill="black" stroke="black" points="1992.96,-1209.12 1982.55,-1205.69 1987.66,-1209.68 1983.35,-1210.13 1983.35,-1210.13 1983.35,-1210.13 1987.66,-1209.68 1983.49,-1214.64 1992.96,-1209.12"/>
+<text text-anchor="start" x="1989.68" y="-1220.2" font-family="Arial" font-size="10.00">FOREIGN KEY (admin_user_id) REFERENCES users (user_id)</text>
 </g>
 <!-- join_requests_history&#45;&gt;join_responses_history -->
 <g id="edge14" class="edge">
 <title>join_requests_history:join_response_event_id&#45;&gt;join_responses_history:join_response_event_id</title>
-<path fill="none" stroke="black" d="M1660.93,-1240.14C1606.96,-1230.39 1632.95,-1139.91 1672.11,-1090 1729.85,-1016.42 1818.3,-1112.07 1876.19,-1038.6 1902.1,-1005.71 1919.06,-944.4 1877.19,-944.4"/>
-<polygon fill="black" stroke="black" points="1660.81,-1240.13 1670.4,-1245.46 1666.13,-1240.58 1670.44,-1240.94 1670.44,-1240.94 1670.44,-1240.94 1666.13,-1240.58 1671.16,-1236.49 1660.81,-1240.13"/>
-<text text-anchor="start" x="1189.44" y="-1251" font-family="Arial" font-size="10.00">FOREIGN KEY (join_response_event_id) REFERENCES join_responses_history (join_response_event_id)</text>
+<path fill="none" stroke="black" d="M1677.03,-1240.15C1623.11,-1230.44 1649.55,-1140.3 1688.21,-1090 1740.99,-1021.33 1823.27,-1107.17 1876.19,-1038.6 1901.77,-1005.45 1919.06,-944.4 1877.19,-944.4"/>
+<polygon fill="black" stroke="black" points="1676.91,-1240.14 1686.5,-1245.46 1682.23,-1240.58 1686.54,-1240.94 1686.54,-1240.94 1686.54,-1240.94 1682.23,-1240.58 1687.25,-1236.49 1676.91,-1240.14"/>
+<text text-anchor="start" x="1205.54" y="-1251" font-family="Arial" font-size="10.00">FOREIGN KEY (join_response_event_id) REFERENCES join_responses_history (join_response_event_id)</text>
 </g>
 <!-- users_labels&#45;&gt;users -->
 <g id="edge15" class="edge">

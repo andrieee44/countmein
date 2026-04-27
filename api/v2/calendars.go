@@ -36,7 +36,6 @@ func (c *CalendarService) CreateCalendar(
 ) (*connect.Response[calendarsv2.CreateCalendarResponse], error) {
 	var (
 		actor      UserActor
-		tx         *sql.Tx
 		calendarID int64
 		err        error
 	)
@@ -51,32 +50,24 @@ func (c *CalendarService) CreateCalendar(
 		return nil, err
 	}
 
-	tx, err = c.db.BeginTx(ctx, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	defer tx.Rollback()
-
-	err = store.New(tx).CreateCalendar(ctx, store.CreateCalendarParams{
-		ActorUserID:  actor.UserID,
-		Name:         req.Msg.Name,
-		Ical:         req.Msg.Ical,
-		Description:  req.Msg.Description,
-		AesSecretKey: c._AES_SECRET_KEY,
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	err = tx.QueryRowContext(ctx, "SELECT @out_calendar_id").Scan(
+	err = sproc(
+		ctx,
+		c.db,
+		"@out_calendar_id",
 		&calendarID,
+		func(tx *sql.Tx) error {
+			return store.New(tx).CreateCalendar(
+				ctx,
+				store.CreateCalendarParams{
+					ActorUserID:  actor.UserID,
+					Name:         req.Msg.Name,
+					Ical:         req.Msg.Ical,
+					Description:  req.Msg.Description,
+					AesSecretKey: c._AES_SECRET_KEY,
+				},
+			)
+		},
 	)
-	if err != nil {
-		return nil, err
-	}
-
-	err = tx.Commit()
 	if err != nil {
 		return nil, err
 	}
@@ -195,10 +186,10 @@ func (c *CalendarService) WriteCalendar(
 	return connect.NewResponse(&calendarsv2.WriteCalendarResponse{}), nil
 }
 
-func (c *CalendarService) UpdateCalendarMetadata(
+func (c *CalendarService) UpdateCalendar(
 	ctx context.Context,
-	req *connect.Request[calendarsv2.UpdateCalendarMetadataRequest],
-) (*connect.Response[calendarsv2.UpdateCalendarMetadataResponse], error) {
+	req *connect.Request[calendarsv2.UpdateCalendarRequest],
+) (*connect.Response[calendarsv2.UpdateCalendarResponse], error) {
 	var (
 		actor UserActor
 		n     int64
@@ -210,9 +201,9 @@ func (c *CalendarService) UpdateCalendarMetadata(
 		return nil, err
 	}
 
-	n, err = store.New(c.db).UpdateCalendarMetadata(
+	n, err = store.New(c.db).UpdateCalendar(
 		ctx,
-		store.UpdateCalendarMetadataParams{
+		store.UpdateCalendarParams{
 			ActorUserID: actor.UserID,
 			CalendarID:  req.Msg.CalendarId,
 			Name:        fromPtr(req.Msg.Name),
@@ -228,7 +219,7 @@ func (c *CalendarService) UpdateCalendarMetadata(
 	}
 
 	return connect.NewResponse(
-		&calendarsv2.UpdateCalendarMetadataResponse{},
+		&calendarsv2.UpdateCalendarResponse{},
 	), nil
 }
 

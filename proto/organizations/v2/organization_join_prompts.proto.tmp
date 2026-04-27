@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package organizations.v2;
+
+service OrganizationJoinPromptService {
+  rpc CreateOrganizationJoinPrompt(CreateOrganizationJoinPromptRequest) returns (CreateOrganizationJoinPromptResponse);
+  rpc GetOrganizationJoinPrompt(GetOrganizationJoinPromptRequest) returns (GetOrganizationJoinPromptResponse);
+  rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse);
+  rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse);
+  rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse);
+}
+
+message CreateOrganizationJoinPromptRequest {
+  int64 organization_id = 1;
+  string prompt = 2;
+}
+
+message CreateOrganizationJoinPromptResponse {
+  int64 join_prompt_event_id = 1;
+}
+
+message CreateOrganizationRequest {
+}
+
+message CreateOrganizationResponse {
+}

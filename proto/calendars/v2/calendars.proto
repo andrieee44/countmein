@@ -9,7 +9,7 @@ service CalendarService {
   rpc GetCalendar(GetCalendarRequest) returns (GetCalendarResponse);
   rpc GetCalendarWrites(GetCalendarWritesRequest) returns (GetCalendarWritesResponse);
   rpc WriteCalendar(WriteCalendarRequest) returns (WriteCalendarResponse);
-  rpc UpdateCalendarMetadata(UpdateCalendarMetadataRequest) returns (UpdateCalendarMetadataResponse);
+  rpc UpdateCalendar(UpdateCalendarRequest) returns (UpdateCalendarResponse);
   rpc DeleteCalendar(DeleteCalendarRequest) returns (DeleteCalendarResponse);
 }
 
@@ -50,13 +50,13 @@ message WriteCalendarRequest {
 
 message WriteCalendarResponse {}
 
-message UpdateCalendarMetadataRequest {
+message UpdateCalendarRequest {
   int64 calendar_id = 1;
   optional string name = 2;
   optional string description = 3;
 }
 
-message UpdateCalendarMetadataResponse {}
+message UpdateCalendarResponse {}
 
 message DeleteCalendarRequest {
   int64 calendar_id = 1;
